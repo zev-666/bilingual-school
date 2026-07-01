@@ -5,7 +5,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
-  LayoutDashboard, Megaphone, Images, Video, FileText,
+  LayoutDashboard, Megaphone, Image, Video, FileText,
   Users, MessageSquare, HardDrive, Settings, LogOut,
   Menu, X, ChevronRight,
 } from 'lucide-react'
@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils'
 const NAV = [
   { href: '/admin/dashboard',      label: '儀表板',     icon: LayoutDashboard },
   { href: '/admin/announcements',  label: '公告管理',   icon: Megaphone },
-  { href: '/admin/albums',         label: '相簿管理',   icon: Images },
+  { href: '/admin/albums',         label: '相簿管理',   icon: Image },
   { href: '/admin/documents',      label: '文件管理',   icon: FileText },
   { href: '/admin/teachers',       label: '師資管理',   icon: Users },
   { href: '/admin/contacts',       label: '聯絡訊息',   icon: MessageSquare },

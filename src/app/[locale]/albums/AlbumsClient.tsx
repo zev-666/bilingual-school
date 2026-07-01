@@ -4,7 +4,7 @@
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Images, Calendar, ArrowRight } from 'lucide-react'
+import { Image, Calendar, ArrowRight } from 'lucide-react'
 import { Link as IntlLink } from '@/i18n/routing'
 import { formatDate } from '@/lib/utils'
 
@@ -60,13 +60,13 @@ export default function AlbumsClient({ locale, albums }: AlbumsClientProps) {
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <Images size={40} className="text-gray-300" />
+                        <Image size={40} className="text-gray-300" />
                       </div>
                     )}
                     {/* Photo count badge */}
                     <div className="absolute bottom-3 right-3 flex items-center gap-1.5
                       bg-black/60 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full">
-                      <Images size={12} aria-hidden="true" />
+                      <Image size={12} aria-hidden="true" />
                       {album._count.photos} {t('photos')}
                     </div>
                   </div>

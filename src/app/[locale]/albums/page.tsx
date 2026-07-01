@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl'
 import { prisma } from '@/lib/prisma'
-import { Images } from 'lucide-react'
+import { Image } from 'lucide-react'
 
 async function getAlbums() {
   try {
@@ -31,7 +31,7 @@ export default async function AlbumsPage({ params: { locale } }: { params: { loc
               <div className="h-48 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
                 {album.coverImage
                   ? <img src={album.coverImage} alt="" className="w-full h-full object-cover" />
-                  : <Images size={40} className="text-primary-400" />}
+                  : <Image size={40} className="text-primary-400" />}
               </div>
               <div className="p-4">
                 <h3 className="font-semibold text-gray-900 mb-1">

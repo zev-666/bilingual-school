@@ -1,13 +1,13 @@
 'use client'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { LayoutDashboard, Megaphone, Images, FileText, Users, Settings, MessageSquare, LogOut, Video, Library, GraduationCap } from 'lucide-react'
+import { LayoutDashboard, Megaphone, Image, FileText, Users, Settings, MessageSquare, LogOut, Video, Library, GraduationCap } from 'lucide-react'
 import '../globals.css'
 
 const navItems = [
   { href: '/admin/dashboard', label: '儀表板', icon: LayoutDashboard },
   { href: '/admin/announcements', label: '公告管理', icon: Megaphone },
-  { href: '/admin/albums', label: '相簿管理', icon: Images },
+  { href: '/admin/albums', label: '相簿管理', icon: Image },
   { href: '/admin/teachers', label: '師資管理', icon: GraduationCap },
   { href: '/admin/documents', label: '文件管理', icon: FileText },
   { href: '/admin/media', label: '媒體庫', icon: Library },

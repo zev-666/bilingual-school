@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { prisma } from '@/lib/prisma'
 import { formatDate, cn } from '@/lib/utils'
-import { Plus, Edit, Eye, EyeOff, Images } from 'lucide-react'
+import { Plus, Edit, Eye, EyeOff, Image } from 'lucide-react'
 import DeleteAlbumButton from './DeleteAlbumButton'
 
 export const metadata: Metadata = { title: '相簿管理' }
@@ -38,7 +38,7 @@ export default async function AdminAlbumsPage() {
 
       {albums.length === 0 ? (
         <div className="card flex flex-col items-center justify-center py-20 text-center">
-          <Images size={48} className="text-gray-300 mb-4" />
+          <Image size={48} className="text-gray-300 mb-4" />
           <p className="text-gray-500 text-sm">尚無相簿，點選右上角新增</p>
         </div>
       ) : (
@@ -56,7 +56,7 @@ export default async function AdminAlbumsPage() {
                   />
                 ) : (
                   <div className="flex items-center justify-center h-full">
-                    <Images size={40} className="text-gray-300" />
+                    <Image size={40} className="text-gray-300" />
                   </div>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -103,7 +103,7 @@ export default async function AdminAlbumsPage() {
                     className="flex-1 flex items-center justify-center gap-1.5 py-1.5 text-xs rounded-lg
                       text-gray-600 hover:bg-gray-50 transition-colors font-medium"
                   >
-                    <Images size={13} />
+                    <Image size={13} />
                     管理照片
                   </Link>
                   <DeleteAlbumButton id={album.id} title={album.titleZh} />

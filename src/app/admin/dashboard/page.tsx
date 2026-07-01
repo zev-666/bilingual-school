@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
-import { Megaphone, MessageSquare, Images, FileText, Plus, ArrowRight } from 'lucide-react'
+import { Megaphone, MessageSquare, Image, FileText, Plus, ArrowRight } from 'lucide-react'
 
 async function getStats() {
   try {
@@ -23,7 +23,7 @@ export default async function DashboardPage() {
   const cards = [
     { label: '公告總數', value: stats.announcements, icon: Megaphone, color: 'bg-blue-500', href: '/admin/announcements' },
     { label: '未讀訊息', value: stats.contacts, icon: MessageSquare, color: 'bg-yellow-500', href: '/admin/contacts' },
-    { label: '相簿數量', value: stats.albums, icon: Images, color: 'bg-green-500', href: '/admin/albums' },
+    { label: '相簿數量', value: stats.albums, icon: Image, color: 'bg-green-500', href: '/admin/albums' },
     { label: '文件數量', value: stats.documents, icon: FileText, color: 'bg-purple-500', href: '/admin/documents' },
   ]
 
