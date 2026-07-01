@@ -1,0 +1,370 @@
+{
+  "nav": {
+    "home": "Home",
+    "news": "News",
+    "albums": "Photo Albums",
+    "videos": "Videos",
+    "documents": "Documents",
+    "teachers": "Faculty",
+    "about": "About Us",
+    "admission": "Admissions",
+    "contact": "Contact",
+    "toggleMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "locale": {
+    "zh-TW": "繁體中文",
+    "en": "English",
+    "switchTo": "Switch language"
+  },
+  "home": {
+    "hero": {
+      "badge": "Bilingual Education Excellence",
+      "title": "Cultivating Bilingual",
+      "subtitle": "Leaders of Tomorrow",
+      "description": "Providing a world-class bilingual education environment that blends Eastern and Western cultures to nurture future leaders with a global perspective.",
+      "cta": "Explore Admissions",
+      "ctaSecondary": "Discover Campus Life"
+    },
+    "stats": {
+      "students": "Students",
+      "teachers": "Faculty",
+      "years": "Years",
+      "awards": "Awards",
+      "unit": {
+        "students": "",
+        "teachers": "",
+        "years": "",
+        "awards": ""
+      }
+    },
+    "news": {
+      "title": "Latest News",
+      "subtitle": "Stay informed about campus updates and events",
+      "viewAll": "View All"
+    },
+    "about": {
+      "title": "Our Philosophy",
+      "subtitle": "Bilingual education at the core, cultivating globally competitive talent",
+      "description": "We believe every student has unlimited potential. Through innovative bilingual teaching methods combining Chinese cultural heritage with an international perspective, students confidently engage on the global stage.",
+      "feature1": "Immersive Bilingual Environment",
+      "feature2": "Internationally Accredited Curriculum",
+      "feature3": "World-Class Faculty",
+      "feature4": "Rich Extracurricular Activities"
+    },
+    "quickLinks": {
+      "title": "Quick Links",
+      "admission": "Admissions",
+      "calendar": "School Calendar",
+      "contact": "Contact Us",
+      "documents": "Download Forms"
+    }
+  },
+  "news": {
+    "title": "Latest News",
+    "subtitle": "Stay up to date with campus news",
+    "search": "Search announcements...",
+    "categories": {
+      "all": "All",
+      "ANNOUNCEMENT": "Announcements",
+      "ACTIVITY": "Activities",
+      "ADMISSION": "Admissions",
+      "COMPETITION": "Competitions",
+      "NEWS": "News"
+    },
+    "noResults": "No announcements found matching your criteria",
+    "readMore": "Read More",
+    "publishedAt": "Published",
+    "views": "views",
+    "backToList": "Back to List"
+  },
+  "albums": {
+    "title": "Photo Albums",
+    "subtitle": "Capturing every beautiful moment",
+    "photos": "photos",
+    "viewAlbum": "View Album",
+    "backToList": "Back to Albums",
+    "noPhotos": "No photos in this album yet"
+  },
+  "videos": {
+    "title": "Videos",
+    "subtitle": "Visual records of vibrant campus life",
+    "watch": "Watch Video",
+    "views": "views"
+  },
+  "documents": {
+    "title": "Document Downloads",
+    "subtitle": "Forms and documents available for download",
+    "categories": {
+      "all": "All",
+      "FORM": "Forms",
+      "REGULATION": "Regulations",
+      "BROCHURE": "Brochures",
+      "REPORT": "Reports",
+      "OTHER": "Other"
+    },
+    "download": "Download",
+    "downloads": "downloads",
+    "fileSize": "File size",
+    "preview": "Preview"
+  },
+  "teachers": {
+    "title": "Our Faculty",
+    "subtitle": "Exceptional educators from around the world",
+    "types": {
+      "all": "All",
+      "FULL_TIME": "Full-Time Faculty",
+      "PART_TIME": "Part-Time Faculty",
+      "STAFF": "Administrative Staff"
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We'd love to hear from you",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone (optional)",
+      "subject": "Subject",
+      "message": "Message",
+      "submit": "Send Message",
+      "submitting": "Sending...",
+      "success": "Your message has been sent successfully. We'll get back to you soon!",
+      "error": "Failed to send. Please try again later."
+    },
+    "info": {
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "hours": "Office Hours",
+      "addressValue": "123 School Road, City, Taiwan",
+      "phoneValue": "(02) 1234-5678",
+      "emailValue": "info@bilingualschool.edu.tw",
+      "hoursValue": "Monday–Friday 08:00–17:00"
+    }
+  },
+  "admission": {
+    "title": "Admissions",
+    "subtitle": "Welcome to our school family",
+    "intro": {
+      "title": "Why Choose Us?",
+      "content": "Our bilingual program offers a world-class education that prepares students for success in an interconnected world. We welcome students from all backgrounds who share our passion for learning."
+    },
+    "steps": {
+      "title": "Application Process",
+      "step1": "Complete online application",
+      "step2": "Submit required documents",
+      "step3": "Attend assessment",
+      "step4": "Acceptance notification",
+      "step5": "Complete enrollment"
+    },
+    "requirements": {
+      "title": "Requirements",
+      "elementary": {
+        "label": "Elementary",
+        "items": [
+          "Birth certificate",
+          "Household registration",
+          "Recent passport photo",
+          "Health examination record"
+        ]
+      },
+      "junior": {
+        "label": "Junior High",
+        "items": [
+          "Elementary graduation certificate",
+          "Academic transcripts",
+          "Household registration",
+          "Recent passport photo"
+        ]
+      }
+    },
+    "tuition": {
+      "title": "Tuition & Fees",
+      "note": "Fees listed are per semester. Please contact the admissions office for current information.",
+      "elementary": "Elementary School",
+      "junior": "Junior High School",
+      "items": {
+        "tuition": "Tuition",
+        "activity": "Activity Fee",
+        "lunch": "Lunch Fee",
+        "total": "Total (approx.)"
+      }
+    },
+    "scholarship": {
+      "title": "Scholarships",
+      "content": "We offer merit-based and need-based scholarships. Please inquire at the admissions office for details."
+    },
+    "contact": {
+      "title": "Contact Admissions",
+      "cta": "Apply Now"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "q": "When does the application period open?",
+          "a": "Applications for the upcoming academic year typically open in November of the prior year."
+        },
+        {
+          "q": "Is prior English ability required?",
+          "a": "A basic English foundation is helpful, but our immersive program develops proficiency from the ground up."
+        },
+        {
+          "q": "Are there after-school programs?",
+          "a": "Yes, we offer after-school clubs, tutoring, and enrichment programs."
+        }
+      ]
+    }
+  },
+  "footer": {
+    "description": "Committed to providing world-class bilingual education, cultivating future talents with global perspectives.",
+    "links": "Quick Links",
+    "contact": "Contact Info",
+    "follow": "Follow Us",
+    "rights": "All Rights Reserved",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "notFound": "Page not found",
+    "backHome": "Back to Home",
+    "learnMore": "Learn More",
+    "viewAll": "View All",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "page": "Page",
+    "of": "of",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "announcements": "Announcements",
+    "albums": "Albums",
+    "videos": "Videos",
+    "documents": "Documents",
+    "teachers": "Faculty",
+    "contacts": "Contact Messages",
+    "media": "Media Library",
+    "users": "User Management",
+    "settings": "Site Settings",
+    "logout": "Log Out",
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "published": "Published",
+    "draft": "Draft",
+    "publish": "Publish",
+    "unpublish": "Unpublish"
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Carrying forward our educational mission, shaping a bilingual future",
+    "vision": {
+      "title": "Our Vision",
+      "content": "To become the most influential bilingual experimental school in the Asia-Pacific region, nurturing future leaders who are rooted in Chinese culture and equipped with a global perspective."
+    },
+    "mission": {
+      "title": "Our Mission",
+      "content": "With immersive bilingual education at our core, we integrate multicultural curricula to ignite students passion for learning and creativity, empowering every student to shine on the global stage."
+    },
+    "values": {
+      "title": "Core Values",
+      "bilingual": {
+        "title": "Bilingual Excellence",
+        "desc": "Building a foundation in both Chinese and English for fluent cross-language communication."
+      },
+      "culture": {
+        "title": "Cultural Integration",
+        "desc": "Embracing diverse cultures and blending the best of Eastern and Western education."
+      },
+      "innovation": {
+        "title": "Innovative Learning",
+        "desc": "Employing cutting-edge teaching methods to foster curiosity and critical thinking."
+      },
+      "character": {
+        "title": "Character Development",
+        "desc": "Prioritizing moral education to cultivate responsibility and social awareness."
+      }
+    },
+    "history": {
+      "title": "School History",
+      "events": [
+        {
+          "year": "2001",
+          "title": "School Founded",
+          "desc": "Co-founded by passionate educators dedicated to bilingual education."
+        },
+        {
+          "year": "2005",
+          "title": "International Accreditation",
+          "desc": "Received Cambridge International Education accreditation."
+        },
+        {
+          "year": "2010",
+          "title": "Campus Expansion",
+          "desc": "Completed Phase 2 construction, adding science labs and a maker space."
+        },
+        {
+          "year": "2015",
+          "title": "Excellence Award",
+          "desc": "Received the Ministry of Education Bilingual Education Excellence Award."
+        },
+        {
+          "year": "2020",
+          "title": "Digital Transformation",
+          "desc": "Fully integrated smart classroom systems and an online learning platform."
+        },
+        {
+          "year": "2024",
+          "title": "New Milestone",
+          "desc": "Celebrating our 23rd anniversary, expanding international exchange networks."
+        }
+      ]
+    },
+    "facilities": {
+      "title": "Campus Facilities",
+      "items": [
+        {
+          "name": "Smart Classrooms",
+          "desc": "Interactive whiteboards and tablets throughout campus for an immersive digital learning environment."
+        },
+        {
+          "name": "Science Labs",
+          "desc": "Fully equipped physics, chemistry, and biology labs to nurture scientific inquiry."
+        },
+        {
+          "name": "Library & Resource Center",
+          "desc": "Over 30,000 volumes in Chinese and English, with digital learning zones."
+        },
+        {
+          "name": "Multi-Purpose Gymnasium",
+          "desc": "Indoor basketball, badminton courts, and a professional swimming pool."
+        },
+        {
+          "name": "Arts Creation Center",
+          "desc": "Music rooms, art studios, and a performance stage for diverse artistic expression."
+        },
+        {
+          "name": "International Exchange Hall",
+          "desc": "Designed for international guests and events, with simultaneous translation facilities."
+        }
+      ]
+    },
+    "stats": {
+      "founded": "Year Founded",
+      "students": "Students Enrolled",
+      "teachers": "Expert Faculty",
+      "awards": "Awards Won"
+    }
+  }
+}

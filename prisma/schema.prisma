@@ -1,0 +1,345 @@
+// prisma/schema.prisma
+// Database schema for Bilingual School Website
+// Supports: Users, Announcements, Albums, Videos, Documents, Teachers, Contacts
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Users & Auth ───────────────────────────────────────────────────────────
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+  AUTHOR
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  password     String
+  role         UserRole @default(AUTHOR)
+  avatar       String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  announcements Announcement[]
+  albums        Album[]
+  videos        Video[]
+  documents     Document[]
+  sessions      Session[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+// ─── Announcements / News ────────────────────────────────────────────────────
+
+enum AnnouncementCategory {
+  ANNOUNCEMENT  // 公告
+  ACTIVITY      // 活動
+  ADMISSION     // 招生
+  COMPETITION   // 競賽
+  NEWS          // 新聞
+}
+
+model Announcement {
+  id           String               @id @default(cuid())
+  slug         String               @unique
+  // Bilingual fields
+  titleZh      String               // 中文標題
+  titleEn      String               // English title
+  summaryZh    String?              // 中文摘要
+  summaryEn    String?              // English summary
+  contentZh    String               @db.Text // 中文內容 (Markdown)
+  contentEn    String               @db.Text // English content (Markdown)
+  category     AnnouncementCategory @default(ANNOUNCEMENT)
+  coverImage   String?
+  isPinned     Boolean              @default(false)
+  isPublished  Boolean              @default(false)
+  publishedAt  DateTime?
+  viewCount    Int                  @default(0)
+  authorId     String
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+
+  author User @relation(fields: [authorId], references: [id])
+  tags   AnnouncementTag[]
+
+  @@map("announcements")
+}
+
+model Tag {
+  id            String            @id @default(cuid())
+  nameZh        String
+  nameEn        String
+  slug          String            @unique
+  announcements AnnouncementTag[]
+
+  @@map("tags")
+}
+
+model AnnouncementTag {
+  announcementId String
+  tagId          String
+
+  announcement Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+  tag          Tag          @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([announcementId, tagId])
+  @@map("announcement_tags")
+}
+
+// ─── Photo Albums ────────────────────────────────────────────────────────────
+
+model Album {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  titleZh     String
+  titleEn     String
+  descZh      String?
+  descEn      String?
+  coverImage  String?
+  eventDate   DateTime?
+  isPublished Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  authorId    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  author         User    @relation(fields: [authorId], references: [id])
+  photos         Photo[]
+
+  @@map("albums")
+}
+
+model Photo {
+  id        String   @id @default(cuid())
+  albumId   String
+  url       String
+  thumbnail String?
+  captionZh String?
+  captionEn String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  album Album @relation(fields: [albumId], references: [id], onDelete: Cascade)
+
+  @@map("photos")
+}
+
+// ─── Videos ──────────────────────────────────────────────────────────────────
+
+enum VideoSource {
+  YOUTUBE
+  VIMEO
+  SELF_HOSTED
+}
+
+model Video {
+  id          String      @id @default(cuid())
+  slug        String      @unique
+  titleZh     String
+  titleEn     String
+  descZh      String?
+  descEn      String?
+  source      VideoSource @default(YOUTUBE)
+  videoUrl    String      // YouTube/Vimeo URL or self-hosted path
+  embedId     String?     // YouTube video ID or Vimeo ID
+  thumbnail   String?
+  duration    Int?        // seconds
+  isPublished Boolean     @default(false)
+  viewCount   Int         @default(0)
+  authorId    String
+  publishedAt DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  author   User           @relation(fields: [authorId], references: [id])
+  playlists PlaylistVideo[]
+
+  @@map("videos")
+}
+
+model Playlist {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  titleZh     String
+  titleEn     String
+  descZh      String?
+  descEn      String?
+  coverImage  String?
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  videos PlaylistVideo[]
+
+  @@map("playlists")
+}
+
+model PlaylistVideo {
+  playlistId String
+  videoId    String
+  sortOrder  Int    @default(0)
+
+  playlist Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  video    Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@id([playlistId, videoId])
+  @@map("playlist_videos")
+}
+
+// ─── Documents ───────────────────────────────────────────────────────────────
+
+enum DocumentCategory {
+  FORM       // 表單
+  REGULATION // 規章
+  BROCHURE   // 簡章
+  REPORT     // 報告
+  OTHER      // 其他
+}
+
+model Document {
+  id           String           @id @default(cuid())
+  titleZh      String
+  titleEn      String
+  descZh       String?
+  descEn       String?
+  category     DocumentCategory @default(OTHER)
+  fileUrl      String
+  fileName     String
+  fileSize     Int              // bytes
+  fileType     String           // MIME type
+  downloadCount Int             @default(0)
+  isPublished  Boolean          @default(true)
+  authorId     String
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  author User @relation(fields: [authorId], references: [id])
+
+  @@map("documents")
+}
+
+// ─── Teachers / Staff ────────────────────────────────────────────────────────
+
+enum TeacherType {
+  FULL_TIME  // 專任
+  PART_TIME  // 兼任
+  STAFF      // 行政
+}
+
+model Teacher {
+  id           String      @id @default(cuid())
+  nameZh       String
+  nameEn       String
+  titleZh      String      // 職稱 (中文)
+  titleEn      String      // Title (English)
+  bioZh        String?     @db.Text
+  bioEn        String?     @db.Text
+  avatar       String?
+  type         TeacherType @default(FULL_TIME)
+  subjects     String[]    // Array of subject slugs
+  email        String?
+  sortOrder    Int         @default(0)
+  isActive     Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@map("teachers")
+}
+
+// ─── Contact Messages ────────────────────────────────────────────────────────
+
+enum ContactStatus {
+  UNREAD
+  READ
+  REPLIED
+  ARCHIVED
+}
+
+model Contact {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String        @db.Text
+  status    ContactStatus @default(UNREAD)
+  ipAddress String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@map("contacts")
+}
+
+// ─── Site Settings ───────────────────────────────────────────────────────────
+
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  type      String   @default("string") // string | json | boolean | number
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+// ─── Banner Slides ───────────────────────────────────────────────────────────
+
+model BannerSlide {
+  id          String   @id @default(cuid())
+  titleZh     String
+  titleEn     String
+  subtitleZh  String?
+  subtitleEn  String?
+  imageUrl    String
+  linkUrl     String?
+  linkTextZh  String?
+  linkTextEn  String?
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("banner_slides")
+}
+
+// ─── Media Library ───────────────────────────────────────────────────────────
+
+model Media {
+  id        String   @id @default(cuid())
+  filename  String
+  url       String
+  thumbnail String?
+  mimeType  String
+  size      Int      // bytes
+  width     Int?
+  height    Int?
+  altZh     String?
+  altEn     String?
+  createdAt DateTime @default(now())
+
+  @@map("media")
+}
