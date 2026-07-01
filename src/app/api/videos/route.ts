@@ -60,7 +60,7 @@ const createSchema = z.object({
 })
 
 export async function POST(req: NextRequest) {
-  const authUser = getAuthUserFromRequest(req)
+  const authUser = await getAuthUserFromRequest(req)
   if (!authUser) return apiError('Unauthorized', 401)
   if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)
 
@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
       slug,
       embedId,
       thumbnail,
-      authorId:    authUser.userId,
+      authorId:    authUser.id,
       publishedAt: parsed.data.isPublished ? new Date() : null,
     },
   })
