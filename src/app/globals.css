@@ -2,125 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --color-primary: 79 70 229;
-    --color-accent: 249 115 22;
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    @apply text-gray-900 bg-white;
-    font-feature-settings: 'kern' 1, 'liga' 1;
-  }
-
-  /* Typography scale */
-  h1 { @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight; }
-  h2 { @apply text-3xl md:text-4xl font-bold tracking-tight; }
-  h3 { @apply text-2xl font-semibold; }
-  h4 { @apply text-xl font-semibold; }
-}
-
 @layer components {
-  /* Prose rich text styles */
-  .prose-school {
-    @apply prose prose-lg max-w-none
-      prose-headings:text-gray-900
-      prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline
-      prose-img:rounded-xl prose-img:shadow-md;
-  }
-
-  /* Card styles */
-  .card {
-    @apply bg-white rounded-2xl shadow-sm border border-gray-100
-      hover:shadow-md transition-shadow duration-300;
-  }
-
-  /* Section padding */
-  .section-padding {
-    @apply py-16 md:py-24 px-4 sm:px-6 lg:px-8;
-  }
-
-  /* Container max width */
   .container-school {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
-
-  /* Category badge */
-  .badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
-  }
-  .badge-primary { @apply badge bg-primary-100 text-primary-700; }
-  .badge-accent  { @apply badge bg-orange-100 text-orange-700; }
-  .badge-green   { @apply badge bg-green-100 text-green-700; }
-  .badge-red     { @apply badge bg-red-100 text-red-700; }
-
-  /* Button variants */
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3
-      rounded-xl font-medium transition-all duration-200 focus-visible:outline-none
-      focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2
-      disabled:opacity-50 disabled:cursor-not-allowed;
+  .section-padding {
+    @apply py-16 md:py-24;
   }
   .btn-primary {
-    @apply btn bg-primary-600 text-white hover:bg-primary-700 active:scale-[0.98];
+    @apply inline-flex items-center justify-center px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .btn-secondary {
-    @apply btn bg-white text-gray-700 border border-gray-200
-      hover:bg-gray-50 hover:border-gray-300 active:scale-[0.98];
+    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-primary-600 text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors duration-200;
   }
   .btn-ghost {
-    @apply btn text-gray-600 hover:bg-gray-100 active:scale-[0.98];
+    @apply inline-flex items-center justify-center px-4 py-2 text-gray-600 font-medium rounded-lg hover:bg-gray-100 transition-colors duration-200;
   }
-
-  /* Form inputs */
+  .btn-danger {
+    @apply inline-flex items-center justify-center px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors duration-200;
+  }
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300;
+  }
   .input {
-    @apply w-full px-4 py-3 rounded-xl border border-gray-200 bg-white
-      text-gray-900 placeholder-gray-400
-      focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent
-      transition-all duration-200;
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors;
   }
-
-  /* Skeleton loading */
-  .skeleton {
-    @apply animate-pulse bg-gray-200 rounded-lg;
+  .label {
+    @apply block text-sm font-medium text-gray-700 mb-1;
   }
-}
-
-@layer utilities {
-  /* Text gradient */
-  .text-gradient {
-    @apply bg-gradient-to-r from-primary-600 to-indigo-500 bg-clip-text text-transparent;
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
   }
-
-  /* Smooth scroll offset for fixed navbar */
-  .scroll-mt-navbar {
-    scroll-margin-top: 80px;
+  .badge-blue {
+    @apply badge bg-blue-100 text-blue-800;
   }
-
-  /* Visually hidden (a11y) */
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    white-space: nowrap;
-    border-width: 0;
+  .badge-green {
+    @apply badge bg-green-100 text-green-800;
   }
-  .sr-only.focus\:not-sr-only:focus {
-    position: static;
-    width: auto;
-    height: auto;
-    padding: inherit;
-    margin: inherit;
-    overflow: visible;
-    clip: auto;
-    white-space: normal;
+  .badge-yellow {
+    @apply badge bg-yellow-100 text-yellow-800;
+  }
+  .badge-red {
+    @apply badge bg-red-100 text-red-800;
+  }
+  .badge-gray {
+    @apply badge bg-gray-100 text-gray-800;
   }
 }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: system-ui, -apple-system, sans-serif; color: #111827; background: #fff; }

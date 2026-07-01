@@ -1,90 +1,60 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
-import { apiSuccess, apiError } from '@/lib/utils'
-import { z } from 'zod'
+import { apiSuccess, apiError, hasPermission } from '@/lib/utils'
+import { getCurrentUser } from '@/lib/auth'
 
-const updateSchema = z.object({
-  titleZh: z.string().min(1).optional(),
-  titleEn: z.string().min(1).optional(),
-  category: z.enum(['FORM', 'REGULATION', 'BROCHURE', 'REPORT', 'OTHER']).optional(),
-  isPublished: z.boolean().optional(),
-  fileUrl: z.string().optional(),
-  fileSize: z.number().optional(),
-})
-
-interface Props {
-  params: { id: string }
-}
-
-export async function GET(_req: NextRequest, { params }: Props) {
+export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
   try {
     const doc = await prisma.document.findUnique({ where: { id: params.id } })
-    if (!doc) return NextResponse.json(apiError('Document not found'), { status: 404 })
-    return NextResponse.json(apiSuccess(doc))
-  } catch (err) {
-    console.error(err)
-    return NextResponse.json(apiError('Failed to fetch document'), { status: 500 })
+    if (!doc) return apiError('找不到文件', 404)
+    return apiSuccess(doc)
+  } catch (e) {
+    return apiError('取得文件失敗', 500)
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: Props) {
-  const user = await getAuthUserFromRequest(req)
-  if (!user || !hasPermission(user.role, 'EDITOR')) {
-    return NextResponse.json(apiError('Unauthorized'), { status: 401 })
-  }
-
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const body = await req.json()
-    const data = updateSchema.parse(body)
+    const user = getCurrentUser()
+    if (!user || !hasPermission(user.role, 'EDITOR')) return apiError('權限不足', 403)
 
+    const body = await req.json()
     const doc = await prisma.document.update({
       where: { id: params.id },
-      data,
+      data: {
+        titleZh: body.titleZh, titleEn: body.titleEn,
+        descZh: body.descZh, descEn: body.descEn,
+        category: body.category, fileUrl: body.fileUrl,
+        fileSize: body.fileSize, isPublished: !!body.isPublished,
+      },
     })
-
-    return NextResponse.json(apiSuccess(doc))
-  } catch (err) {
-    if (err instanceof z.ZodError) {
-      return NextResponse.json(apiError(err.errors[0].message), { status: 400 })
-    }
-    console.error(err)
-    return NextResponse.json(apiError('Failed to update document'), { status: 500 })
+    return apiSuccess(doc)
+  } catch (e) {
+    return apiError('更新文件失敗', 500)
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: Props) {
-  const user = await getAuthUserFromRequest(req)
-  if (!user || !hasPermission(user.role, 'ADMIN')) {
-    return NextResponse.json(apiError('Unauthorized'), { status: 401 })
-  }
-
+// Increment download count
+export async function POST(_req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    await prisma.document.delete({ where: { id: params.id } })
-    return NextResponse.json(apiSuccess({ deleted: true }))
-  } catch (err) {
-    console.error(err)
-    return NextResponse.json(apiError('Failed to delete document'), { status: 500 })
-  }
-}
-
-// Increment download count (public)
-export async function POST(req: NextRequest, { params }: Props) {
-  try {
-    const body = await req.json().catch(() => ({}))
-    if (body.action !== 'download') {
-      return NextResponse.json(apiError('Unknown action'), { status: 400 })
-    }
-
     const doc = await prisma.document.update({
       where: { id: params.id },
       data: { downloadCount: { increment: 1 } },
-      select: { downloadCount: true },
     })
+    return apiSuccess(doc)
+  } catch (e) {
+    return apiError('更新下載次數失敗', 500)
+  }
+}
 
-    return NextResponse.json(apiSuccess(doc))
-  } catch (err) {
-    console.error(err)
-    return NextResponse.json(apiError('Failed to record download'), { status: 500 })
+export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const user = getCurrentUser()
+    if (!user || !hasPermission(user.role, 'ADMIN')) return apiError('權限不足', 403)
+
+    await prisma.document.delete({ where: { id: params.id } })
+    return apiSuccess({ message: '刪除成功' })
+  } catch (e) {
+    return apiError('刪除文件失敗', 500)
   }
 }

@@ -1,51 +1,34 @@
-// src/app/api/contacts/route.ts
 import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
-import { apiSuccess, apiError } from '@/lib/utils'
-import { z } from 'zod'
+import { apiSuccess, apiError, hasPermission } from '@/lib/utils'
+import { getCurrentUser } from '@/lib/auth'
 
-const schema = z.object({
-  name:    z.string().min(2).max(100),
-  email:   z.string().email(),
-  phone:   z.string().max(20).optional(),
-  subject: z.string().min(3).max(200),
-  message: z.string().min(10).max(5000),
-})
+export async function GET(req: NextRequest) {
+  try {
+    const user = getCurrentUser()
+    if (!user || !hasPermission(user.role, 'EDITOR')) return apiError('權限不足', 403)
 
-// POST /api/contacts — public form submission
-export async function POST(req: NextRequest) {
-  const body = await req.json()
-  const parsed = schema.safeParse(body)
-  if (!parsed.success) return apiError(parsed.error.message, 422)
+    const { searchParams } = new URL(req.url)
+    const status = searchParams.get('status')
+    const where: any = {}
+    if (status) where.status = status
 
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0] ?? req.headers.get('x-real-ip') ?? undefined
-
-  const contact = await prisma.contact.create({
-    data: { ...parsed.data, ipAddress: ip },
-  })
-  return apiSuccess({ id: contact.id }, 201)
+    const contacts = await prisma.contact.findMany({ where, orderBy: { createdAt: 'desc' } })
+    return apiSuccess(contacts)
+  } catch (e) {
+    return apiError('取得聯絡訊息失敗', 500)
+  }
 }
 
-// GET /api/contacts — admin only
-export async function GET(req: NextRequest) {
-  const authUser = getAuthUserFromRequest(req)
-  if (!authUser) return apiError('Unauthorized', 401)
-  if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json()
+    const { name, email, subject, message } = body
+    if (!name || !email || !subject || !message) return apiError('請填寫所有欄位', 400)
 
-  const { searchParams } = new URL(req.url)
-  const status = searchParams.get('status')
-  const page   = parseInt(searchParams.get('page') ?? '1', 10)
-  const perPage = 20
-
-  const where = status ? { status: status as any } : {}
-  const [data, total] = await Promise.all([
-    prisma.contact.findMany({
-      where, orderBy: { createdAt: 'desc' },
-      skip: (page - 1) * perPage, take: perPage,
-    }),
-    prisma.contact.count({ where }),
-  ])
-
-  return apiSuccess({ data, meta: { total, page, perPage, totalPages: Math.ceil(total / perPage) } })
+    const contact = await prisma.contact.create({ data: { name, email, subject, message } })
+    return apiSuccess(contact, 201)
+  } catch (e) {
+    return apiError('送出失敗，請稍後再試', 500)
+  }
 }

@@ -1,135 +1,63 @@
-'use client'
-
-// src/components/layout/Footer.tsx
-import { useTranslations, useLocale } from 'next-intl'
-import { Link as IntlLink } from '@/i18n/routing'
-import { Mail, Phone, MapPin, Facebook, Youtube, Instagram } from 'lucide-react'
-
-const FOOTER_LINKS = [
-  { href: '/news',      key: 'news' },
-  { href: '/albums',    key: 'albums' },
-  { href: '/videos',    key: 'videos' },
-  { href: '/documents', key: 'documents' },
-  { href: '/teachers',  key: 'teachers' },
-  { href: '/about',     key: 'about' },
-  { href: '/admission', key: 'admission' },
-  { href: '/contact',   key: 'contact' },
-] as const
+import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/routing'
+import { Mail, Phone, MapPin } from 'lucide-react'
 
 export default function Footer() {
-  const t = useTranslations('footer')
-  const tNav = useTranslations('nav')
-  const tContact = useTranslations('contact.info')
-  const locale = useLocale()
-  const currentYear = new Date().getFullYear()
+  const t = useTranslations()
 
   return (
     <footer className="bg-gray-900 text-gray-300">
-      <div className="container-school py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-
-          {/* Brand */}
-          <div className="lg:col-span-1">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-9 h-9 rounded-xl bg-primary-600 flex items-center justify-center text-white font-bold text-lg">
-                B
+      <div className="container-school py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">雙</span>
               </div>
-              <span className="font-bold text-white text-lg">
-                {locale === 'zh-TW' ? '雙語實驗學校' : 'Bilingual School'}
-              </span>
+              <span className="font-bold text-white">雙語實驗學校</span>
             </div>
-            <p className="text-sm text-gray-400 leading-relaxed mb-6">
-              {t('description')}
-            </p>
-            {/* Social links */}
-            <div className="flex gap-3">
-              {[
-                { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
-                { icon: Youtube,  href: 'https://youtube.com',  label: 'YouTube' },
-                { icon: Instagram,href: 'https://instagram.com',label: 'Instagram' },
-              ].map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center
-                    text-gray-400 hover:bg-primary-600 hover:text-white transition-colors"
-                >
-                  <Icon size={18} aria-hidden="true" />
-                </a>
-              ))}
-            </div>
+            <p className="text-sm text-gray-400">提供優質雙語教育，培育未來人才</p>
           </div>
 
-          {/* Quick links */}
           <div>
-            <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
-              {t('links')}
-            </h3>
-            <ul className="space-y-2.5">
-              {FOOTER_LINKS.map(({ href, key }) => (
-                <li key={key}>
-                  <IntlLink
-                    href={href}
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
-                  >
-                    {tNav(key)}
-                  </IntlLink>
+            <h3 className="font-semibold text-white mb-4">快速連結</h3>
+            <ul className="space-y-2 text-sm">
+              {[
+                { href: '/news', label: t('nav.news') },
+                { href: '/about', label: t('nav.about') },
+                { href: '/admission', label: t('nav.admission') },
+                { href: '/contact', label: t('nav.contact') },
+              ].map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href as any} className="hover:text-white transition-colors">
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact info */}
           <div>
-            <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
-              {t('contact')}
-            </h3>
-            <ul className="space-y-3">
-              {[
-                { icon: MapPin, value: tContact('addressValue') },
-                { icon: Phone,  value: tContact('phoneValue'),  href: `tel:${tContact('phoneValue').replace(/\D/g,'')}` },
-                { icon: Mail,   value: tContact('emailValue'),  href: `mailto:${tContact('emailValue')}` },
-              ].map(({ icon: Icon, value, href }) => (
-                <li key={value} className="flex items-start gap-3">
-                  <Icon size={16} className="text-primary-400 mt-0.5 shrink-0" aria-hidden="true" />
-                  {href ? (
-                    <a href={href} className="text-sm text-gray-400 hover:text-white transition-colors">
-                      {value}
-                    </a>
-                  ) : (
-                    <span className="text-sm text-gray-400">{value}</span>
-                  )}
-                </li>
-              ))}
+            <h3 className="font-semibold text-white mb-4">聯絡資訊</h3>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-start gap-2">
+                <MapPin size={14} className="mt-0.5 text-primary-400 flex-shrink-0" />
+                台北市信義區教育路1號
+              </li>
+              <li className="flex items-center gap-2">
+                <Phone size={14} className="text-primary-400 flex-shrink-0" />
+                02-1234-5678
+              </li>
+              <li className="flex items-center gap-2">
+                <Mail size={14} className="text-primary-400 flex-shrink-0" />
+                info@school.edu.tw
+              </li>
             </ul>
-          </div>
-
-          {/* Map placeholder / newsletter */}
-          <div>
-            <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
-              {t('follow')}
-            </h3>
-            <div className="rounded-xl overflow-hidden bg-gray-800 h-32 flex items-center justify-center">
-              <span className="text-xs text-gray-500">Google Maps</span>
-            </div>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-gray-800 mt-12 pt-6 flex flex-col sm:flex-row
-          items-center justify-between gap-4 text-xs text-gray-500">
-          <p>© {currentYear} {locale === 'zh-TW' ? '雙語實驗學校' : 'Bilingual School'}. {t('rights')}.</p>
-          <div className="flex gap-4">
-            <IntlLink href="/privacy" className="hover:text-gray-300 transition-colors">
-              {t('privacy')}
-            </IntlLink>
-            <IntlLink href="/terms" className="hover:text-gray-300 transition-colors">
-              {t('terms')}
-            </IntlLink>
-          </div>
+        <div className="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-500">
+          © 2024 雙語實驗學校 版權所有
         </div>
       </div>
     </footer>

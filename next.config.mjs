@@ -1,13 +1,14 @@
+import createNextIntlPlugin from 'next-intl/plugin'
+
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 告訴 Next.js 在建置時忽略 ESLint 錯誤
-  eslint: {
-    ignoreDuringBuilds: true,
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: '**' },
+    ],
   },
-  // 告訴 Next.js 在建置時忽略 TypeScript 型別錯誤
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-};
+}
 
-export default nextConfig;
+export default withNextIntl(nextConfig)

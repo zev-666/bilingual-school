@@ -1,33 +1,7 @@
-# Dependencies
-node_modules/
-
-# Next.js
-.next/
-out/
-
-# Environment
-.env
+node_modules
+.next
 .env.local
-.env.*.local
-
-# Prisma
-prisma/migrations/
-
-# Uploads (local dev)
-public/uploads/
-
-# Build
-dist/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Editor
-.vscode/
-.idea/
-*.swp
-
-# Logs
+.env
 *.log
-npm-debug.log*
+.DS_Store
+public/uploads

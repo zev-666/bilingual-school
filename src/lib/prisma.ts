@@ -1,6 +1,3 @@
-// src/lib/prisma.ts
-// Singleton Prisma client to prevent multiple connections in development
-
 import { PrismaClient } from '@prisma/client'
 
 const globalForPrisma = globalThis as unknown as {

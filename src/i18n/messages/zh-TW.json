@@ -6,113 +6,91 @@
     "videos": "活動影音",
     "documents": "文件下載",
     "teachers": "師資介紹",
-    "about": "關於我們",
+    "about": "關於學校",
     "admission": "招生資訊",
-    "contact": "聯絡我們",
-    "toggleMenu": "開啟選單",
-    "closeMenu": "關閉選單"
-  },
-  "locale": {
-    "zh-TW": "繁體中文",
-    "en": "English",
-    "switchTo": "切換語言"
+    "contact": "聯絡我們"
   },
   "home": {
     "hero": {
-      "badge": "雙語教育典範",
-      "title": "培育雙語人才",
-      "subtitle": "卓越未來",
-      "description": "提供世界級雙語教育環境，融合中西文化精髓，培養具備全球視野的未來領袖。",
-      "cta": "了解招生資訊",
-      "ctaSecondary": "探索校園生活"
+      "badge": "雙語實驗學校",
+      "title": "啟迪未來，雙語領航",
+      "subtitle": "提供最優質的雙語教育環境，培育具備全球競爭力的未來人才",
+      "cta_primary": "了解更多",
+      "cta_secondary": "招生資訊"
     },
     "stats": {
       "students": "在校學生",
-      "teachers": "優秀師資",
-      "years": "辦學年資",
-      "awards": "獲獎紀錄",
-      "unit": {
-        "students": "位",
-        "teachers": "位",
-        "years": "年",
-        "awards": "項"
-      }
+      "teachers": "專業師資",
+      "years": "辦學年數",
+      "programs": "雙語課程"
     },
     "news": {
       "title": "最新消息",
-      "subtitle": "掌握校園動態，不錯過任何重要資訊",
-      "viewAll": "查看全部"
+      "subtitle": "掌握學校最新動態與活動資訊",
+      "more": "查看更多"
     },
     "about": {
-      "title": "辦學理念",
-      "subtitle": "以雙語教育為核心，培養具備國際競爭力的人才",
-      "description": "我們相信每位學生都有無限潛能。透過創新的雙語教學方法，結合中華文化底蘊與國際化視野，讓學生在全球舞台上自信展現。",
-      "feature1": "沉浸式雙語環境",
-      "feature2": "國際認證課程",
-      "feature3": "頂尖師資團隊",
-      "feature4": "豐富課外活動"
+      "title": "關於我們",
+      "subtitle": "致力於提供卓越的雙語教育",
+      "description": "我們是一所致力於雙語教育的實驗學校，融合中西方教育精華，培育學生具備國際視野與本土情懷。",
+      "learn_more": "了解更多"
     },
-    "quickLinks": {
+    "quicklinks": {
       "title": "快速連結",
-      "admission": "招生資訊",
+      "admission": "招生簡章",
       "calendar": "學校行事曆",
-      "contact": "聯絡我們",
-      "documents": "表單下載"
+      "documents": "表單下載",
+      "contact": "聯絡我們"
     }
   },
   "news": {
     "title": "最新消息",
-    "subtitle": "掌握校園最新動態",
-    "search": "搜尋公告...",
+    "subtitle": "掌握學校最新動態",
+    "all": "全部",
+    "search": "搜尋消息...",
+    "no_results": "目前沒有相關消息",
+    "read_more": "閱讀更多",
+    "back": "返回列表",
+    "published": "發布日期",
     "categories": {
-      "all": "全部",
-      "ANNOUNCEMENT": "公告",
-      "ACTIVITY": "活動",
+      "NEWS": "新聞",
+      "EVENT": "活動",
       "ADMISSION": "招生",
-      "COMPETITION": "競賽",
-      "NEWS": "新聞"
-    },
-    "noResults": "目前沒有符合條件的公告",
-    "readMore": "閱讀更多",
-    "publishedAt": "發布日期",
-    "views": "瀏覽次數",
-    "backToList": "回到列表"
+      "ACADEMIC": "學術",
+      "OTHER": "其他"
+    }
   },
   "albums": {
     "title": "活動相簿",
-    "subtitle": "記錄每個美好時刻",
+    "subtitle": "記錄學校精彩時刻",
     "photos": "張照片",
-    "viewAlbum": "查看相簿",
-    "backToList": "回到相簿列表",
-    "noPhotos": "此相簿尚無照片"
+    "no_albums": "目前沒有相簿"
   },
   "videos": {
     "title": "活動影音",
-    "subtitle": "精彩校園生活的影像記錄",
-    "watch": "觀看影片",
-    "views": "次觀看"
+    "subtitle": "精彩影片回顧",
+    "no_videos": "目前沒有影片"
   },
   "documents": {
     "title": "文件下載",
     "subtitle": "各類表單與文件下載",
+    "download": "下載",
+    "downloads": "次下載",
+    "no_documents": "目前沒有文件",
     "categories": {
-      "all": "全部",
       "FORM": "表單",
       "REGULATION": "規章",
       "BROCHURE": "簡章",
       "REPORT": "報告",
       "OTHER": "其他"
-    },
-    "download": "下載",
-    "downloads": "次下載",
-    "fileSize": "檔案大小",
-    "preview": "預覽"
+    }
   },
   "teachers": {
     "title": "師資介紹",
-    "subtitle": "來自世界各地的優秀師資",
+    "subtitle": "專業優質的教學團隊",
+    "subjects": "教授科目",
+    "no_teachers": "目前沒有師資資料",
     "types": {
-      "all": "全部",
       "FULL_TIME": "專任教師",
       "PART_TIME": "兼任教師",
       "STAFF": "行政人員"
@@ -120,251 +98,54 @@
   },
   "contact": {
     "title": "聯絡我們",
-    "subtitle": "歡迎與我們聯繫，我們將盡快回覆",
-    "form": {
-      "name": "姓名",
-      "email": "電子郵件",
-      "phone": "電話（選填）",
-      "subject": "主旨",
-      "message": "訊息內容",
-      "submit": "送出",
-      "submitting": "送出中...",
-      "success": "訊息已成功送出，我們將盡快與您聯繫！",
-      "error": "送出失敗，請稍後再試。"
-    },
-    "info": {
-      "address": "地址",
-      "phone": "電話",
-      "email": "電子郵件",
-      "hours": "辦公時間",
-      "addressValue": "台灣某市某區某路123號",
-      "phoneValue": "(02) 1234-5678",
-      "emailValue": "info@bilingualschool.edu.tw",
-      "hoursValue": "週一至週五 08:00–17:00"
-    }
+    "subtitle": "歡迎與我們聯繫",
+    "name": "姓名",
+    "email": "電子郵件",
+    "subject": "主旨",
+    "message": "訊息內容",
+    "submit": "送出訊息",
+    "success": "訊息已送出，我們將盡快回覆您！",
+    "error": "送出失敗，請稍後再試",
+    "address": "地址",
+    "phone": "電話",
+    "office_hours": "辦公時間",
+    "office_hours_value": "週一至週五 8:00 - 17:00"
+  },
+  "about": {
+    "title": "關於學校",
+    "subtitle": "了解我們的使命與願景",
+    "mission_title": "使命",
+    "vision_title": "願景",
+    "history_title": "學校沿革",
+    "facilities_title": "學校設施"
   },
   "admission": {
     "title": "招生資訊",
-    "subtitle": "歡迎加入我們的大家庭",
-    "intro": {
-      "title": "為何選擇我們？",
-      "content": "我們的雙語課程提供世界級教育，培養學生在全球互聯的世界中脫穎而出的能力。我們歡迎所有熱愛學習、渴望成長的學生加入。"
-    },
-    "steps": {
-      "title": "報名流程",
-      "step1": "線上填寫報名表",
-      "step2": "繳交相關文件",
-      "step3": "參加入學評估",
-      "step4": "公布錄取結果",
-      "step5": "完成報到手續"
-    },
-    "requirements": {
-      "title": "報名所需文件",
-      "elementary": {
-        "label": "國小部",
-        "items": [
-          "戶口名簿影本",
-          "出生證明",
-          "近期一吋照片兩張",
-          "學童健康紀錄"
-        ]
-      },
-      "junior": {
-        "label": "國中部",
-        "items": [
-          "國小畢業證書",
-          "歷年成績單",
-          "戶口名簿影本",
-          "近期一吋照片兩張"
-        ]
-      }
-    },
-    "tuition": {
-      "title": "學費說明",
-      "note": "以上費用為每學期金額，實際費用請洽招生組確認。",
-      "elementary": "國小部",
-      "junior": "國中部",
-      "items": {
-        "tuition": "學費",
-        "activity": "活動費",
-        "lunch": "午餐費",
-        "total": "合計（約）"
-      }
-    },
-    "scholarship": {
-      "title": "獎學金制度",
-      "content": "本校設有多項優秀學生獎學金及清寒獎助學金，詳情請洽招生組。"
-    },
-    "contact": {
-      "title": "聯絡招生組",
-      "cta": "立即報名"
-    },
-    "faq": {
-      "title": "常見問題",
-      "items": [
-        {
-          "q": "招生何時開始？",
-          "a": "下學年度招生通常於前一年 11 月開始，請密切關注本校公告。"
-        },
-        {
-          "q": "需要具備英文基礎嗎？",
-          "a": "建議具備基本英文能力，但本校沉浸式課程可從零培養，歡迎詢問。"
-        },
-        {
-          "q": "有課後照顧服務嗎？",
-          "a": "有，本校提供多元課後社團、補救教學及才藝加強課程。"
-        }
-      ]
-    }
+    "subtitle": "加入我們的大家庭",
+    "process_title": "申請流程",
+    "requirements_title": "申請條件",
+    "tuition_title": "學費資訊",
+    "apply_now": "立即申請",
+    "contact_us": "聯絡招生組"
   },
   "footer": {
-    "description": "致力於提供世界級的雙語教育，培育具有全球視野的未來人才。",
-    "links": "快速連結",
-    "contact": "聯絡資訊",
-    "follow": "追蹤我們",
     "rights": "版權所有",
     "privacy": "隱私政策",
-    "terms": "使用條款"
+    "sitemap": "網站地圖"
   },
   "common": {
     "loading": "載入中...",
     "error": "發生錯誤",
-    "notFound": "找不到頁面",
-    "backHome": "回到首頁",
-    "learnMore": "了解更多",
-    "viewAll": "查看全部",
-    "search": "搜尋",
-    "filter": "篩選",
-    "sort": "排序",
-    "newest": "最新",
-    "oldest": "最舊",
-    "page": "頁面",
-    "of": "共",
-    "prev": "上一頁",
-    "next": "下一頁"
-  },
-  "admin": {
-    "dashboard": "儀表板",
-    "announcements": "公告管理",
-    "albums": "相簿管理",
-    "videos": "影片管理",
-    "documents": "文件管理",
-    "teachers": "師資管理",
-    "contacts": "聯絡訊息",
-    "media": "媒體庫",
-    "users": "使用者管理",
-    "settings": "網站設定",
-    "logout": "登出",
-    "create": "新增",
-    "edit": "編輯",
-    "delete": "刪除",
+    "back": "返回",
     "save": "儲存",
     "cancel": "取消",
-    "confirm": "確認",
+    "delete": "刪除",
+    "edit": "編輯",
+    "create": "新增",
+    "search": "搜尋",
+    "all": "全部",
     "published": "已發布",
     "draft": "草稿",
-    "publish": "發布",
-    "unpublish": "取消發布"
-  },
-  "about": {
-    "title": "關於我們",
-    "subtitle": "傳承教育使命，開創雙語未來",
-    "vision": {
-      "title": "辦學願景",
-      "content": "成為亞太地區最具影響力的雙語實驗學校，培育兼具中華文化底蘊與國際視野的未來領袖。"
-    },
-    "mission": {
-      "title": "教育使命",
-      "content": "以沉浸式雙語教學為核心，整合多元文化課程，激發學生的學習熱情與創造力，讓每位學生在全球舞台上自信展現。"
-    },
-    "values": {
-      "title": "核心價值",
-      "bilingual": {
-        "title": "雙語卓越",
-        "desc": "以中英雙語為基礎，培養流暢的跨語言溝通能力。"
-      },
-      "culture": {
-        "title": "文化融合",
-        "desc": "尊重多元文化，融合東西方教育精髓。"
-      },
-      "innovation": {
-        "title": "創新學習",
-        "desc": "採用最新教學法，激發學生的探索精神與批判思維。"
-      },
-      "character": {
-        "title": "品格養成",
-        "desc": "重視道德教育，培養學生的責任感與社會關懷。"
-      }
-    },
-    "history": {
-      "title": "學校沿革",
-      "events": [
-        {
-          "year": "2001",
-          "title": "學校創立",
-          "desc": "由一群熱愛雙語教育的教育家共同創辦，以「雙語立校、文化傳承」為核心理念。"
-        },
-        {
-          "year": "2005",
-          "title": "獲得國際認證",
-          "desc": "取得 Cambridge International Education 認證，成為全台首批通過國際課程認證的學校之一。"
-        },
-        {
-          "year": "2010",
-          "title": "擴建新校區",
-          "desc": "完成第二期校舍工程，新增科學實驗室、創客空間與國際交流中心。"
-        },
-        {
-          "year": "2015",
-          "title": "卓越表現獎",
-          "desc": "榮獲教育部「雙語教育卓越獎」，學生在國際競賽累計獲獎逾百項。"
-        },
-        {
-          "year": "2020",
-          "title": "數位轉型",
-          "desc": "全面導入智慧教室系統，建立完善的線上學習平台，提升混合式學習體驗。"
-        },
-        {
-          "year": "2024",
-          "title": "邁向新里程",
-          "desc": "迎來建校 23 周年，持續深化雙語課程，拓展國際交流合作網絡。"
-        }
-      ]
-    },
-    "facilities": {
-      "title": "校園設施",
-      "items": [
-        {
-          "name": "智慧教室",
-          "desc": "全校配備互動式電子白板與平板電腦，打造沉浸式數位學習環境。"
-        },
-        {
-          "name": "科學實驗室",
-          "desc": "設備完善的物理、化學、生物實驗室，培養學生的科學探究精神。"
-        },
-        {
-          "name": "圖書資訊中心",
-          "desc": "藏書逾三萬冊，中英文資源齊備，附設數位學習區與討論空間。"
-        },
-        {
-          "name": "多功能體育館",
-          "desc": "室內籃球場、羽球場，以及專業游泳池，促進學生全方位體能發展。"
-        },
-        {
-          "name": "藝術創作中心",
-          "desc": "音樂教室、美術教室、表演舞台，提供學生多元藝術表達空間。"
-        },
-        {
-          "name": "國際交流廳",
-          "desc": "專為接待外賓與舉辦國際活動設計，配備同步翻譯設備。"
-        }
-      ]
-    },
-    "stats": {
-      "founded": "創校年份",
-      "students": "在校學生",
-      "teachers": "優秀師資",
-      "awards": "獲獎紀錄"
-    }
+    "pinned": "置頂"
   }
 }

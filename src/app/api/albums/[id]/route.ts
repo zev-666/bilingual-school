@@ -1,57 +1,55 @@
-// src/app/api/albums/[id]/route.ts
 import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
-import { apiSuccess, apiError } from '@/lib/utils'
-import { z } from 'zod'
+import { apiSuccess, apiError, hasPermission } from '@/lib/utils'
+import { getCurrentUser } from '@/lib/auth'
 
-const updateSchema = z.object({
-  titleZh:     z.string().min(1).optional(),
-  titleEn:     z.string().min(1).optional(),
-  descZh:      z.string().optional(),
-  descEn:      z.string().optional(),
-  coverImage:  z.string().url().optional().or(z.literal('')),
-  eventDate:   z.string().datetime().optional().nullable(),
-  isPublished: z.boolean().optional(),
-  sortOrder:   z.number().optional(),
-})
-
-interface Ctx { params: { id: string } }
-
-export async function GET(_req: NextRequest, { params }: Ctx) {
-  const album = await prisma.album.findUnique({
-    where: { id: params.id },
-    include: { photos: { orderBy: { sortOrder: 'asc' } }, _count: { select: { photos: true } } },
-  })
-  if (!album) return apiError('Not found', 404)
-  return apiSuccess(album)
-}
-
-export async function PATCH(req: NextRequest, { params }: Ctx) {
-  const authUser = getAuthUserFromRequest(req)
-  if (!authUser) return apiError('Unauthorized', 401)
-  if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)
-
-  const body = await req.json()
-  const parsed = updateSchema.safeParse(body)
-  if (!parsed.success) return apiError(parsed.error.message, 422)
-
-  const data = {
-    ...parsed.data,
-    coverImage: parsed.data.coverImage === '' ? null : parsed.data.coverImage,
-    eventDate:  parsed.data.eventDate ? new Date(parsed.data.eventDate) : undefined,
+export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const album = await prisma.album.findUnique({
+      where: { id: params.id },
+      include: { photos: { orderBy: { sortOrder: 'asc' } } },
+    })
+    if (!album) return apiError('找不到相簿', 404)
+    return apiSuccess(album)
+  } catch (e) {
+    return apiError('取得相簿失敗', 500)
   }
-
-  const album = await prisma.album.update({ where: { id: params.id }, data })
-  return apiSuccess(album)
 }
 
-export async function DELETE(req: NextRequest, { params }: Ctx) {
-  const authUser = getAuthUserFromRequest(req)
-  if (!authUser) return apiError('Unauthorized', 401)
-  if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const user = getCurrentUser()
+    if (!user || !hasPermission(user.role, 'EDITOR')) return apiError('權限不足', 403)
 
-  // Cascade deletes photos via Prisma schema (onDelete: Cascade)
-  await prisma.album.delete({ where: { id: params.id } })
-  return apiSuccess({ deleted: true })
+    const body = await req.json()
+    const existing = await prisma.album.findUnique({ where: { id: params.id } })
+    if (!existing) return apiError('找不到相簿', 404)
+
+    const wasPublished = existing.isPublished
+    const updated = await prisma.album.update({
+      where: { id: params.id },
+      data: {
+        titleZh: body.titleZh, titleEn: body.titleEn,
+        descZh: body.descZh, descEn: body.descEn,
+        coverImage: body.coverImage,
+        isPublished: !!body.isPublished,
+        publishedAt: !wasPublished && body.isPublished ? new Date() : existing.publishedAt,
+      },
+    })
+    return apiSuccess(updated)
+  } catch (e) {
+    return apiError('更新相簿失敗', 500)
+  }
+}
+
+export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const user = getCurrentUser()
+    if (!user || !hasPermission(user.role, 'ADMIN')) return apiError('權限不足', 403)
+
+    await prisma.album.delete({ where: { id: params.id } })
+    return apiSuccess({ message: '刪除成功' })
+  } catch (e) {
+    return apiError('刪除相簿失敗', 500)
+  }
 }

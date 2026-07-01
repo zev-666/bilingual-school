@@ -1,74 +1,52 @@
-// src/app/[locale]/news/page.tsx
-import type { Metadata } from 'next'
-import { getTranslations } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/routing'
 import { prisma } from '@/lib/prisma'
-import NewsClient from './NewsClient'
+import { formatDate } from '@/lib/utils'
+import { Pin } from 'lucide-react'
 
-interface NewsPageProps {
-  params: { locale: string }
-  searchParams: { category?: string; q?: string; page?: string }
-}
-
-export async function generateMetadata({ params: { locale } }: NewsPageProps): Promise<Metadata> {
-  const t = await getTranslations({ locale, namespace: 'news' })
-  return { title: t('title'), description: t('subtitle') }
-}
-
-async function getAnnouncements(category?: string, query?: string, page = 1) {
-  const perPage = 9
+async function getAnnouncements() {
   try {
-    const where = {
-      isPublished: true,
-      ...(category && category !== 'all' ? { category: category as any } : {}),
-      ...(query ? {
-        OR: [
-          { titleZh: { contains: query, mode: 'insensitive' as const } },
-          { titleEn: { contains: query, mode: 'insensitive' as const } },
-          { summaryZh: { contains: query, mode: 'insensitive' as const } },
-          { summaryEn: { contains: query, mode: 'insensitive' as const } },
-        ],
-      } : {}),
-    }
-
-    const [announcements, total] = await Promise.all([
-      prisma.announcement.findMany({
-        where,
-        orderBy: [{ isPinned: 'desc' }, { publishedAt: 'desc' }],
-        skip: (page - 1) * perPage,
-        take: perPage,
-        select: {
-          id: true, slug: true, titleZh: true, titleEn: true,
-          summaryZh: true, summaryEn: true, category: true,
-          coverImage: true, isPinned: true, publishedAt: true, viewCount: true,
-          author: { select: { name: true } },
-        },
-      }),
-      prisma.announcement.count({ where }),
-    ])
-
-    return { announcements, total, totalPages: Math.ceil(total / perPage) }
+    return await prisma.announcement.findMany({
+      where: { isPublished: true },
+      orderBy: [{ isPinned: 'desc' }, { publishedAt: 'desc' }],
+    })
   } catch {
-    // Mock data for development
-    const { MOCK_NEWS } = await import('./mockData')
-    return { announcements: MOCK_NEWS, total: MOCK_NEWS.length, totalPages: 1 }
+    return [
+      { id: '1', slug: 'sample', titleZh: '範例公告', titleEn: 'Sample Announcement', category: 'NEWS', isPinned: false, publishedAt: new Date(), createdAt: new Date() },
+    ]
   }
 }
 
-export default async function NewsPage({ params: { locale }, searchParams }: NewsPageProps) {
-  const page = parseInt(searchParams.page ?? '1', 10)
-  const { announcements, total, totalPages } = await getAnnouncements(
-    searchParams.category,
-    searchParams.q,
-    page
-  )
+export default async function NewsPage({ params: { locale } }: { params: { locale: string } }) {
+  const t = useTranslations('news')
+  const tc = useTranslations('news.categories')
+  const announcements = await getAnnouncements()
 
   return (
-    <NewsClient
-      locale={locale}
-      initialAnnouncements={announcements}
-      total={total}
-      totalPages={totalPages}
-      currentPage={page}
-    />
+    <div className="section-padding">
+      <div className="container-school">
+        <div className="mb-10">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">{t('title')}</h1>
+          <p className="text-gray-500">{t('subtitle')}</p>
+        </div>
+        <div className="space-y-4">
+          {announcements.map((item: any) => (
+            <Link key={item.id} href={`/news/${item.slug}` as any}
+              className="card p-6 flex items-start gap-4 hover:border-primary-200 block">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="badge-blue">{tc(item.category as any)}</span>
+                  {item.isPinned && <Pin size={12} className="text-primary-500" />}
+                </div>
+                <h2 className="font-semibold text-gray-900 mb-1">
+                  {locale === 'zh-TW' ? item.titleZh : item.titleEn}
+                </h2>
+                <p className="text-xs text-gray-400">{formatDate(item.publishedAt || item.createdAt, locale)}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
   )
 }
