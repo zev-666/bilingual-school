@@ -1,13 +1,15 @@
 'use client'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { Suspense, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
-export default function AdminLoginPage() {
+function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirect') || '/admin/dashboard'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -19,7 +21,7 @@ export default function AdminLoginPage() {
         body: JSON.stringify({ email, password }),
       })
       const data = await res.json()
-      if (res.ok) router.push('/admin/dashboard')
+      if (res.ok) router.push(redirectTo)
       else setError(data.error || '登入失敗')
     } catch { setError('網路錯誤，請稍後再試') }
     finally { setLoading(false) }
@@ -55,5 +57,13 @@ export default function AdminLoginPage() {
         </form>
       </div>
     </div>
+  )
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
   )
 }
