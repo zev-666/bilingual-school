@@ -13,7 +13,7 @@ interface AnnouncementData {
 }
 
 interface AnnouncementEditorProps {
-  mode: 'create' | 'edit'
+  mode?: 'create' | 'edit'
   initialData?: AnnouncementData
 }
 
@@ -25,7 +25,7 @@ const CATEGORIES = [
   { value: 'OTHER', label: '其他' },
 ]
 
-export default function AnnouncementEditor({ mode, initialData }: AnnouncementEditorProps) {
+export default function AnnouncementEditor({ mode = 'create', initialData }: AnnouncementEditorProps) {
   const router = useRouter()
   const isEdit = mode === 'edit'
   const [tab, setTab] = useState<'zh' | 'en'>('zh')
