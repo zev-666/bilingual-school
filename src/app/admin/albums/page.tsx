@@ -85,7 +85,7 @@ export default async function AdminAlbumsPage() {
 
                 <div className="flex items-center justify-between text-xs text-gray-400">
                   <span>{album.eventDate ? formatDate(album.eventDate, 'zh-TW') : '未設定日期'}</span>
-                  <span>{album.author.name}</span>
+                  <span>{album.author?.name ?? '—'}</span>
                 </div>
 
                 {/* Actions */}
