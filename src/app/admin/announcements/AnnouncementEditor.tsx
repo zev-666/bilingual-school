@@ -3,10 +3,18 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 interface AnnouncementData {
+  id?: string
   slug?: string
   titleZh: string; titleEn: string
+  summaryZh?: string; summaryEn?: string
   contentZh: string; contentEn: string
-  category: string; isPinned: boolean; isPublished: boolean
+  category: string; coverImage?: string
+  isPinned: boolean; isPublished: boolean
+}
+
+interface AnnouncementEditorProps {
+  mode: 'create' | 'edit'
+  initialData?: AnnouncementData
 }
 
 const CATEGORIES = [
@@ -17,13 +25,14 @@ const CATEGORIES = [
   { value: 'OTHER', label: '其他' },
 ]
 
-export default function AnnouncementEditor({ initialData }: { initialData?: AnnouncementData }) {
+export default function AnnouncementEditor({ mode, initialData }: AnnouncementEditorProps) {
   const router = useRouter()
-  const isEdit = !!initialData?.slug
+  const isEdit = mode === 'edit'
   const [tab, setTab] = useState<'zh' | 'en'>('zh')
   const [form, setForm] = useState<AnnouncementData>(initialData || {
-    titleZh: '', titleEn: '', contentZh: '', contentEn: '',
-    category: 'NEWS', isPinned: false, isPublished: false,
+    titleZh: '', titleEn: '', summaryZh: '', summaryEn: '',
+    contentZh: '', contentEn: '', category: 'NEWS', coverImage: '',
+    isPinned: false, isPublished: false,
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -32,7 +41,7 @@ export default function AnnouncementEditor({ initialData }: { initialData?: Anno
     e.preventDefault()
     setLoading(true); setError('')
     try {
-      const url = isEdit ? `/api/announcements/${initialData!.slug}` : '/api/announcements'
+      const url = isEdit ? `/api/announcements/${initialData?.slug}` : '/api/announcements'
       const method = isEdit ? 'PATCH' : 'POST'
       const res = await fetch(url, {
         method,
@@ -68,6 +77,11 @@ export default function AnnouncementEditor({ initialData }: { initialData?: Anno
               <input value={form.titleZh} onChange={e => setForm({ ...form, titleZh: e.target.value })} className="input" required />
             </div>
             <div>
+              <label className="label">摘要（中文）</label>
+              <textarea value={form.summaryZh ?? ''} onChange={e => setForm({ ...form, summaryZh: e.target.value })} rows={2} className="input resize-none"
+                placeholder="選填，顯示於列表頁的簡短摘要" />
+            </div>
+            <div>
               <label className="label">內容（中文）</label>
               <textarea value={form.contentZh} onChange={e => setForm({ ...form, contentZh: e.target.value })} rows={8} className="input resize-none" required />
             </div>
@@ -77,6 +91,11 @@ export default function AnnouncementEditor({ initialData }: { initialData?: Anno
             <div>
               <label className="label">Title (English)</label>
               <input value={form.titleEn} onChange={e => setForm({ ...form, titleEn: e.target.value })} className="input" required />
+            </div>
+            <div>
+              <label className="label">Summary (English)</label>
+              <textarea value={form.summaryEn ?? ''} onChange={e => setForm({ ...form, summaryEn: e.target.value })} rows={2} className="input resize-none"
+                placeholder="Optional short summary shown on the list page" />
             </div>
             <div>
               <label className="label">Content (English)</label>
@@ -92,6 +111,10 @@ export default function AnnouncementEditor({ initialData }: { initialData?: Anno
           <select value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} className="input">
             {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
           </select>
+        </div>
+        <div>
+          <label className="label">封面圖片網址</label>
+          <input value={form.coverImage ?? ''} onChange={e => setForm({ ...form, coverImage: e.target.value })} className="input" placeholder="https://..." />
         </div>
         <div className="flex items-center gap-6">
           <label className="flex items-center gap-2 text-sm text-gray-700">

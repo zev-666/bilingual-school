@@ -57,6 +57,7 @@ model User {
   role      UserRole @default(AUTHOR)
   isActive  Boolean  @default(true)
   albums    Album[]
+  announcements Announcement[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -66,12 +67,18 @@ model Announcement {
   slug        String               @unique
   titleZh     String
   titleEn     String
+  summaryZh   String?              @db.Text
+  summaryEn   String?              @db.Text
   contentZh   String               @db.Text
   contentEn   String               @db.Text
   category    AnnouncementCategory @default(NEWS)
+  coverImage  String?
   isPinned    Boolean              @default(false)
   isPublished Boolean              @default(false)
   publishedAt DateTime?
+  viewCount   Int                  @default(0)
+  authorId    String?
+  author      User?                @relation(fields: [authorId], references: [id])
   createdAt   DateTime             @default(now())
   updatedAt   DateTime             @updatedAt
 }
