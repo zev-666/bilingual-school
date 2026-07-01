@@ -25,7 +25,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         nameZh: body.nameZh, nameEn: body.nameEn,
         titleZh: body.titleZh, titleEn: body.titleEn,
         bioZh: body.bioZh, bioEn: body.bioEn,
-        photoUrl: body.photoUrl, type: body.type,
+        avatar: body.avatar, type: body.type,
         subjects: body.subjects || [],
         isActive: body.isActive ?? true,
       },

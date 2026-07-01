@@ -26,13 +26,13 @@ export async function POST(req: NextRequest) {
     if (!user || !hasPermission(user.role, 'ADMIN')) return apiError('權限不足', 403)
 
     const body = await req.json()
-    const { nameZh, nameEn, titleZh, titleEn, bioZh, bioEn, photoUrl, type, subjects } = body
+    const { nameZh, nameEn, titleZh, titleEn, bioZh, bioEn, avatar, type, subjects } = body
     if (!nameZh || !nameEn || !titleZh || !titleEn) return apiError('請填寫所有必填欄位', 400)
 
     const count = await prisma.teacher.count()
     const teacher = await prisma.teacher.create({
       data: {
-        nameZh, nameEn, titleZh, titleEn, bioZh, bioEn, photoUrl,
+        nameZh, nameEn, titleZh, titleEn, bioZh, bioEn, avatar,
         type: type || 'FULL_TIME',
         subjects: subjects || [],
         sortOrder: count,
