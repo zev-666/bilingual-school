@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
 import { NextRequest } from 'next/server'
-import prisma from './prisma' // 確保你的 prisma client 路徑是這個
+import { prisma } from './prisma'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-change-in-production'
 const COOKIE_NAME = 'admin_token'
