@@ -23,44 +23,7 @@ async function getDocuments() {
       orderBy: { createdAt: 'desc' },
     })
   } catch {
-    return [
-      {
-        id: 'mock-1',
-        titleZh: '113學年度招生簡章',
-        titleEn: 'Admission Brochure 2024',
-        category: 'BROCHURE',
-        fileUrl: '/docs/brochure-2024.pdf',
-        fileSize: 2048000,
-        downloadCount: 128,
-        isPublished: true,
-        createdAt: new Date('2024-01-15'),
-        updatedAt: new Date('2024-01-15'),
-      },
-      {
-        id: 'mock-2',
-        titleZh: '學生請假申請表',
-        titleEn: 'Student Leave Application Form',
-        category: 'FORM',
-        fileUrl: '/docs/leave-form.pdf',
-        fileSize: 512000,
-        downloadCount: 45,
-        isPublished: true,
-        createdAt: new Date('2024-02-01'),
-        updatedAt: new Date('2024-02-01'),
-      },
-      {
-        id: 'mock-3',
-        titleZh: '學校教育法規彙編',
-        titleEn: 'School Regulation Compilation',
-        category: 'REGULATION',
-        fileUrl: '/docs/regulations.pdf',
-        fileSize: 5120000,
-        downloadCount: 22,
-        isPublished: false,
-        createdAt: new Date('2024-03-10'),
-        updatedAt: new Date('2024-03-10'),
-      },
-    ]
+    return []
   }
 }
 
