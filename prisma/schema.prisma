@@ -153,7 +153,8 @@ model Teacher {
   titleEn   String
   bioZh     String?     @db.Text
   bioEn     String?     @db.Text
-  photoUrl  String?
+  avatar    String?
+  email     String?
   type      TeacherType @default(FULL_TIME)
   subjects  String[]
   sortOrder Int         @default(0)
