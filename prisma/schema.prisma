@@ -83,6 +83,7 @@ model Album {
   descZh      String?  @db.Text
   descEn      String?  @db.Text
   coverImage  String?
+  eventDate   DateTime?
   isPublished Boolean  @default(false)
   publishedAt DateTime?
   photos      Photo[]
