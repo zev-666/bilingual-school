@@ -67,3 +67,11 @@ export function extractVimeoId(url: string): string | null {
   const match = url.match(/vimeo\.com\/(\d+)/)
   return match ? match[1] : null
 }
+
+export const CATEGORY_COLORS: Record<string, string> = {
+  ANNOUNCEMENT: 'bg-blue-100 text-blue-700',
+  ACTIVITY:     'bg-green-100 text-green-700',
+  ADMISSION:    'bg-purple-100 text-purple-700',
+  COMPETITION:  'bg-amber-100 text-amber-700',
+  NEWS:         'bg-gray-100 text-gray-700',
+}
