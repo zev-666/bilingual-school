@@ -37,6 +37,7 @@ async function getLatestAnnouncements(locale: string) {
         isPinned: true,
         publishedAt: true,
         viewCount: true,
+        createdAt: true,
         author: { select: { name: true } },
       },
     })
