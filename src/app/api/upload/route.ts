@@ -1,4 +1,6 @@
 // src/app/api/upload/route.ts
+export const runtime = 'nodejs'
+
 import { NextRequest } from 'next/server'
 import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
@@ -40,14 +42,33 @@ export async function POST(req: NextRequest) {
   const buffer = Buffer.from(bytes)
   const filename = file.name
   const uniqueName = `${randomUUID()}${extname(file.name)}`
+  let url: string
 
-  // Save to local public/uploads (works on local dev; on Vercel use a CDN/storage service)
-  const uploadDir = join(process.cwd(), 'public', 'uploads')
-  await mkdir(uploadDir, { recursive: true })
-  await writeFile(join(uploadDir, uniqueName), buffer)
-  const url = `/uploads/${uniqueName}`
+  if (process.env.AWS_S3_BUCKET) {
+    // Dynamic import at runtime — avoids webpack bundling issues
+    const s3Module = await import('@aws-sdk/client-s3')
+    const s3 = new s3Module.S3Client({
+      region: process.env.AWS_REGION ?? 'ap-northeast-1',
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+      },
+    })
+    const key = `uploads/${uniqueName}`
+    await s3.send(new s3Module.PutObjectCommand({
+      Bucket: process.env.AWS_S3_BUCKET,
+      Key: key,
+      Body: buffer,
+      ContentType: file.type,
+    }))
+    url = `https://${process.env.AWS_S3_BUCKET}.s3.amazonaws.com/${key}`
+  } else {
+    const uploadDir = join(process.cwd(), 'public', 'uploads')
+    await mkdir(uploadDir, { recursive: true })
+    await writeFile(join(uploadDir, uniqueName), buffer)
+    url = `/uploads/${uniqueName}`
+  }
 
-  // Persist to Media table
   let media
   try {
     media = await prisma.media.create({
