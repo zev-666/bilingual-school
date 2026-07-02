@@ -38,37 +38,14 @@ export async function POST(req: NextRequest) {
   const isImage = ALLOWED_IMAGE_TYPES.includes(file.type)
   const bytes = await file.arrayBuffer()
   const buffer = Buffer.from(bytes)
-  let url: string
   const filename = file.name
+  const uniqueName = `${randomUUID()}${extname(file.name)}`
 
-  if (process.env.AWS_S3_BUCKET) {
-    // S3 upload — loaded at runtime only, not bundled by webpack
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3')
-    const s3 = new S3Client({
-      region: process.env.AWS_REGION ?? 'ap-northeast-1',
-      credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-      },
-    })
-    const key = `uploads/${randomUUID()}${extname(file.name)}`
-    await s3.send(new PutObjectCommand({
-      Bucket: process.env.AWS_S3_BUCKET,
-      Key: key,
-      Body: buffer,
-      ContentType: file.type,
-      ACL: 'public-read',
-    }))
-    url = `https://${process.env.AWS_S3_BUCKET}.s3.amazonaws.com/${key}`
-  } else {
-    // Local disk (development)
-    const uploadDir = join(process.cwd(), 'public', 'uploads')
-    await mkdir(uploadDir, { recursive: true })
-    const uniqueName = `${randomUUID()}${extname(file.name)}`
-    await writeFile(join(uploadDir, uniqueName), buffer)
-    url = `/uploads/${uniqueName}`
-  }
+  // Save to local public/uploads (works on local dev; on Vercel use a CDN/storage service)
+  const uploadDir = join(process.cwd(), 'public', 'uploads')
+  await mkdir(uploadDir, { recursive: true })
+  await writeFile(join(uploadDir, uniqueName), buffer)
+  const url = `/uploads/${uniqueName}`
 
   // Persist to Media table
   let media
