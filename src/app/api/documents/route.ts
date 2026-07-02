@@ -1,43 +1,48 @@
+// src/app/api/documents/route.ts
 import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { apiSuccess, apiError, hasPermission } from '@/lib/utils'
-import { getCurrentUser } from '@/lib/auth'
+import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
+import { apiSuccess, apiError } from '@/lib/utils'
+import { z } from 'zod'
 
 export async function GET(req: NextRequest) {
-  try {
-    const { searchParams } = new URL(req.url)
-    const category = searchParams.get('category')
-    const published = searchParams.get('published')
-    const where: any = {}
-    if (category) where.category = category
-    if (published !== null) where.isPublished = published === 'true'
-
-    const documents = await prisma.document.findMany({ where, orderBy: { createdAt: 'desc' } })
-    return apiSuccess(documents)
-  } catch (e) {
-    return apiError('取得文件列表失敗', 500)
+  const { searchParams } = new URL(req.url)
+  const category = searchParams.get('category')
+  const page     = parseInt(searchParams.get('page') ?? '1', 10)
+  const perPage  = 12
+  const where = {
+    isPublished: true,
+    ...(category && category !== 'all' ? { category: category as 'FORM' | 'REGULATION' | 'BROCHURE' | 'REPORT' | 'OTHER' } : {}),
   }
+  const [data, total] = await Promise.all([
+    prisma.document.findMany({
+      where, orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * perPage, take: perPage,
+      include: { author: { select: { name: true } } },
+    }),
+    prisma.document.count({ where }),
+  ])
+  return apiSuccess({ data, meta: { total, page, perPage, totalPages: Math.ceil(total / perPage) } })
 }
 
+const createSchema = z.object({
+  titleZh: z.string().min(1), titleEn: z.string().min(1),
+  descZh: z.string().optional(), descEn: z.string().optional(),
+  category: z.enum(['FORM','REGULATION','BROCHURE','REPORT','OTHER']).default('OTHER'),
+  fileUrl: z.string().url(), fileName: z.string().min(1),
+  fileSize: z.number().positive(), fileType: z.string(),
+  isPublished: z.boolean().default(true),
+})
+
 export async function POST(req: NextRequest) {
-  try {
-    const user = getCurrentUser()
-    if (!user || !hasPermission(user.role, 'EDITOR')) return apiError('權限不足', 403)
+  const authUser = getAuthUserFromRequest(req)
+  if (!authUser) return apiError('Unauthorized', 401)
+  if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)
 
-    const body = await req.json()
-    const { titleZh, titleEn, descZh, descEn, category, fileUrl, fileSize, isPublished } = body
-    if (!titleZh || !titleEn || !fileUrl) return apiError('請填寫所有必填欄位', 400)
+  const body = await req.json()
+  const parsed = createSchema.safeParse(body)
+  if (!parsed.success) return apiError(parsed.error.message, 422)
 
-    const document = await prisma.document.create({
-      data: {
-        titleZh, titleEn, descZh, descEn,
-        category: category || 'OTHER',
-        fileUrl, fileSize,
-        isPublished: !!isPublished,
-      },
-    })
-    return apiSuccess(document, 201)
-  } catch (e) {
-    return apiError('建立文件失敗', 500)
-  }
+  const doc = await prisma.document.create({ data: { ...parsed.data, authorId: authUser.userId } })
+  return apiSuccess(doc, 201)
 }

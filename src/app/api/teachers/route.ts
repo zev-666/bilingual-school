@@ -1,45 +1,43 @@
+// src/app/api/teachers/route.ts
 import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { apiSuccess, apiError, hasPermission } from '@/lib/utils'
-import { getCurrentUser } from '@/lib/auth'
+import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
+import { apiSuccess, apiError } from '@/lib/utils'
+import { z } from 'zod'
 
 export async function GET(req: NextRequest) {
-  try {
-    const { searchParams } = new URL(req.url)
-    const type = searchParams.get('type')
-    const where: any = {}
-    if (type) where.type = type
-
-    const teachers = await prisma.teacher.findMany({
-      where,
-      orderBy: [{ type: 'asc' }, { sortOrder: 'asc' }],
-    })
-    return apiSuccess(teachers)
-  } catch (e) {
-    return apiError('取得師資列表失敗', 500)
+  const { searchParams } = new URL(req.url)
+  const type = searchParams.get('type')
+  const where = {
+    isActive: true,
+    ...(type && type !== 'all' ? { type: type as 'FULL_TIME' | 'PART_TIME' | 'STAFF' } : {}),
   }
+  const teachers = await prisma.teacher.findMany({
+    where, orderBy: [{ sortOrder: 'asc' }, { nameZh: 'asc' }],
+  })
+  return apiSuccess(teachers)
 }
 
+const createSchema = z.object({
+  nameZh: z.string().min(1), nameEn: z.string().min(1),
+  titleZh: z.string().min(1), titleEn: z.string().min(1),
+  bioZh: z.string().optional(), bioEn: z.string().optional(),
+  avatar: z.string().url().optional(),
+  type: z.enum(['FULL_TIME','PART_TIME','STAFF']).default('FULL_TIME'),
+  subjects: z.array(z.string()).default([]),
+  email: z.string().email().optional(),
+  sortOrder: z.number().default(0),
+})
+
 export async function POST(req: NextRequest) {
-  try {
-    const user = getCurrentUser()
-    if (!user || !hasPermission(user.role, 'ADMIN')) return apiError('權限不足', 403)
+  const authUser = getAuthUserFromRequest(req)
+  if (!authUser) return apiError('Unauthorized', 401)
+  if (!hasPermission(authUser.role, 'ADMIN')) return apiError('Forbidden', 403)
 
-    const body = await req.json()
-    const { nameZh, nameEn, titleZh, titleEn, bioZh, bioEn, avatar, type, subjects } = body
-    if (!nameZh || !nameEn || !titleZh || !titleEn) return apiError('請填寫所有必填欄位', 400)
+  const body = await req.json()
+  const parsed = createSchema.safeParse(body)
+  if (!parsed.success) return apiError(parsed.error.message, 422)
 
-    const count = await prisma.teacher.count()
-    const teacher = await prisma.teacher.create({
-      data: {
-        nameZh, nameEn, titleZh, titleEn, bioZh, bioEn, avatar,
-        type: type || 'FULL_TIME',
-        subjects: subjects || [],
-        sortOrder: count,
-      },
-    })
-    return apiSuccess(teacher, 201)
-  } catch (e) {
-    return apiError('建立師資失敗', 500)
-  }
+  const teacher = await prisma.teacher.create({ data: parsed.data })
+  return apiSuccess(teacher, 201)
 }

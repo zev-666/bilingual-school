@@ -1,23 +1,38 @@
-import jwt from 'jsonwebtoken'
-import bcrypt from 'bcryptjs'
+// src/lib/auth.ts
 import { cookies } from 'next/headers'
 import { NextRequest } from 'next/server'
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
 import { prisma } from './prisma'
+import type { User, UserRole } from '@prisma/client'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-change-in-production'
-const COOKIE_NAME = 'admin_token'
+const JWT_SECRET = process.env.JWT_SECRET ?? 'change-this-secret-in-production'
+const SESSION_COOKIE = 'school_session'
+const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000 // 7 days
 
 export interface JWTPayload {
-  id: string
+  userId: string
   email: string
-  role: string
+  role: UserRole
   name: string
 }
 
+/** Hash a plain-text password */
+export async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, 12)
+}
+
+/** Compare password with stored hash */
+export async function verifyPassword(password: string, hash: string): Promise<boolean> {
+  return bcrypt.compare(password, hash)
+}
+
+/** Sign a JWT token */
 export function signToken(payload: JWTPayload): string {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' })
 }
 
+/** Verify and decode a JWT token */
 export function verifyToken(token: string): JWTPayload | null {
   try {
     return jwt.verify(token, JWT_SECRET) as JWTPayload
@@ -26,62 +41,51 @@ export function verifyToken(token: string): JWTPayload | null {
   }
 }
 
-export async function hashPassword(password: string): Promise<string> {
-  return bcrypt.hash(password, 12)
-}
-
-export async function comparePassword(password: string, hash: string): Promise<boolean> {
-  return bcrypt.compare(password, hash)
-}
-
-export function getTokenFromCookies(): string | null {
+/** Get the currently authenticated user from cookies (Server Components) */
+export async function getAuthUser(): Promise<JWTPayload | null> {
   const cookieStore = cookies()
-  return cookieStore.get(COOKIE_NAME)?.value ?? null
-}
-
-export function getCurrentUser(): JWTPayload | null {
-  const token = getTokenFromCookies()
+  const token = cookieStore.get(SESSION_COOKIE)?.value
   if (!token) return null
   return verifyToken(token)
 }
 
-export { COOKIE_NAME }
+/** Get auth user from request headers (API routes / middleware) */
+export function getAuthUserFromRequest(req: NextRequest): JWTPayload | null {
+  // Try cookie first
+  const cookieToken = req.cookies.get(SESSION_COOKIE)?.value
+  if (cookieToken) return verifyToken(cookieToken)
 
-// 從請求中獲取當前登入的用戶資訊（給 middleware / API route 用）
-export async function getAuthUserFromRequest(req: NextRequest) {
-  // 嘗試從 Cookie 或 Header 中獲取 token
-  const token = req.cookies.get('token')?.value || req.headers.get('authorization')?.replace('Bearer ', '')
-  if (!token) return null
-
-  try {
-    // 驗證 JWT 並解碼
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string }
-
-    // 從資料庫查詢用戶
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.userId },
-    })
-
-    // 如果用戶不存在或被停用，返回 null
-    if (!user || !user.isActive) return null
-
-    // 為了安全，移除密碼欄位後返回
-    const { password, ...userWithoutPassword } = user
-    return userWithoutPassword
-  } catch (error) {
-    // token 無效或過期
-    return null
+  // Try Authorization header
+  const authHeader = req.headers.get('Authorization')
+  if (authHeader?.startsWith('Bearer ')) {
+    return verifyToken(authHeader.slice(7))
   }
+
+  return null
 }
 
-// 檢查用戶角色是否有權限 (權限級別：SUPER_ADMIN > ADMIN > EDITOR > VIEWER)
+/** Create a session token and set cookie */
+export function createSessionCookie(payload: JWTPayload): string {
+  return signToken(payload)
+}
+
+/** Session cookie name (exported for middleware) */
+export { SESSION_COOKIE }
+
+/** Role hierarchy helper */
+export const ROLE_LEVELS: Record<string, number> = {
+  AUTHOR: 1,
+  EDITOR: 2,
+  ADMIN: 3,
+  SUPER_ADMIN: 4,
+}
+
+/**
+ * Check if userRole meets or exceeds requiredRole.
+ * Accepts string so callers don't need explicit `as UserRole` casts.
+ */
 export function hasPermission(userRole: string, requiredRole: string): boolean {
-  const roles = ['SUPER_ADMIN', 'ADMIN', 'EDITOR', 'VIEWER']
-  const userLevel = roles.indexOf(userRole)
-  const requiredLevel = roles.indexOf(requiredRole)
-
-  if (userLevel === -1) return false // 未知角色
-  if (requiredLevel === -1) return true // 如果沒有設定門檻，則允許
-
-  return userLevel <= requiredLevel // 數字越小，權限越高
+  const userLevel     = ROLE_LEVELS[userRole]     ?? 0
+  const requiredLevel = ROLE_LEVELS[requiredRole] ?? 0
+  return userLevel >= requiredLevel
 }
