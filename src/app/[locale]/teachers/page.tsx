@@ -2,6 +2,8 @@ import { useTranslations } from 'next-intl'
 import { prisma } from '@/lib/prisma'
 import { User } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 async function getTeachers() {
   try {
     return await prisma.teacher.findMany({ where: { isActive: true }, orderBy: [{ type: 'asc' }, { sortOrder: 'asc' }] })

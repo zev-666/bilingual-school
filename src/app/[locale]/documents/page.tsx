@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { formatFileSize } from '@/lib/utils'
 import { Download, FileText } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 async function getDocuments() {
   try {
     return await prisma.document.findMany({ where: { isPublished: true }, orderBy: { createdAt: 'desc' } })

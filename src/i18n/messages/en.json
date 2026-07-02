@@ -114,19 +114,125 @@
   "about": {
     "title": "About Us",
     "subtitle": "Our mission and vision",
-    "mission_title": "Mission",
-    "vision_title": "Vision",
-    "history_title": "School History",
-    "facilities_title": "Facilities"
+    "vision": {
+      "title": "Vision",
+      "content": "To become a leading school in bilingual education, nurturing students with a global perspective, local roots, and the capacity for lifelong learning as future citizens connected to the world."
+    },
+    "mission": {
+      "title": "Mission",
+      "content": "Through an environment that values both Chinese and English equally, combined with character education and diverse learning, we inspire every student's potential and cultivate independent, innovative learners."
+    },
+    "stats": {
+      "founded": "Founded",
+      "students": "Students",
+      "teachers": "Teachers",
+      "awards": "Awards"
+    },
+    "values": {
+      "title": "Core Values",
+      "bilingual": {
+        "title": "Bilingual Focus",
+        "desc": "Parallel Chinese-English instruction builds fluent bilingual communication and cross-cultural understanding."
+      },
+      "culture": {
+        "title": "Cultural Enrichment",
+        "desc": "Blending the best of Eastern and Western culture, giving students a broad, multicultural perspective."
+      },
+      "innovation": {
+        "title": "Innovative Thinking",
+        "desc": "Encouraging exploration and hands-on practice to build problem-solving and creative adaptability."
+      },
+      "character": {
+        "title": "Character Education",
+        "desc": "Emphasizing moral development and interpersonal skills to raise warm, responsible future citizens."
+      }
+    },
+    "history": {
+      "title": "School History",
+      "events": [
+        { "year": "2001", "title": "Founding", "desc": "The school was officially established, taking its first step in bilingual education and enrolling its first class." },
+        { "year": "2008", "title": "Campus Expansion", "desc": "As enrollment grew, the campus was expanded with new specialized classrooms and activity spaces." },
+        { "year": "2013", "title": "International Accreditation", "desc": "Received international education accreditation, with teaching quality recognized globally." },
+        { "year": "2018", "title": "Digital Transformation", "desc": "Fully adopted digital teaching equipment, establishing smart classrooms and an online learning platform." },
+        { "year": "2024", "title": "Sustainable Development", "desc": "Launched a green campus initiative, integrating sustainability into the curriculum." }
+      ]
+    },
+    "facilities": {
+      "title": "Facilities",
+      "items": [
+        { "name": "Library", "desc": "A well-stocked bilingual library offering a comfortable space for reading and self-study." },
+        { "name": "Science Labs", "desc": "Fully equipped physics, chemistry, and biology labs that foster scientific inquiry." },
+        { "name": "Gymnasium", "desc": "A multi-purpose indoor gymnasium for ball sports, gymnastics, and large assemblies." },
+        { "name": "Art Studios", "desc": "Dedicated art and music classrooms where students can develop their creative talents." },
+        { "name": "Computer Lab", "desc": "Equipped with the latest computers for programming and information technology courses." },
+        { "name": "Outdoor Sports Field", "desc": "A spacious outdoor field for sports activities and extracurricular events." }
+      ]
+    }
   },
   "admission": {
     "title": "Admission",
     "subtitle": "Join our school family",
-    "process_title": "Application Process",
-    "requirements_title": "Requirements",
-    "tuition_title": "Tuition",
-    "apply_now": "Apply Now",
-    "contact_us": "Contact Admissions"
+    "intro": {
+      "content": "We warmly welcome every family to join our educational community as we support your child's growth together."
+    },
+    "contact": {
+      "title": "Have questions about admission?",
+      "cta": "Contact Admissions"
+    },
+    "steps": {
+      "title": "Application Process",
+      "step1": "Complete the online application",
+      "step2": "Submit required documents",
+      "step3": "Schedule an entrance assessment",
+      "step4": "Interview and review",
+      "step5": "Receive admission decision"
+    },
+    "requirements": {
+      "title": "Requirements",
+      "elementary": {
+        "label": "Elementary Division",
+        "items": [
+          "Must be at least 6 years old by the required date",
+          "Copy of household registration certificate",
+          "Two recent 2-inch photos (within 3 months)",
+          "Kindergarten enrollment or graduation proof (if applicable)"
+        ]
+      },
+      "junior": {
+        "label": "Junior High Division",
+        "items": [
+          "Completion of elementary education or equivalent",
+          "Elementary school diploma or enrollment certificate",
+          "Most recent semester's report card",
+          "Two recent 2-inch photos (within 3 months)"
+        ]
+      }
+    },
+    "tuition": {
+      "title": "Tuition",
+      "note": "The figures above are for reference only; actual amounts follow the current academic year's official announcement.",
+      "elementary": "Elementary Division",
+      "junior": "Junior High Division",
+      "items": {
+        "tuition": "Tuition",
+        "activity": "Activity Fee",
+        "lunch": "Lunch Fee",
+        "total": "Total"
+      }
+    },
+    "scholarship": {
+      "title": "Scholarships",
+      "content": "The school offers a range of scholarships, including academic excellence awards, talent awards, and need-based grants, to encourage and support students in pursuing excellence."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "items": [
+        { "q": "When is the application deadline?", "a": "Admission periods vary each academic year. Please check the school website or contact the admissions office for the latest information." },
+        { "q": "Is school bus service available?", "a": "The school offers bus service on multiple routes. Please contact the admissions office for route details and fees." },
+        { "q": "Can transfer students apply at any time?", "a": "Transfer applications depend on available spots per grade in a given year. We recommend contacting the admissions office early to confirm availability." },
+        { "q": "Are scholarships or tuition reductions available?", "a": "The school offers several scholarships and financial aid programs. Please see the Scholarships section or contact the admissions office for details." }
+      ]
+    }
   },
   "footer": {
     "rights": "All rights reserved",

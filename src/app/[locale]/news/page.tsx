@@ -4,6 +4,8 @@ import { prisma } from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
 import { Pin } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 async function getAnnouncements() {
   try {
     return await prisma.announcement.findMany({

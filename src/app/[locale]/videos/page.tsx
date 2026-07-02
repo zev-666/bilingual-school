@@ -2,6 +2,8 @@ import { useTranslations } from 'next-intl'
 import { prisma } from '@/lib/prisma'
 import { Play } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 async function getVideos() {
   try {
     return await prisma.video.findMany({ where: { isPublished: true }, orderBy: { publishedAt: 'desc' } })

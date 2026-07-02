@@ -2,6 +2,8 @@ import { useTranslations } from 'next-intl'
 import { prisma } from '@/lib/prisma'
 import { Image } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 async function getAlbums() {
   try {
     return await prisma.album.findMany({
