@@ -1,68 +1,51 @@
-import { NextRequest, NextResponse } from 'next/server'
+// src/app/api/users/route.ts
+import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
+import { getAuthUserFromRequest, hasPermission, hashPassword } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
 import { z } from 'zod'
-import bcrypt from 'bcryptjs'
 
 const createSchema = z.object({
-  name: z.string().min(1),
-  email: z.string().email(),
-  password: z.string().min(8),
-  role: z.enum(['AUTHOR', 'EDITOR', 'ADMIN', 'SUPER_ADMIN']),
+  name:     z.string().min(1),
+  email:    z.string().email(),
+  password: z.string().min(8).regex(/^(?=.*[A-Za-z])(?=.*\d)/),
+  role:     z.enum(['AUTHOR', 'EDITOR', 'ADMIN', 'SUPER_ADMIN']).default('AUTHOR'),
+  isActive: z.boolean().default(true),
 })
 
 export async function GET(req: NextRequest) {
-  const user = await getAuthUserFromRequest(req)
-  if (!user || !hasPermission(user.role, 'ADMIN')) {
-    return NextResponse.json(apiError('Unauthorized'), { status: 401 })
-  }
+  const authUser = getAuthUserFromRequest(req)
+  if (!authUser) return apiError('Unauthorized', 401)
+  if (!hasPermission(authUser.role, 'ADMIN')) return apiError('Forbidden', 403)
 
-  try {
-    const users = await prisma.user.findMany({
-      orderBy: { createdAt: 'asc' },
-      select: { id: true, name: true, email: true, role: true, createdAt: true },
-    })
-    return NextResponse.json(apiSuccess(users))
-  } catch (err) {
-    console.error(err)
-    return NextResponse.json(apiError('Failed to fetch users'), { status: 500 })
-  }
+  const users = await prisma.user.findMany({
+    orderBy: { createdAt: 'asc' },
+    select: { id: true, name: true, email: true, role: true, isActive: true, createdAt: true },
+  })
+  return apiSuccess(users)
 }
 
 export async function POST(req: NextRequest) {
-  const user = await getAuthUserFromRequest(req)
-  if (!user || !hasPermission(user.role, 'ADMIN')) {
-    return NextResponse.json(apiError('Unauthorized'), { status: 401 })
+  const authUser = getAuthUserFromRequest(req)
+  if (!authUser) return apiError('Unauthorized', 401)
+  if (!hasPermission(authUser.role, 'ADMIN')) return apiError('Forbidden', 403)
+
+  const body = await req.json()
+  const parsed = createSchema.safeParse(body)
+  if (!parsed.success) return apiError(parsed.error.message, 422)
+
+  // Only SUPER_ADMIN can create SUPER_ADMIN accounts
+  if (parsed.data.role === 'SUPER_ADMIN' && authUser.role !== 'SUPER_ADMIN') {
+    return apiError('只有超級管理員可以建立超級管理員帳號', 403)
   }
 
-  try {
-    const body = await req.json()
-    const data = createSchema.parse(body)
+  const existing = await prisma.user.findUnique({ where: { email: parsed.data.email } })
+  if (existing) return apiError('此 Email 已被使用', 409)
 
-    const existing = await prisma.user.findUnique({ where: { email: data.email } })
-    if (existing) {
-      return NextResponse.json(apiError('此電子信箱已被使用'), { status: 409 })
-    }
-
-    const hashedPassword = await bcrypt.hash(data.password, 12)
-
-    const newUser = await prisma.user.create({
-      data: {
-        name: data.name,
-        email: data.email,
-        password: hashedPassword,
-        role: data.role,
-      },
-      select: { id: true, name: true, email: true, role: true, createdAt: true },
-    })
-
-    return NextResponse.json(apiSuccess(newUser), { status: 201 })
-  } catch (err) {
-    if (err instanceof z.ZodError) {
-      return NextResponse.json(apiError(err.errors[0].message), { status: 400 })
-    }
-    console.error(err)
-    return NextResponse.json(apiError('Failed to create user'), { status: 500 })
-  }
+  const hashed = await hashPassword(parsed.data.password)
+  const user = await prisma.user.create({
+    data: { ...parsed.data, password: hashed },
+    select: { id: true, name: true, email: true, role: true, isActive: true, createdAt: true },
+  })
+  return apiSuccess(user, 201)
 }

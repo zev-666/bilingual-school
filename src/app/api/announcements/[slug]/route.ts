@@ -1,54 +1,68 @@
+// src/app/api/announcements/[slug]/route.ts
 import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { apiSuccess, apiError, hasPermission } from '@/lib/utils'
-import { getCurrentUser } from '@/lib/auth'
+import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
+import { apiSuccess, apiError } from '@/lib/utils'
+import { z } from 'zod'
 
-export async function GET(_req: NextRequest, { params }: { params: { slug: string } }) {
-  try {
-    const announcement = await prisma.announcement.findUnique({ where: { slug: params.slug } })
-    if (!announcement) return apiError('找不到公告', 404)
-    return apiSuccess(announcement)
-  } catch (e) {
-    return apiError('取得公告失敗', 500)
-  }
+interface Ctx { params: { slug: string } }
+
+// GET /api/announcements/:slug
+export async function GET(_req: NextRequest, { params }: Ctx) {
+  const item = await prisma.announcement.findUnique({
+    where: { slug: params.slug },
+    include: { author: { select: { name: true } }, tags: { include: { tag: true } } },
+  })
+  if (!item) return apiError('Not found', 404)
+
+  // Increment view count (fire-and-forget)
+  prisma.announcement.update({ where: { id: item.id }, data: { viewCount: { increment: 1 } } }).catch(() => {})
+  return apiSuccess(item)
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { slug: string } }) {
-  try {
-    const user = getCurrentUser()
-    if (!user || !hasPermission(user.role, 'EDITOR')) return apiError('權限不足', 403)
+const updateSchema = z.object({
+  titleZh: z.string().optional(), titleEn: z.string().optional(),
+  summaryZh: z.string().optional(), summaryEn: z.string().optional(),
+  contentZh: z.string().optional(), contentEn: z.string().optional(),
+  category: z.enum(['ANNOUNCEMENT','ACTIVITY','ADMISSION','COMPETITION','NEWS']).optional(),
+  coverImage: z.string().url().nullable().optional(),
+  isPinned: z.boolean().optional(),
+  isPublished: z.boolean().optional(),
+})
 
-    const body = await req.json()
-    const existing = await prisma.announcement.findUnique({ where: { slug: params.slug } })
-    if (!existing) return apiError('找不到公告', 404)
+// PATCH /api/announcements/:slug
+export async function PATCH(req: NextRequest, { params }: Ctx) {
+  const authUser = getAuthUserFromRequest(req)
+  if (!authUser) return apiError('Unauthorized', 401)
+  if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)
 
-    const wasPublished = existing.isPublished
-    const willPublish = body.isPublished
+  const item = await prisma.announcement.findUnique({ where: { slug: params.slug } })
+  if (!item) return apiError('Not found', 404)
 
-    const updated = await prisma.announcement.update({
-      where: { slug: params.slug },
-      data: {
-        titleZh: body.titleZh, titleEn: body.titleEn,
-        contentZh: body.contentZh, contentEn: body.contentEn,
-        category: body.category, isPinned: !!body.isPinned,
-        isPublished: !!body.isPublished,
-        publishedAt: !wasPublished && willPublish ? new Date() : existing.publishedAt,
-      },
-    })
-    return apiSuccess(updated)
-  } catch (e) {
-    return apiError('更新公告失敗', 500)
-  }
+  const body = await req.json()
+  const parsed = updateSchema.safeParse(body)
+  if (!parsed.success) return apiError(parsed.error.message, 422)
+
+  const { data } = parsed
+  const updated = await prisma.announcement.update({
+    where: { slug: params.slug },
+    data: {
+      ...data,
+      publishedAt:
+        data.isPublished === true && !item.publishedAt ? new Date()
+        : data.isPublished === false ? null
+        : item.publishedAt,
+    },
+  })
+  return apiSuccess(updated)
 }
 
-export async function DELETE(_req: NextRequest, { params }: { params: { slug: string } }) {
-  try {
-    const user = getCurrentUser()
-    if (!user || !hasPermission(user.role, 'ADMIN')) return apiError('權限不足', 403)
+// DELETE /api/announcements/:slug
+export async function DELETE(_req: NextRequest, { params }: Ctx) {
+  const authUser = getAuthUserFromRequest(_req)
+  if (!authUser) return apiError('Unauthorized', 401)
+  if (!hasPermission(authUser.role, 'ADMIN')) return apiError('Forbidden', 403)
 
-    await prisma.announcement.delete({ where: { slug: params.slug } })
-    return apiSuccess({ message: '刪除成功' })
-  } catch (e) {
-    return apiError('刪除公告失敗', 500)
-  }
+  await prisma.announcement.delete({ where: { slug: params.slug } })
+  return apiSuccess({ deleted: true })
 }

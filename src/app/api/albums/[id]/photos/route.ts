@@ -1,35 +1,43 @@
+// src/app/api/albums/[id]/photos/route.ts
 import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { apiSuccess, apiError, hasPermission } from '@/lib/utils'
-import { getCurrentUser } from '@/lib/auth'
+import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
+import { apiSuccess, apiError } from '@/lib/utils'
+import { z } from 'zod'
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
-  try {
-    const photos = await prisma.photo.findMany({
-      where: { albumId: params.id },
-      orderBy: { sortOrder: 'asc' },
-    })
-    return apiSuccess(photos)
-  } catch (e) {
-    return apiError('取得照片失敗', 500)
-  }
+interface Ctx { params: { id: string } }
+
+export async function GET(_req: NextRequest, { params }: Ctx) {
+  const photos = await prisma.photo.findMany({
+    where: { albumId: params.id },
+    orderBy: { sortOrder: 'asc' },
+  })
+  return apiSuccess(photos)
 }
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
-  try {
-    const user = getCurrentUser()
-    if (!user || !hasPermission(user.role, 'EDITOR')) return apiError('權限不足', 403)
+const createPhotoSchema = z.object({
+  url:       z.string().url(),
+  thumbnail: z.string().url().optional(),
+  captionZh: z.string().optional(),
+  captionEn: z.string().optional(),
+  sortOrder: z.number().default(0),
+})
 
-    const body = await req.json()
-    const { url, thumbnail, captionZh, captionEn } = body
-    if (!url) return apiError('請提供圖片網址', 400)
+export async function POST(req: NextRequest, { params }: Ctx) {
+  const authUser = getAuthUserFromRequest(req)
+  if (!authUser) return apiError('Unauthorized', 401)
+  if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)
 
-    const count = await prisma.photo.count({ where: { albumId: params.id } })
-    const photo = await prisma.photo.create({
-      data: { albumId: params.id, url, thumbnail, captionZh, captionEn, sortOrder: count },
-    })
-    return apiSuccess(photo, 201)
-  } catch (e) {
-    return apiError('新增照片失敗', 500)
-  }
+  // Verify album exists
+  const album = await prisma.album.findUnique({ where: { id: params.id } })
+  if (!album) return apiError('Album not found', 404)
+
+  const body = await req.json()
+  const parsed = createPhotoSchema.safeParse(body)
+  if (!parsed.success) return apiError(parsed.error.message, 422)
+
+  const photo = await prisma.photo.create({
+    data: { ...parsed.data, albumId: params.id },
+  })
+  return apiSuccess(photo, 201)
 }

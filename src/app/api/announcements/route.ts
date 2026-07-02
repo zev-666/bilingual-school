@@ -1,52 +1,80 @@
+// src/app/api/announcements/route.ts
 import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { apiSuccess, apiError, generateSlug, hasPermission } from '@/lib/utils'
-import { getCurrentUser } from '@/lib/auth'
+import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
+import { apiSuccess, apiError, generateSlug } from '@/lib/utils'
+import { z } from 'zod'
 
+// GET /api/announcements — public listing
 export async function GET(req: NextRequest) {
-  try {
-    const { searchParams } = new URL(req.url)
-    const category = searchParams.get('category')
-    const published = searchParams.get('published')
+  const { searchParams } = new URL(req.url)
+  const page     = parseInt(searchParams.get('page') ?? '1', 10)
+  const perPage  = parseInt(searchParams.get('perPage') ?? '9', 10)
+  const category = searchParams.get('category')
+  const q        = searchParams.get('q')
+  const admin    = searchParams.get('admin') === 'true'
 
-    const where: any = {}
-    if (category) where.category = category
-    if (published !== null) where.isPublished = published === 'true'
+  const authUser = getAuthUserFromRequest(req)
 
-    const announcements = await prisma.announcement.findMany({
-      where,
-      orderBy: [{ isPinned: 'desc' }, { createdAt: 'desc' }],
-    })
-    return apiSuccess(announcements)
-  } catch (e) {
-    return apiError('取得公告列表失敗', 500)
+  // Non-admins only see published items
+  const where: Record<string, unknown> = admin && authUser ? {} : { isPublished: true }
+
+  if (category && category !== 'all') where.category = category
+  if (q) {
+    where.OR = [
+      { titleZh: { contains: q, mode: 'insensitive' } },
+      { titleEn: { contains: q, mode: 'insensitive' } },
+    ]
   }
+
+  const [data, total] = await Promise.all([
+    prisma.announcement.findMany({
+      where,
+      orderBy: [{ isPinned: 'desc' }, { publishedAt: 'desc' }],
+      skip: (page - 1) * perPage,
+      take: perPage,
+      include: { author: { select: { name: true, email: true } } },
+    }),
+    prisma.announcement.count({ where }),
+  ])
+
+  return apiSuccess({ data, meta: { total, page, perPage, totalPages: Math.ceil(total / perPage) } })
 }
 
+// POST /api/announcements — admin create
+const createSchema = z.object({
+  titleZh:    z.string().min(1),
+  titleEn:    z.string().min(1),
+  summaryZh:  z.string().optional(),
+  summaryEn:  z.string().optional(),
+  contentZh:  z.string().min(1),
+  contentEn:  z.string().min(1),
+  category:   z.enum(['ANNOUNCEMENT','ACTIVITY','ADMISSION','COMPETITION','NEWS']),
+  coverImage: z.string().url().optional(),
+  isPinned:   z.boolean().optional().default(false),
+  isPublished:z.boolean().optional().default(false),
+})
+
 export async function POST(req: NextRequest) {
-  try {
-    const user = getCurrentUser()
-    if (!user || !hasPermission(user.role, 'AUTHOR')) return apiError('權限不足', 403)
+  const authUser = getAuthUserFromRequest(req)
+  if (!authUser) return apiError('Unauthorized', 401)
+  if (!hasPermission(authUser.role, 'AUTHOR')) return apiError('Forbidden', 403)
 
-    const body = await req.json()
-    const { titleZh, titleEn, contentZh, contentEn, category, isPinned, isPublished } = body
+  const body = await req.json()
+  const parsed = createSchema.safeParse(body)
+  if (!parsed.success) return apiError(parsed.error.message, 422)
 
-    if (!titleZh || !titleEn || !contentZh || !contentEn) {
-      return apiError('請填寫所有必填欄位', 400)
-    }
+  const { data } = parsed
+  const slug = generateSlug(data.titleEn)
 
-    const announcement = await prisma.announcement.create({
-      data: {
-        slug: generateSlug(titleEn || titleZh),
-        titleZh, titleEn, contentZh, contentEn,
-        category: category || 'NEWS',
-        isPinned: !!isPinned,
-        isPublished: !!isPublished,
-        publishedAt: isPublished ? new Date() : null,
-      },
-    })
-    return apiSuccess(announcement, 201)
-  } catch (e) {
-    return apiError('建立公告失敗', 500)
-  }
+  const announcement = await prisma.announcement.create({
+    data: {
+      ...data,
+      slug,
+      authorId: authUser.userId,
+      publishedAt: data.isPublished ? new Date() : null,
+    },
+  })
+
+  return apiSuccess(announcement, 201)
 }

@@ -5,7 +5,7 @@ import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
 
 export async function GET(req: NextRequest) {
-  const authUser = await getAuthUserFromRequest(req)
+  const authUser = getAuthUserFromRequest(req)
   if (!authUser) return apiError('Unauthorized', 401)
   if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)
 
@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const authUser = await getAuthUserFromRequest(req)
+  const authUser = getAuthUserFromRequest(req)
   if (!authUser) return apiError('Unauthorized', 401)
   if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)
 

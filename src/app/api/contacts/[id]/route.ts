@@ -1,32 +1,53 @@
+// src/app/api/contacts/[id]/route.ts
 import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { apiSuccess, apiError, hasPermission } from '@/lib/utils'
-import { getCurrentUser } from '@/lib/auth'
+import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
+import { apiSuccess, apiError } from '@/lib/utils'
+import { z } from 'zod'
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  try {
-    const user = getCurrentUser()
-    if (!user || !hasPermission(user.role, 'EDITOR')) return apiError('權限不足', 403)
+interface Ctx { params: { id: string } }
 
-    const body = await req.json()
-    const contact = await prisma.contact.update({
-      where: { id: params.id },
-      data: { status: body.status },
-    })
-    return apiSuccess(contact)
-  } catch (e) {
-    return apiError('更新失敗', 500)
+export async function GET(req: NextRequest, { params }: Ctx) {
+  const authUser = getAuthUserFromRequest(req)
+  if (!authUser) return apiError('Unauthorized', 401)
+  if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)
+
+  const contact = await prisma.contact.findUnique({ where: { id: params.id } })
+  if (!contact) return apiError('Not found', 404)
+
+  // Mark as READ if still UNREAD
+  if (contact.status === 'UNREAD') {
+    await prisma.contact.update({ where: { id: params.id }, data: { status: 'READ' } })
   }
+
+  return apiSuccess(contact)
 }
 
-export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
-  try {
-    const user = getCurrentUser()
-    if (!user || !hasPermission(user.role, 'ADMIN')) return apiError('權限不足', 403)
+const updateSchema = z.object({
+  status: z.enum(['UNREAD', 'READ', 'REPLIED', 'ARCHIVED']).optional(),
+})
 
-    await prisma.contact.delete({ where: { id: params.id } })
-    return apiSuccess({ message: '刪除成功' })
-  } catch (e) {
-    return apiError('刪除失敗', 500)
-  }
+export async function PATCH(req: NextRequest, { params }: Ctx) {
+  const authUser = getAuthUserFromRequest(req)
+  if (!authUser) return apiError('Unauthorized', 401)
+  if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)
+
+  const body = await req.json()
+  const parsed = updateSchema.safeParse(body)
+  if (!parsed.success) return apiError(parsed.error.message, 422)
+
+  const contact = await prisma.contact.update({
+    where: { id: params.id },
+    data: parsed.data,
+  })
+  return apiSuccess(contact)
+}
+
+export async function DELETE(req: NextRequest, { params }: Ctx) {
+  const authUser = getAuthUserFromRequest(req)
+  if (!authUser) return apiError('Unauthorized', 401)
+  if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)
+
+  await prisma.contact.delete({ where: { id: params.id } })
+  return apiSuccess({ deleted: true })
 }

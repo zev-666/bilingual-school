@@ -1,96 +1,85 @@
-import { NextRequest, NextResponse } from 'next/server'
+// src/app/api/users/[id]/route.ts
+import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
+import { getAuthUserFromRequest, hasPermission, hashPassword } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
 import { z } from 'zod'
-import bcrypt from 'bcryptjs'
 
 const updateSchema = z.object({
-  name: z.string().min(1).optional(),
-  email: z.string().email().optional(),
-  password: z.string().min(8).optional(),
-  role: z.enum(['AUTHOR', 'EDITOR', 'ADMIN', 'SUPER_ADMIN']).optional(),
+  name:     z.string().min(1).optional(),
+  email:    z.string().email().optional(),
+  password: z.string().min(8).regex(/^(?=.*[A-Za-z])(?=.*\d)/).optional(),
+  role:     z.enum(['AUTHOR', 'EDITOR', 'ADMIN', 'SUPER_ADMIN']).optional(),
+  isActive: z.boolean().optional(),
 })
 
-interface Props {
-  params: { id: string }
+interface Ctx { params: { id: string } }
+
+export async function GET(req: NextRequest, { params }: Ctx) {
+  const authUser = getAuthUserFromRequest(req)
+  if (!authUser) return apiError('Unauthorized', 401)
+  if (authUser.userId !== params.id && !hasPermission(authUser.role, 'ADMIN')) {
+    return apiError('Forbidden', 403)
+  }
+  const user = await prisma.user.findUnique({
+    where: { id: params.id },
+    select: { id: true, name: true, email: true, role: true, isActive: true, createdAt: true },
+  })
+  if (!user) return apiError('Not found', 404)
+  return apiSuccess(user)
 }
 
-export async function GET(req: NextRequest, { params }: Props) {
-  const user = await getAuthUserFromRequest(req)
-  if (!user || !hasPermission(user.role, 'ADMIN')) {
-    return NextResponse.json(apiError('Unauthorized'), { status: 401 })
+export async function PATCH(req: NextRequest, { params }: Ctx) {
+  const authUser = getAuthUserFromRequest(req)
+  if (!authUser) return apiError('Unauthorized', 401)
+  // Users can edit themselves; ADMIN+ can edit others
+  if (authUser.userId !== params.id && !hasPermission(authUser.role, 'ADMIN')) {
+    return apiError('Forbidden', 403)
   }
 
-  try {
-    const target = await prisma.user.findUnique({
-      where: { id: params.id },
-      select: { id: true, name: true, email: true, role: true, createdAt: true },
-    })
-    if (!target) return NextResponse.json(apiError('User not found'), { status: 404 })
-    return NextResponse.json(apiSuccess(target))
-  } catch (err) {
-    console.error(err)
-    return NextResponse.json(apiError('Failed to fetch user'), { status: 500 })
+  const target = await prisma.user.findUnique({ where: { id: params.id } })
+  if (!target) return apiError('Not found', 404)
+
+  const body = await req.json()
+  const parsed = updateSchema.safeParse(body)
+  if (!parsed.success) return apiError(parsed.error.message, 422)
+
+  // Protect: only SUPER_ADMIN can change roles to/from SUPER_ADMIN
+  if (parsed.data.role && authUser.role !== 'SUPER_ADMIN') {
+    if (parsed.data.role === 'SUPER_ADMIN' || target.role === 'SUPER_ADMIN') {
+      return apiError('只有超級管理員可以變更此角色', 403)
+    }
   }
+
+  const data: Record<string, unknown> = { ...parsed.data }
+  if (parsed.data.password) {
+    data.password = await hashPassword(parsed.data.password)
+  } else {
+    delete data.password
+  }
+
+  const user = await prisma.user.update({
+    where: { id: params.id },
+    data,
+    select: { id: true, name: true, email: true, role: true, isActive: true },
+  })
+  return apiSuccess(user)
 }
 
-export async function PATCH(req: NextRequest, { params }: Props) {
-  const user = await getAuthUserFromRequest(req)
-  if (!user || !hasPermission(user.role, 'ADMIN')) {
-    return NextResponse.json(apiError('Unauthorized'), { status: 401 })
-  }
+export async function DELETE(req: NextRequest, { params }: Ctx) {
+  const authUser = getAuthUserFromRequest(req)
+  if (!authUser) return apiError('Unauthorized', 401)
+  if (!hasPermission(authUser.role, 'ADMIN')) return apiError('Forbidden', 403)
 
-  try {
-    const body = await req.json()
-    const data = updateSchema.parse(body)
+  // Block self-deletion
+  if (authUser.userId === params.id) return apiError('不能刪除自己的帳號', 400)
 
-    const updateData: Record<string, unknown> = {}
-    if (data.name) updateData.name = data.name
-    if (data.email) updateData.email = data.email
-    if (data.role) updateData.role = data.role
-    if (data.password) {
-      updateData.password = await bcrypt.hash(data.password, 12)
-    }
+  const target = await prisma.user.findUnique({ where: { id: params.id } })
+  if (!target) return apiError('Not found', 404)
 
-    const updated = await prisma.user.update({
-      where: { id: params.id },
-      data: updateData,
-      select: { id: true, name: true, email: true, role: true },
-    })
+  // Block deleting SUPER_ADMIN
+  if (target.role === 'SUPER_ADMIN') return apiError('無法刪除超級管理員帳號', 403)
 
-    return NextResponse.json(apiSuccess(updated))
-  } catch (err) {
-    if (err instanceof z.ZodError) {
-      return NextResponse.json(apiError(err.errors[0].message), { status: 400 })
-    }
-    console.error(err)
-    return NextResponse.json(apiError('Failed to update user'), { status: 500 })
-  }
-}
-
-export async function DELETE(req: NextRequest, { params }: Props) {
-  const user = await getAuthUserFromRequest(req)
-  if (!user || !hasPermission(user.role, 'ADMIN')) {
-    return NextResponse.json(apiError('Unauthorized'), { status: 401 })
-  }
-
-  try {
-    // Prevent deleting yourself
-    if (user.id === params.id) {
-      return NextResponse.json(apiError('不能刪除自己的帳號'), { status: 400 })
-    }
-
-    // Prevent deleting SUPER_ADMIN
-    const target = await prisma.user.findUnique({ where: { id: params.id } })
-    if (target?.role === 'SUPER_ADMIN') {
-      return NextResponse.json(apiError('不能刪除超級管理員帳號'), { status: 403 })
-    }
-
-    await prisma.user.delete({ where: { id: params.id } })
-    return NextResponse.json(apiSuccess({ deleted: true }))
-  } catch (err) {
-    console.error(err)
-    return NextResponse.json(apiError('Failed to delete user'), { status: 500 })
-  }
+  await prisma.user.delete({ where: { id: params.id } })
+  return apiSuccess({ deleted: true })
 }

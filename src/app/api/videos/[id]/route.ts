@@ -28,7 +28,7 @@ export async function GET(_req: NextRequest, { params }: Ctx) {
 }
 
 export async function PATCH(req: NextRequest, { params }: Ctx) {
-  const authUser = await getAuthUserFromRequest(req)
+  const authUser = getAuthUserFromRequest(req)
   if (!authUser) return apiError('Unauthorized', 401)
   if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)
 
@@ -51,7 +51,7 @@ export async function PATCH(req: NextRequest, { params }: Ctx) {
 }
 
 export async function DELETE(req: NextRequest, { params }: Ctx) {
-  const authUser = await getAuthUserFromRequest(req)
+  const authUser = getAuthUserFromRequest(req)
   if (!authUser) return apiError('Unauthorized', 401)
   if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)
 
