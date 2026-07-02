@@ -7,7 +7,7 @@ async function getAlbums() {
     return await prisma.album.findMany({
       where: { isPublished: true },
       include: { _count: { select: { photos: true } } },
-      orderBy: { publishedAt: 'desc' },
+      orderBy: { createdAt: 'desc' }, // 👈 這裡改成 createdAt
     })
   } catch {
     return [{ id: '1', slug: 'sample', titleZh: '範例相簿', titleEn: 'Sample Album', coverImage: null, _count: { photos: 0 } }]
@@ -29,9 +29,11 @@ export default async function AlbumsPage({ params: { locale } }: { params: { loc
           {albums.map((album: any) => (
             <div key={album.id} className="card overflow-hidden">
               <div className="h-48 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
-                {album.coverImage
-                  ? <img src={album.coverImage} alt="" className="w-full h-full object-cover" />
-                  : <Image size={40} className="text-primary-400" />}
+                {album.coverImage ? (
+                  <img src={album.coverImage} alt="" className="w-full h-full object-cover" />
+                ) : (
+                  <Image size={40} className="text-primary-400" />
+                )}
               </div>
               <div className="p-4">
                 <h3 className="font-semibold text-gray-900 mb-1">
