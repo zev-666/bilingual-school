@@ -67,7 +67,7 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
 
   return (
     <>
-      <HeroSection locale={locale} slides={bannerSlides} />
+      <HeroSection locale={locale} banners={bannerSlides} />
       <StatsSection locale={locale} />
       <NewsSection locale={locale} announcements={announcements} />
       <AboutSection locale={locale} />
