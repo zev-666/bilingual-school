@@ -1,7 +1,6 @@
 // src/app/admin/users/page.tsx
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
 import { prisma } from '@/lib/prisma'
 import { formatDate, cn } from '@/lib/utils'
 import { Plus, Users } from 'lucide-react'
@@ -25,7 +24,7 @@ async function getUsers() {
   try {
     return await prisma.user.findMany({
       orderBy: { createdAt: 'asc' },
-      select: { id: true, name: true, email: true, role: true, avatar: true, isActive: true, createdAt: true },
+      select: { id: true, name: true, email: true, role: true, isActive: true, createdAt: true },
     })
   } catch {
     return []
@@ -81,16 +80,11 @@ export default async function AdminUsersPage() {
                   <tr key={user.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        {user.avatar ? (
-                          <Image src={user.avatar} alt={user.name} width={36} height={36}
-                            className="rounded-full object-cover shrink-0" />
-                        ) : (
-                          <div className="w-9 h-9 rounded-full bg-primary-100 flex items-center justify-center shrink-0">
+                        <div className="w-9 h-9 rounded-full bg-primary-100 flex items-center justify-center shrink-0">
                             <span className="text-sm font-semibold text-primary-700">
                               {user.name.charAt(0).toUpperCase()}
                             </span>
                           </div>
-                        )}
                         <div>
                           <p className="font-medium text-gray-900 flex items-center gap-1.5">
                             {user.name}
