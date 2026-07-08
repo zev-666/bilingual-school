@@ -32,7 +32,7 @@ export default function HeroSection({ locale, banners }: { locale: string; banne
           <span className="inline-block mb-4 px-4 py-1.5 bg-white/20 text-white text-sm font-medium rounded-full backdrop-blur-sm">
             {t('badge')}
           </span>
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight tracking-tight">
             {title}
           </h1>
           {subtitle && (

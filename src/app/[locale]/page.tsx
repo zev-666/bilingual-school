@@ -23,7 +23,7 @@ async function getData() {
   } catch {
     return {
       announcements: [
-        { id: '1', slug: 'welcome', titleZh: '歡迎蒞臨雙語實驗學校', titleEn: 'Welcome to Bilingual School', category: 'NEWS', isPinned: true, publishedAt: new Date(), createdAt: new Date() },
+        { id: '1', slug: 'welcome', titleZh: '歡迎蒞臨基隆市英語資源中心', titleEn: 'Welcome to Keelung City English Resource Center', category: 'NEWS', isPinned: true, publishedAt: new Date(), createdAt: new Date() },
       ],
       banners: [],
     }

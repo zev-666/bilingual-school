@@ -8,8 +8,8 @@ import Footer from '@/components/layout/Footer'
 import '../globals.css'
 
 export const metadata: Metadata = {
-  title: { default: '雙語實驗學校', template: '%s | 雙語實驗學校' },
-  description: '提供優質雙語教育的實驗學校',
+  title: { default: '基隆市英語資源中心', template: '%s | 基隆市英語資源中心' },
+  description: '基隆市英語資源中心 — 提供教師與外師專業英語教學資源、研習與交流平台',
 }
 
 export function generateStaticParams() {

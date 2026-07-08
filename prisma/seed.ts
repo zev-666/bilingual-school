@@ -41,7 +41,7 @@ async function main() {
   await prisma.bannerSlide.createMany({
     skipDuplicates: true,
     data: [
-      { titleZh: '培育雙語人才', titleEn: 'Cultivating Bilingual Leaders', subtitleZh: '卓越教育，成就未來', subtitleEn: 'Excellence in Education', imageUrl: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1920&q=80', linkUrl: '/admission', linkTextZh: '了解招生資訊', linkTextEn: 'Explore Admissions', sortOrder: 0 },
+      { titleZh: '支援教學，連結世界', titleEn: 'Supporting Teaching, Connecting the World', subtitleZh: '基隆市英語教學資源與研習平台', subtitleEn: 'English Teaching Resources & Professional Development', imageUrl: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1920&q=80', linkUrl: '/about', linkTextZh: '了解中心', linkTextEn: 'About the Center', sortOrder: 0 },
       { titleZh: '世界級學習環境', titleEn: 'World-Class Learning', subtitleZh: '現代設施，激發無限潛能', subtitleEn: 'Modern Facilities, Unlimited Potential', imageUrl: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1920&q=80', linkUrl: '/about', linkTextZh: '了解更多', linkTextEn: 'Learn More', sortOrder: 1 },
     ],
   })
@@ -70,14 +70,14 @@ async function main() {
 
   // ── Site settings ─────────────────────────────────────────────
   const settings = [
-    { key: 'site_name_zh',    value: '雙語實驗學校' },
-    { key: 'site_name_en',    value: 'Bilingual School' },
-    { key: 'contact_email',   value: 'info@bilingualschool.edu.tw' },
-    { key: 'contact_phone',   value: '(02) 1234-5678' },
-    { key: 'address_zh',      value: '台灣某市某區某路123號' },
-    { key: 'address_en',      value: '123 School Road, City, Taiwan' },
-    { key: 'facebook_url',    value: 'https://facebook.com/bilingualschool' },
-    { key: 'youtube_url',     value: 'https://youtube.com/@bilingualschool' },
+    { key: 'site_name_zh',    value: '基隆市英語資源中心' },
+    { key: 'site_name_en',    value: 'Keelung City English Resource Center' },
+    { key: 'contact_email',   value: 'info@kl-erc.edu.tw' },
+    { key: 'contact_phone',   value: '(02) 2XXX-XXXX' },
+    { key: 'address_zh',      value: '基隆市中正區（請填入實際地址）' },
+    { key: 'address_en',      value: '(Please fill in actual address), Zhongzheng Dist., Keelung' },
+    { key: 'facebook_url',    value: '' },
+    { key: 'youtube_url',     value: '' },
   ]
   for (const s of settings) {
     await prisma.siteSetting.upsert({

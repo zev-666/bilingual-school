@@ -17,7 +17,7 @@ export default function NewsSection({ locale, announcements }: { locale: string;
       <div className="container-school">
         <div className="flex items-end justify-between mb-10">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">{t('title')}</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">{t('title')}</h2>
             <p className="text-gray-500">{t('subtitle')}</p>
           </div>
           <Link href="/news" className="flex items-center gap-1 text-primary-600 hover:text-primary-700 font-medium text-sm">

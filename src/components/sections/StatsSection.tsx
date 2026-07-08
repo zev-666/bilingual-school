@@ -33,15 +33,15 @@ export default function StatsSection({ locale }: { locale: string }) {
   ]
 
   return (
-    <section className="bg-primary-600 py-12">
+    <section className="bg-primary-800 py-12">
       <div className="container-school">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, i) => (
             <div key={i} className="text-center text-white">
-              <div className="text-4xl font-bold mb-1">
+              <div className="text-4xl font-bold mb-1 tracking-tight">
                 <Counter end={stat.value} />{stat.suffix}
               </div>
-              <div className="text-primary-100 text-sm">{stat.label}</div>
+              <div className="text-primary-200 text-sm">{stat.label}</div>
             </div>
           ))}
         </div>

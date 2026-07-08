@@ -11,12 +11,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">雙</span>
+              <div className="w-8 h-8 bg-primary-700 rounded-md flex items-center justify-center">
+                <span className="text-white font-bold text-sm">K</span>
               </div>
-              <span className="font-bold text-white">雙語實驗學校</span>
+              <span className="font-bold text-white">基隆市英語資源中心</span>
             </div>
-            <p className="text-sm text-gray-400">提供優質雙語教育，培育未來人才</p>
+            <p className="text-sm text-gray-400">支援教師與外師的英語教學資源與研習平台</p>
           </div>
 
           <div>
@@ -42,22 +42,22 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-2">
                 <MapPin size={14} className="mt-0.5 text-primary-400 flex-shrink-0" />
-                台北市信義區教育路1號
+                基隆市中正區（請填入實際地址）
               </li>
               <li className="flex items-center gap-2">
                 <Phone size={14} className="text-primary-400 flex-shrink-0" />
-                02-1234-5678
+                02-2XXX-XXXX
               </li>
               <li className="flex items-center gap-2">
                 <Mail size={14} className="text-primary-400 flex-shrink-0" />
-                info@school.edu.tw
+                info@kl-erc.edu.tw
               </li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-500">
-          © 2024 雙語實驗學校 版權所有
+          © 2024 基隆市英語資源中心 版權所有
         </div>
       </div>
     </footer>

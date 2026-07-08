@@ -37,9 +37,9 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     <aside className="flex flex-col h-full bg-gray-900 text-white">
       {/* Brand */}
       <div className="flex items-center gap-3 px-5 py-5 border-b border-gray-800">
-        <div className="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center font-bold text-sm">B</div>
+        <div className="w-8 h-8 rounded-md bg-primary-700 flex items-center justify-center font-bold text-sm">K</div>
         <div>
-          <p className="font-semibold text-sm">雙語實驗學校</p>
+          <p className="font-semibold text-sm">基隆市英語資源中心</p>
           <p className="text-xs text-gray-400">管理後台</p>
         </div>
       </div>
