@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/routing'
 import { prisma } from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
@@ -20,8 +20,8 @@ async function getAnnouncements() {
 }
 
 export default async function NewsPage({ params: { locale } }: { params: { locale: string } }) {
-  const t = useTranslations('news')
-  const tc = useTranslations('news.categories')
+  const t = await getTranslations('news')
+  const tc = await getTranslations('news.categories')
   const announcements = await getAnnouncements()
 
   return (

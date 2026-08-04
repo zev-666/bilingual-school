@@ -1,14 +1,29 @@
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/routing'
-import { Mail, Phone, MapPin } from 'lucide-react'
+import { Mail, Phone, Printer, MapPin, Landmark, ExternalLink } from 'lucide-react'
+import { prisma } from '@/lib/prisma'
+import { formatDate } from '@/lib/utils'
 
-export default function Footer() {
-  const t = useTranslations()
+async function getLastUpdated() {
+  try {
+    const latest = await prisma.announcement.findFirst({
+      orderBy: { updatedAt: 'desc' },
+      select: { updatedAt: true },
+    })
+    return latest?.updatedAt ?? new Date()
+  } catch {
+    return new Date()
+  }
+}
+
+export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) {
+  const t = await getTranslations()
+  const lastUpdated = await getLastUpdated()
 
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="container-school py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 bg-primary-700 rounded-md flex items-center justify-center">
@@ -16,7 +31,17 @@ export default function Footer() {
               </div>
               <span className="font-bold text-white">基隆市英語資源中心</span>
             </div>
-            <p className="text-sm text-gray-400">支援教師與外師的英語教學資源與研習平台</p>
+            <p className="text-sm text-gray-400 mb-4">支援教師與外師的英語教學資源與研習平台</p>
+            <a
+              href="https://bilingual-school.vercel.app/zh-TW"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white transition-colors"
+            >
+              <Landmark size={13} className="flex-shrink-0" />
+              主管機關：基隆市政府教育處
+              <ExternalLink size={11} className="flex-shrink-0" />
+            </a>
           </div>
 
           <div>
@@ -38,6 +63,25 @@ export default function Footer() {
           </div>
 
           <div>
+            <h3 className="font-semibold text-white mb-4">本站資訊</h3>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link href={'/privacy' as any} className="hover:text-white transition-colors">
+                  {t('legal.privacy_policy')}
+                </Link>
+              </li>
+              <li>
+                <Link href={'/security-policy' as any} className="hover:text-white transition-colors">
+                  {t('legal.security_policy')}
+                </Link>
+              </li>
+              <li className="text-gray-500 pt-1">
+                {t('footer.last_updated')}：{formatDate(lastUpdated, locale)}
+              </li>
+            </ul>
+          </div>
+
+          <div>
             <h3 className="font-semibold text-white mb-4">聯絡資訊</h3>
             <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-2">
@@ -49,6 +93,10 @@ export default function Footer() {
                 02-2XXX-XXXX
               </li>
               <li className="flex items-center gap-2">
+                <Printer size={14} className="text-primary-400 flex-shrink-0" />
+                02-2XXX-XXXX（請填入傳真）
+              </li>
+              <li className="flex items-center gap-2">
                 <Mail size={14} className="text-primary-400 flex-shrink-0" />
                 info@kl-erc.edu.tw
               </li>
@@ -57,7 +105,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-500">
-          © 2024 基隆市英語資源中心 版權所有
+          © {new Date().getFullYear()} 基隆市英語資源中心 {t('footer.rights')}
         </div>
       </div>
     </footer>

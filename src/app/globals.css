@@ -56,3 +56,17 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body { font-family: system-ui, -apple-system, sans-serif; color: #111827; background: #fff; }
+/* ========================================
+   字體縮放無障礙工具 — 加到 globals.css 最上面（@tailwind 之後）
+   原理：改變 html 的 font-size，Tailwind 預設用 rem，
+   全站文字會等比例跟著縮放，不用改任何元件。
+   ======================================== */
+
+:root {
+  --font-scale: 1;
+}
+
+html {
+  font-size: calc(16px * var(--font-scale, 1));
+}
+

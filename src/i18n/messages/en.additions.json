@@ -1,0 +1,26 @@
+{
+  "footer": {
+    "rights": "All rights reserved",
+    "privacy": "Privacy Policy",
+    "sitemap": "Sitemap",
+    "last_updated": "Last Updated"
+  },
+  "legal": {
+    "privacy_policy": "Privacy Policy",
+    "security_policy": "Security Policy",
+    "privacy_updated": "Last updated: July 2026",
+    "privacy_s1_title": "Scope of Data Collection",
+    "privacy_s1_body": "When you use our contact form, we collect the name, email, and message you provide solely to respond to your inquiry, and for no other purpose.",
+    "privacy_s2_title": "Data Protection",
+    "privacy_s2_body": "This website uses encrypted (HTTPS) connections to transmit data and performs regular security maintenance to protect your personal information.",
+    "privacy_s3_title": "Contact Us",
+    "privacy_s3_body": "If you have any questions about this privacy policy, please reach out via our Contact page.",
+    "security_s1_title": "Website Security Maintenance",
+    "security_s1_body": "This website undergoes regular system updates and security scans, with firewall and intrusion-detection mechanisms in place to guard against malicious attacks.",
+    "security_s2_title": "Account Security",
+    "security_s2_body": "The admin system uses encrypted password storage and role-based access control, restricting management functions to authorized personnel only."
+  },
+  "common_add": {
+    "detail": "Details"
+  }
+}

@@ -11,6 +11,13 @@ const ADMIN_PATHS = ['/admin']
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
+  // The login page itself must bypass both admin-auth protection and
+  // i18n locale rewriting, otherwise it gets redirected in a loop
+  // (auth check) or redirected to a non-existent /zh-TW/admin/login (i18n).
+  if (pathname === '/admin/login') {
+    return NextResponse.next()
+  }
+
   // Protect admin routes
   if (ADMIN_PATHS.some((p) => pathname.startsWith(p))) {
     const token = req.cookies.get(SESSION_COOKIE)?.value

@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
-import '../globals.css'
+import Breadcrumb from '@/components/layout/Breadcrumb'
 
 export const metadata: Metadata = {
   title: { default: '基隆市英語資源中心', template: '%s | 基隆市英語資源中心' },
@@ -25,16 +25,12 @@ export default async function LocaleLayout({
 }) {
   if (!routing.locales.includes(locale as 'zh-TW' | 'en')) notFound()
   const messages = await getMessages()
-
   return (
-    <html lang={locale}>
-      <body>
-        <NextIntlClientProvider messages={messages}>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider messages={messages}>
+      <Navbar />
+      <Breadcrumb />
+      <main>{children}</main>
+      <Footer locale={locale} />
+    </NextIntlClientProvider>
   )
 }

@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { prisma } from '@/lib/prisma'
 import { Play } from 'lucide-react'
 
@@ -13,7 +13,7 @@ async function getVideos() {
 }
 
 export default async function VideosPage({ params: { locale } }: { params: { locale: string } }) {
-  const t = useTranslations('videos')
+  const t = await getTranslations('videos')
   const videos = await getVideos()
 
   return (

@@ -1,9 +1,12 @@
 'use client'
+
 import { useState } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
 import { Link, usePathname } from '@/i18n/routing'
 import { Menu, X, Globe } from 'lucide-react'
 import { useRouter } from '@/i18n/routing'
+import SearchBar from './SearchBar'
+import FontSizeAdjuster from './FontSizeAdjuster'
 
 export default function Navbar() {
   const t = useTranslations('nav')
@@ -53,6 +56,8 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            <SearchBar locale={locale} />
+            <FontSizeAdjuster />
             <button onClick={toggleLocale} className="ml-2 flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-700 border border-gray-300 rounded-md transition-colors">
               <Globe size={14} />
               {locale === 'zh-TW' ? 'EN' : '中'}
@@ -61,6 +66,7 @@ export default function Navbar() {
 
           {/* Mobile */}
           <div className="lg:hidden flex items-center gap-2">
+            <FontSizeAdjuster />
             <button onClick={toggleLocale} className="p-2 text-gray-600">
               <Globe size={18} />
             </button>

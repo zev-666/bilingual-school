@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { prisma } from '@/lib/prisma'
 import { formatFileSize } from '@/lib/utils'
 import { Download, FileText } from 'lucide-react'
@@ -14,8 +14,8 @@ async function getDocuments() {
 }
 
 export default async function DocumentsPage({ params: { locale } }: { params: { locale: string } }) {
-  const t = useTranslations('documents')
-  const tc = useTranslations('documents.categories')
+  const t = await getTranslations('documents')
+  const tc = await getTranslations('documents.categories')
   const documents = await getDocuments()
 
   return (

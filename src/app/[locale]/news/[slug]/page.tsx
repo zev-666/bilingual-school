@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/routing'
 import { prisma } from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
@@ -12,7 +12,7 @@ async function getAnnouncement(slug: string) {
 }
 
 export default async function NewsDetailPage({ params: { locale, slug } }: { params: { locale: string; slug: string } }) {
-  const t = useTranslations('news')
+  const t = await getTranslations('news')
   const item = await getAnnouncement(slug)
   if (!item) notFound()
 

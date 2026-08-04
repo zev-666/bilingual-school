@@ -3,7 +3,7 @@
 // src/app/admin/albums/[id]/photos/PhotoManager.tsx
 import { useState, useRef } from 'react'
 import Image from 'next/image'
-import { Upload, Trash2, ImagePlus, Loader2 } from 'lucide-react'
+import { Upload, Trash2, ImagePlus, Loader2, GripVertical } from 'lucide-react'
 
 interface Photo {
   id: string
@@ -20,10 +20,73 @@ interface PhotoManagerProps {
 }
 
 export default function PhotoManager({ albumId, initialPhotos }: PhotoManagerProps) {
-  const [photos, setPhotos] = useState<Photo[]>(initialPhotos)
+  const [photos, setPhotos] = useState<Photo[]>(
+    [...initialPhotos].sort((a, b) => a.sortOrder - b.sortOrder)
+  )
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // ── 拖曳排序 ──────────────────────────────────────────────
+  const [draggedId, setDraggedId] = useState<string | null>(null)
+  const [dragOverId, setDragOverId] = useState<string | null>(null)
+  const [reorderSaving, setReorderSaving] = useState(false)
+
+  async function persistOrder(ordered: Photo[]) {
+    setReorderSaving(true)
+    try {
+      await fetch(`/api/albums/${albumId}/photos/reorder`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderedIds: ordered.map((p) => p.id) }),
+      })
+    } catch {
+      alert('排序儲存失敗，請重新整理頁面再試一次')
+    } finally {
+      setReorderSaving(false)
+    }
+  }
+
+  function handleDragStart(id: string) {
+    setDraggedId(id)
+  }
+
+  function handleDragOver(e: React.DragEvent, id: string) {
+    e.preventDefault()
+    if (id !== draggedId) setDragOverId(id)
+  }
+
+  function handleDrop(targetId: string) {
+    if (!draggedId || draggedId === targetId) {
+      setDraggedId(null)
+      setDragOverId(null)
+      return
+    }
+    setPhotos((prev) => {
+      const next = [...prev]
+      const fromIndex = next.findIndex((p) => p.id === draggedId)
+      const toIndex = next.findIndex((p) => p.id === targetId)
+      const [moved] = next.splice(fromIndex, 1)
+      next.splice(toIndex, 0, moved)
+      persistOrder(next)
+      return next
+    })
+    setDraggedId(null)
+    setDragOverId(null)
+  }
+
+  function moveByKeyboard(id: string, direction: -1 | 1) {
+    setPhotos((prev) => {
+      const index = prev.findIndex((p) => p.id === id)
+      const targetIndex = index + direction
+      if (targetIndex < 0 || targetIndex >= prev.length) return prev
+      const next = [...prev]
+      ;[next[index], next[targetIndex]] = [next[targetIndex], next[index]]
+      persistOrder(next)
+      return next
+    })
+  }
+  // ──────────────────────────────────────────────────────────
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? [])
@@ -132,19 +195,48 @@ export default function PhotoManager({ albumId, initialPhotos }: PhotoManagerPro
         </div>
       ) : (
         <>
-          <p className="text-sm text-gray-500">共 {photos.length} 張照片</p>
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-gray-500">
+              共 {photos.length} 張照片，拖曳可調整順序
+            </p>
+            {reorderSaving && (
+              <span className="text-xs text-gray-400 flex items-center gap-1">
+                <Loader2 size={12} className="animate-spin" />
+                排序儲存中...
+              </span>
+            )}
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-            {photos.map((photo) => (
-              <div key={photo.id} className="group relative aspect-square rounded-xl overflow-hidden bg-gray-100">
+            {photos.map((photo, i) => (
+              <div
+                key={photo.id}
+                draggable
+                onDragStart={() => handleDragStart(photo.id)}
+                onDragOver={(e) => handleDragOver(e, photo.id)}
+                onDrop={() => handleDrop(photo.id)}
+                onDragEnd={() => { setDraggedId(null); setDragOverId(null) }}
+                className={`group relative aspect-square rounded-xl overflow-hidden bg-gray-100 cursor-grab active:cursor-grabbing border-2 transition-opacity ${
+                  draggedId === photo.id ? 'opacity-40' : ''
+                } ${dragOverId === photo.id ? 'border-primary-500' : 'border-transparent'}`}
+              >
                 <Image
                   src={photo.thumbnail ?? photo.url}
                   alt={photo.captionZh ?? ''}
                   fill
-                  className="object-cover"
+                  className="object-cover pointer-events-none"
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                 />
-                {/* Overlay on hover */}
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+
+                {/* 拖曳握把 + 順序編號 */}
+                <div className="absolute left-1.5 top-1.5 bg-black/50 rounded p-1 text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                  <GripVertical size={14} />
+                </div>
+                <div className="absolute right-1.5 top-1.5 bg-black/50 rounded px-1.5 py-0.5 text-xs text-white font-medium">
+                  {i + 1}
+                </div>
+
+                {/* Overlay on hover：刪除 + 鍵盤方向按鈕 */}
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
                   <button
                     onClick={() => handleDelete(photo.id)}
                     className="p-2 bg-red-600 rounded-full text-white hover:bg-red-700 transition-colors"
@@ -152,6 +244,26 @@ export default function PhotoManager({ albumId, initialPhotos }: PhotoManagerPro
                   >
                     <Trash2 size={14} />
                   </button>
+                  <div className="flex gap-1">
+                    <button
+                      type="button"
+                      onClick={() => moveByKeyboard(photo.id, -1)}
+                      disabled={i === 0}
+                      aria-label="往前移動"
+                      className="rounded bg-white/90 px-1.5 py-0.5 text-xs font-medium text-gray-700 disabled:opacity-30"
+                    >
+                      ←
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => moveByKeyboard(photo.id, 1)}
+                      disabled={i === photos.length - 1}
+                      aria-label="往後移動"
+                      className="rounded bg-white/90 px-1.5 py-0.5 text-xs font-medium text-gray-700 disabled:opacity-30"
+                    >
+                      →
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

@@ -3,6 +3,7 @@ import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
+import { sendContactNotification } from '@/lib/email'
 import { z } from 'zod'
 
 const schema = z.object({
@@ -24,6 +25,16 @@ export async function POST(req: NextRequest) {
   const contact = await prisma.contact.create({
     data: { ...parsed.data, ipAddress: ip },
   })
+
+  // 寄送通知信給管理員（fire-and-forget，不 await、不影響表單送出結果）
+  sendContactNotification({
+    name: parsed.data.name,
+    email: parsed.data.email,
+    subject: parsed.data.subject,
+    message: parsed.data.message,
+    contactId: contact.id,
+  }).catch((err) => console.error('[contacts] 通知信寄送發生未預期錯誤:', err))
+
   return apiSuccess({ id: contact.id }, 201)
 }
 

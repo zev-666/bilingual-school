@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { prisma } from '@/lib/prisma'
 import { Image } from 'lucide-react'
 
@@ -17,7 +17,7 @@ async function getAlbums() {
 }
 
 export default async function AlbumsPage({ params: { locale } }: { params: { locale: string } }) {
-  const t = useTranslations('albums')
+  const t = await getTranslations('albums')
   const albums = await getAlbums()
 
   return (

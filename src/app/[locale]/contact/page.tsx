@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -17,7 +17,21 @@ type FormData = z.infer<typeof schema>
 export default function ContactPage() {
   const t = useTranslations('contact')
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [mapEmbed, setMapEmbed] = useState<string>('')
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FormData>({ resolver: zodResolver(schema) })
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success && json.data?.google_maps_embed) {
+          setMapEmbed(json.data.google_maps_embed)
+        }
+      })
+      .catch(() => {
+        // 讀取設定失敗就不顯示地圖，不影響頁面其他部分
+      })
+  }, [])
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -53,6 +67,14 @@ export default function ContactPage() {
                 </div>
               ))}
             </div>
+
+            {/* Google Maps 嵌入：由後台「網站設定 → Google Maps」貼上 iframe 代碼控制 */}
+            {mapEmbed && (
+              <div
+                className="mt-8 overflow-hidden rounded-xl border border-gray-200 [&_iframe]:w-full [&_iframe]:h-[320px]"
+                dangerouslySetInnerHTML={{ __html: mapEmbed }}
+              />
+            )}
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

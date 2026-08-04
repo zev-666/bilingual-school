@@ -1,0 +1,26 @@
+{
+  "footer": {
+    "rights": "版權所有",
+    "privacy": "隱私政策",
+    "sitemap": "網站地圖",
+    "last_updated": "最後更新"
+  },
+  "legal": {
+    "privacy_policy": "隱私權政策",
+    "security_policy": "資訊安全政策",
+    "privacy_updated": "最後更新日期：2026年7月",
+    "privacy_s1_title": "資料蒐集範圍",
+    "privacy_s1_body": "本網站於您使用聯絡表單時，將蒐集您填寫之姓名、電子郵件及訊息內容，僅用於回覆您的詢問，不作其他用途。",
+    "privacy_s2_title": "資料保護方式",
+    "privacy_s2_body": "本網站採用加密連線（HTTPS）傳輸資料，並定期進行安全性維護，以保護您的個人資料安全。",
+    "privacy_s3_title": "聯絡我們",
+    "privacy_s3_body": "若您對本隱私權政策有任何疑問，歡迎透過本站聯絡我們頁面與我們聯繫。",
+    "security_s1_title": "網站安全維護",
+    "security_s1_body": "本網站定期進行系統更新與安全性掃描，並設有防火牆與入侵偵測機制，以防範惡意攻擊。",
+    "security_s2_title": "帳號安全",
+    "security_s2_body": "後台管理系統採用加密密碼儲存與權限分級控管，僅授權人員可存取管理功能。"
+  },
+  "common_add": {
+    "detail": "詳細內容"
+  }
+}

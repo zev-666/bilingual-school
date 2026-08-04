@@ -237,7 +237,23 @@
   "footer": {
     "rights": "All rights reserved",
     "privacy": "Privacy Policy",
-    "sitemap": "Sitemap"
+    "sitemap": "Sitemap",
+    "last_updated": "Last Updated"
+  },
+  "legal": {
+    "privacy_policy": "Privacy Policy",
+    "security_policy": "Security Policy",
+    "privacy_updated": "Last Updated",
+    "privacy_s1_title": "Scope of Data Collection",
+    "privacy_s1_body": "This website collects name, email, and message content when users submit the contact form, used solely for replying to inquiries.",
+    "privacy_s2_title": "How We Use Your Data",
+    "privacy_s2_body": "Collected personal data is used only for internal communication by this center and will not be provided, exchanged, rented, or sold to any other individual, organization, or agency.",
+    "privacy_s3_title": "Data Protection Measures",
+    "privacy_s3_body": "This website has implemented necessary security measures to prevent your personal data from being stolen, tampered with, damaged, lost, or disclosed.",
+    "security_s1_title": "Account Security",
+    "security_s1_body": "The admin backend uses encrypted password storage and role-based access control to keep system data secure.",
+    "security_s2_title": "Data Transmission Security",
+    "security_s2_body": "This website uses HTTPS encryption to protect data transmitted between you and this site."
   },
   "common": {
     "loading": "Loading...",
@@ -252,6 +268,7 @@
     "all": "All",
     "published": "Published",
     "draft": "Draft",
-    "pinned": "Pinned"
+    "pinned": "Pinned",
+    "detail": "Details"
   }
 }

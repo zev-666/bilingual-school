@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { prisma } from '@/lib/prisma'
 import { User } from 'lucide-react'
 
@@ -13,8 +13,8 @@ async function getTeachers() {
 }
 
 export default async function TeachersPage({ params: { locale } }: { params: { locale: string } }) {
-  const t = useTranslations('teachers')
-  const tt = useTranslations('teachers.types')
+  const t = await getTranslations('teachers')
+  const tt = await getTranslations('teachers.types')
   const teachers = await getTeachers()
 
   const grouped = teachers.reduce((acc: any, teacher: any) => {
