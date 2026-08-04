@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -14,24 +14,44 @@ const schema = z.object({
 })
 type FormData = z.infer<typeof schema>
 
+// API 沒有回傳對應 key（尚未在後台設定過）時使用的預設值，跟 admin/settings/page.tsx 的 DEFAULT_SETTINGS 保持一致
+const DEFAULT_CONTACT_SETTINGS = {
+  contact_address_zh: '基隆市中正區（請填入實際地址）',
+  contact_address_en: '(Please fill in actual address), Zhongzheng Dist., Keelung',
+  contact_phone: '(02) 2XXX-XXXX',
+  contact_email: 'info@kl-erc.edu.tw',
+}
+
 export default function ContactPage() {
   const t = useTranslations('contact')
+  const locale = useLocale()
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [mapEmbed, setMapEmbed] = useState<string>('')
+  const [contactInfo, setContactInfo] = useState(DEFAULT_CONTACT_SETTINGS)
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FormData>({ resolver: zodResolver(schema) })
 
   useEffect(() => {
     fetch('/api/settings')
       .then((res) => res.json())
       .then((json) => {
-        if (json.success && json.data?.google_maps_embed) {
-          setMapEmbed(json.data.google_maps_embed)
+        if (json.success && json.data) {
+          if (json.data.google_maps_embed) {
+            setMapEmbed(json.data.google_maps_embed)
+          }
+          setContactInfo((prev) => ({
+            contact_address_zh: json.data.contact_address_zh || prev.contact_address_zh,
+            contact_address_en: json.data.contact_address_en || prev.contact_address_en,
+            contact_phone: json.data.contact_phone || prev.contact_phone,
+            contact_email: json.data.contact_email || prev.contact_email,
+          }))
         }
       })
       .catch(() => {
-        // 讀取設定失敗就不顯示地圖，不影響頁面其他部分
+        // 讀取設定失敗就維持預設值，不影響頁面其他部分
       })
   }, [])
+
+  const address = locale === 'en' ? contactInfo.contact_address_en : contactInfo.contact_address_zh
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -51,9 +71,9 @@ export default function ContactPage() {
           <div>
             <div className="space-y-6">
               {[
-                { icon: MapPin, label: t('address'), value: '台北市信義區教育路1號' },
-                { icon: Phone, label: t('phone'), value: '02-1234-5678' },
-                { icon: Mail, label: t('email'), value: 'info@school.edu.tw' },
+                { icon: MapPin, label: t('address'), value: address },
+                { icon: Phone, label: t('phone'), value: contactInfo.contact_phone },
+                { icon: Mail, label: t('email'), value: contactInfo.contact_email },
                 { icon: Clock, label: t('office_hours'), value: t('office_hours_value') },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="flex items-start gap-4">

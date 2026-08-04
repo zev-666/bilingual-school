@@ -16,9 +16,38 @@ async function getLastUpdated() {
   }
 }
 
+// 後台「網站設定」找不到對應 key 時的預設值，跟 admin/settings/page.tsx 的 DEFAULT_SETTINGS 保持一致
+const DEFAULT_CONTACT_SETTINGS = {
+  contact_address_zh: '基隆市中正區（請填入實際地址）',
+  contact_address_en: '(Please fill in actual address), Zhongzheng Dist., Keelung',
+  contact_phone: '(02) 2XXX-XXXX',
+  contact_email: 'info@kl-erc.edu.tw',
+}
+
+async function getContactSettings() {
+  try {
+    const rows = await prisma.siteSetting.findMany({
+      where: {
+        key: { in: ['contact_address_zh', 'contact_address_en', 'contact_phone', 'contact_email'] },
+      },
+    })
+    const map = { ...DEFAULT_CONTACT_SETTINGS }
+    for (const row of rows) {
+      if (row.value) {
+        ;(map as Record<string, string>)[row.key] = row.value
+      }
+    }
+    return map
+  } catch {
+    return DEFAULT_CONTACT_SETTINGS
+  }
+}
+
 export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) {
   const t = await getTranslations()
   const lastUpdated = await getLastUpdated()
+  const settings = await getContactSettings()
+  const address = locale === 'en' ? settings.contact_address_en : settings.contact_address_zh
 
   return (
     <footer className="bg-gray-900 text-gray-300">
@@ -86,11 +115,11 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) 
             <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-2">
                 <MapPin size={14} className="mt-0.5 text-primary-400 flex-shrink-0" />
-                基隆市中正區（請填入實際地址）
+                {address}
               </li>
               <li className="flex items-center gap-2">
                 <Phone size={14} className="text-primary-400 flex-shrink-0" />
-                02-2XXX-XXXX
+                {settings.contact_phone}
               </li>
               <li className="flex items-center gap-2">
                 <Printer size={14} className="text-primary-400 flex-shrink-0" />
@@ -98,7 +127,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) 
               </li>
               <li className="flex items-center gap-2">
                 <Mail size={14} className="text-primary-400 flex-shrink-0" />
-                info@kl-erc.edu.tw
+                {settings.contact_email}
               </li>
             </ul>
           </div>

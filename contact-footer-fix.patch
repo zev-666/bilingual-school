@@ -1,0 +1,140 @@
+diff --git a/src/app/[locale]/contact/page.tsx b/src/app/[locale]/contact/page.tsx
+index 0c766dc..ed61939 100644
+--- a/src/app/[locale]/contact/page.tsx
++++ b/src/app/[locale]/contact/page.tsx
+@@ -1,6 +1,6 @@
+ 'use client'
+ import { useState, useEffect } from 'react'
+-import { useTranslations } from 'next-intl'
++import { useTranslations, useLocale } from 'next-intl'
+ import { useForm } from 'react-hook-form'
+ import { zodResolver } from '@hookform/resolvers/zod'
+ import { z } from 'zod'
+@@ -14,25 +14,45 @@ const schema = z.object({
+ })
+ type FormData = z.infer<typeof schema>
+ 
++// API 沒有回傳對應 key（尚未在後台設定過）時使用的預設值，跟 admin/settings/page.tsx 的 DEFAULT_SETTINGS 保持一致
++const DEFAULT_CONTACT_SETTINGS = {
++  contact_address_zh: '基隆市中正區（請填入實際地址）',
++  contact_address_en: '(Please fill in actual address), Zhongzheng Dist., Keelung',
++  contact_phone: '(02) 2XXX-XXXX',
++  contact_email: 'info@kl-erc.edu.tw',
++}
++
+ export default function ContactPage() {
+   const t = useTranslations('contact')
++  const locale = useLocale()
+   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
+   const [mapEmbed, setMapEmbed] = useState<string>('')
++  const [contactInfo, setContactInfo] = useState(DEFAULT_CONTACT_SETTINGS)
+   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FormData>({ resolver: zodResolver(schema) })
+ 
+   useEffect(() => {
+     fetch('/api/settings')
+       .then((res) => res.json())
+       .then((json) => {
+-        if (json.success && json.data?.google_maps_embed) {
+-          setMapEmbed(json.data.google_maps_embed)
++        if (json.success && json.data) {
++          if (json.data.google_maps_embed) {
++            setMapEmbed(json.data.google_maps_embed)
++          }
++          setContactInfo((prev) => ({
++            contact_address_zh: json.data.contact_address_zh || prev.contact_address_zh,
++            contact_address_en: json.data.contact_address_en || prev.contact_address_en,
++            contact_phone: json.data.contact_phone || prev.contact_phone,
++            contact_email: json.data.contact_email || prev.contact_email,
++          }))
+         }
+       })
+       .catch(() => {
+-        // 讀取設定失敗就不顯示地圖，不影響頁面其他部分
++        // 讀取設定失敗就維持預設值，不影響頁面其他部分
+       })
+   }, [])
+ 
++  const address = locale === 'en' ? contactInfo.contact_address_en : contactInfo.contact_address_zh
++
+   const onSubmit = async (data: FormData) => {
+     try {
+       const res = await fetch('/api/contacts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+@@ -51,9 +71,9 @@ export default function ContactPage() {
+           <div>
+             <div className="space-y-6">
+               {[
+-                { icon: MapPin, label: t('address'), value: '台北市信義區教育路1號' },
+-                { icon: Phone, label: t('phone'), value: '02-1234-5678' },
+-                { icon: Mail, label: t('email'), value: 'info@school.edu.tw' },
++                { icon: MapPin, label: t('address'), value: address },
++                { icon: Phone, label: t('phone'), value: contactInfo.contact_phone },
++                { icon: Mail, label: t('email'), value: contactInfo.contact_email },
+                 { icon: Clock, label: t('office_hours'), value: t('office_hours_value') },
+               ].map(({ icon: Icon, label, value }) => (
+                 <div key={label} className="flex items-start gap-4">
+diff --git a/src/components/layout/Footer.tsx b/src/components/layout/Footer.tsx
+index f69a47f..fba2ffa 100644
+--- a/src/components/layout/Footer.tsx
++++ b/src/components/layout/Footer.tsx
+@@ -16,9 +16,38 @@ async function getLastUpdated() {
+   }
+ }
+ 
++// 後台「網站設定」找不到對應 key 時的預設值，跟 admin/settings/page.tsx 的 DEFAULT_SETTINGS 保持一致
++const DEFAULT_CONTACT_SETTINGS = {
++  contact_address_zh: '基隆市中正區（請填入實際地址）',
++  contact_address_en: '(Please fill in actual address), Zhongzheng Dist., Keelung',
++  contact_phone: '(02) 2XXX-XXXX',
++  contact_email: 'info@kl-erc.edu.tw',
++}
++
++async function getContactSettings() {
++  try {
++    const rows = await prisma.siteSetting.findMany({
++      where: {
++        key: { in: ['contact_address_zh', 'contact_address_en', 'contact_phone', 'contact_email'] },
++      },
++    })
++    const map = { ...DEFAULT_CONTACT_SETTINGS }
++    for (const row of rows) {
++      if (row.value) {
++        ;(map as Record<string, string>)[row.key] = row.value
++      }
++    }
++    return map
++  } catch {
++    return DEFAULT_CONTACT_SETTINGS
++  }
++}
++
+ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) {
+   const t = await getTranslations()
+   const lastUpdated = await getLastUpdated()
++  const settings = await getContactSettings()
++  const address = locale === 'en' ? settings.contact_address_en : settings.contact_address_zh
+ 
+   return (
+     <footer className="bg-gray-900 text-gray-300">
+@@ -86,11 +115,11 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string })
+             <ul className="space-y-2 text-sm">
+               <li className="flex items-start gap-2">
+                 <MapPin size={14} className="mt-0.5 text-primary-400 flex-shrink-0" />
+-                基隆市中正區（請填入實際地址）
++                {address}
+               </li>
+               <li className="flex items-center gap-2">
+                 <Phone size={14} className="text-primary-400 flex-shrink-0" />
+-                02-2XXX-XXXX
++                {settings.contact_phone}
+               </li>
+               <li className="flex items-center gap-2">
+                 <Printer size={14} className="text-primary-400 flex-shrink-0" />
+@@ -98,7 +127,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string })
+               </li>
+               <li className="flex items-center gap-2">
+                 <Mail size={14} className="text-primary-400 flex-shrink-0" />
+-                info@kl-erc.edu.tw
++                {settings.contact_email}
+               </li>
+             </ul>
+           </div>
