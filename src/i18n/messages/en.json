@@ -19,10 +19,8 @@
       "cta_secondary": "Admission Info"
     },
     "stats": {
-      "students": "Students",
-      "teachers": "Teachers",
-      "years": "Years",
-      "programs": "Programs"
+      "schools": "Partner Schools",
+      "teachers_served": "Teachers Served"
     },
     "news": {
       "title": "Latest News",

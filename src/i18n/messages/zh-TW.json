@@ -19,10 +19,8 @@
       "cta_secondary": "招生資訊"
     },
     "stats": {
-      "students": "在校學生",
-      "teachers": "專業師資",
-      "years": "辦學年數",
-      "programs": "雙語課程"
+      "schools": "合作學校",
+      "teachers_served": "服務教師人次"
     },
     "news": {
       "title": "最新消息",
