@@ -53,11 +53,11 @@
     "back": "Back to List",
     "published": "Published",
     "categories": {
-      "NEWS": "News",
-      "EVENT": "Event",
+      "ANNOUNCEMENT": "Announcement",
+      "ACTIVITY": "Activity",
       "ADMISSION": "Admission",
-      "ACADEMIC": "Academic",
-      "OTHER": "Other"
+      "COMPETITION": "Competition",
+      "NEWS": "News"
     }
   },
   "albums": {

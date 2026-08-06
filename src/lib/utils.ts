@@ -7,11 +7,21 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatDate(date: Date | string, locale = 'zh-TW') {
-  return new Date(date).toLocaleDateString(locale, {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
+  try {
+    const d = new Date(date)
+    if (isNaN(d.getTime())) return ''
+    return d.toLocaleDateString(locale, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  } catch {
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  }
 }
 
 export function generateSlug(text: string): string {

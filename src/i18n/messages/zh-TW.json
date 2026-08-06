@@ -53,11 +53,11 @@
     "back": "返回列表",
     "published": "發布日期",
     "categories": {
-      "NEWS": "新聞",
-      "EVENT": "活動",
+      "ANNOUNCEMENT": "公告",
+      "ACTIVITY": "活動",
       "ADMISSION": "招生",
-      "ACADEMIC": "學術",
-      "OTHER": "其他"
+      "COMPETITION": "競賽",
+      "NEWS": "新聞"
     }
   },
   "albums": {
