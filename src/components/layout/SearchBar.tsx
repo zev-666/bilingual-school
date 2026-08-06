@@ -74,6 +74,8 @@ export default function SearchBar({ locale }: Props) {
         <Search className="w-4 h-4 text-primary-400 ml-2 shrink-0" aria-hidden="true" />
         <input
           type="text"
+          id="site-search"
+          name="site-search"
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
