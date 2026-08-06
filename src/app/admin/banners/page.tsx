@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { prisma } from '@/lib/prisma'
 import BannerManager from './BannerManager'
 
+export const dynamic = 'force-dynamic'
 export const metadata: Metadata = { title: 'Banner 輪播管理' }
 
 async function getBanners() {
@@ -12,10 +13,8 @@ async function getBanners() {
     return []
   }
 }
-
 export default async function AdminBannersPage() {
   const banners = await getBanners()
-
   return (
     <div className="space-y-6 max-w-5xl">
       <div>
