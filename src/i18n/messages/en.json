@@ -62,7 +62,8 @@
     "title": "Photo Albums",
     "subtitle": "Capturing school memories",
     "photos": "photos",
-    "no_albums": "No albums available"
+    "no_albums": "No albums available",
+    "back": "Back to Albums"
   },
   "videos": {
     "title": "Videos",

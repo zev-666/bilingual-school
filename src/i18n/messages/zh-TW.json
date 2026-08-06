@@ -62,7 +62,8 @@
     "title": "活動相簿",
     "subtitle": "記錄學校精彩時刻",
     "photos": "張照片",
-    "no_albums": "目前沒有相簿"
+    "no_albums": "目前沒有相簿",
+    "back": "返回相簿列表"
   },
   "videos": {
     "title": "活動影音",
