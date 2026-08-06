@@ -144,13 +144,12 @@
       }
     },
     "history": {
-      "title": "School History",
+      "title": "Our History",
       "events": [
-        { "year": "2001", "title": "Founding", "desc": "The school was officially established, taking its first step in bilingual education and enrolling its first class." },
-        { "year": "2008", "title": "Campus Expansion", "desc": "As enrollment grew, the campus was expanded with new specialized classrooms and activity spaces." },
-        { "year": "2013", "title": "International Accreditation", "desc": "Received international education accreditation, with teaching quality recognized globally." },
-        { "year": "2018", "title": "Digital Transformation", "desc": "Fully adopted digital teaching equipment, establishing smart classrooms and an online learning platform." },
-        { "year": "2024", "title": "Sustainable Development", "desc": "Launched a green campus initiative, integrating sustainability into the curriculum." }
+        { "year": "Aug 2024", "title": "Official Establishment", "desc": "The Keelung City Government issued the Directive on the Establishment and Operation of the English Education Resource Center, formally founding the Center to oversee English and bilingual education policy for the city's elementary and junior high schools." },
+        { "year": "2024", "title": "Team Formation", "desc": "Selection of the convener, deputy convener, and specialist staff, along with recruitment of a foreign English teaching advisor, established the Center's task-force operating model." },
+        { "year": "2025", "title": "Expanding Partnerships", "desc": "Worked with Keelung's elementary and junior high schools to advance co-teaching programs such as TFETP and ELTA, steadily growing the number of partner schools." },
+        { "year": "Present", "title": "Ongoing Growth", "desc": "Hosts summer camps with foreign teachers, English speaking showcases, and other events supporting English and bilingual teaching citywide." }
       ]
     },
     "facilities": {
