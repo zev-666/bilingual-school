@@ -75,12 +75,10 @@ export default async function AboutPage({ params: { locale } }: Props) {
       {/* Stats bar */}
       <section className="bg-primary-600 text-white py-12">
         <div className="container-school">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div className="grid grid-cols-2 gap-6 text-center max-w-md mx-auto">
             {[
-              { value: '2001', label: t('stats.founded') },
-              { value: '1,200+', label: t('stats.students') },
-              { value: '80+', label: t('stats.teachers') },
-              { value: '100+', label: t('stats.awards') },
+              { value: '20+', label: t('stats.schools') },
+              { value: '30+', label: t('stats.teachers_served') },
             ].map(({ value, label }) => (
               <div key={label}>
                 <p className="text-4xl font-bold mb-1">{value}</p>

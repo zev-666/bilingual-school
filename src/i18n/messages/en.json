@@ -121,10 +121,8 @@
       "content": "Through an environment that values both Chinese and English equally, combined with character education and diverse learning, we inspire every student's potential and cultivate independent, innovative learners."
     },
     "stats": {
-      "founded": "Founded",
-      "students": "Students",
-      "teachers": "Teachers",
-      "awards": "Awards"
+      "schools": "Partner Schools",
+      "teachers_served": "Teachers Served"
     },
     "values": {
       "title": "Core Values",

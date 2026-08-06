@@ -121,10 +121,8 @@
       "content": "透過中英雙語並重的教學環境，結合品格教育與多元學習，啟發每位學生的潛能，培養獨立思考、勇於創新的學習者。"
     },
     "stats": {
-      "founded": "創校年份",
-      "students": "在校學生",
-      "teachers": "專業師資",
-      "awards": "獲獎榮譽"
+      "schools": "合作學校",
+      "teachers_served": "服務教師人次"
     },
     "values": {
       "title": "核心價值",
