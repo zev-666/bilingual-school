@@ -36,13 +36,13 @@ export default function Breadcrumb() {
   return (
     <nav aria-label="Breadcrumb" className="bg-gray-50 border-b border-gray-200">
       <div className="container-school py-3">
-        <ol className="flex items-center flex-wrap gap-1.5 text-sm text-gray-500">
+        <ol className="flex items-center flex-wrap gap-1.5 text-sm text-gray-600">
           <li className="flex items-center gap-1.5">
             <Link href="/" className="flex items-center gap-1 hover:text-primary-700 transition-colors">
               <Home size={14} />
               <span>{t('home')}</span>
             </Link>
-            <ChevronRight size={14} className="text-gray-300" />
+            <ChevronRight size={14} className="text-gray-400" />
           </li>
           {crumbs.map((crumb, i) => (
             <li key={crumb.href} className="flex items-center gap-1.5">
@@ -53,7 +53,7 @@ export default function Breadcrumb() {
                   {crumb.label}
                 </Link>
               )}
-              {i < crumbs.length - 1 && <ChevronRight size={14} className="text-gray-300" />}
+              {i < crumbs.length - 1 && <ChevronRight size={14} className="text-gray-400" />}
             </li>
           ))}
         </ol>

@@ -70,3 +70,21 @@ html {
   font-size: calc(16px * var(--font-scale, 1));
 }
 
+
+
+/* 無障礙：跳到主要內容的導盲磚連結，預設隱藏，鍵盤 Tab 到時才顯示 */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: #101f30;
+  color: #ffffff;
+  padding: 0.75rem 1.25rem;
+  z-index: 9999;
+  border-radius: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.skip-link:focus {
+  left: 0;
+}

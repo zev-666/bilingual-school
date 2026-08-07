@@ -108,7 +108,7 @@ export default function SearchBar({ locale }: Props) {
               <Loader2 className="w-5 h-5 animate-spin" />
             </div>
           ) : results.length === 0 ? (
-            <p className="px-4 py-6 text-sm text-center text-gray-500">{noResultsText}</p>
+            <p className="px-4 py-6 text-sm text-center text-gray-600">{noResultsText}</p>
           ) : (
             <ul>
               {results.map((item) => (

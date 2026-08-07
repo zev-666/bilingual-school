@@ -29,7 +29,7 @@ export default async function LocaleLayout({
     <NextIntlClientProvider messages={messages}>
       <Navbar />
       <Breadcrumb />
-      <main>{children}</main>
+      <main id="main-content">{children}</main>
       <Footer locale={locale} />
     </NextIntlClientProvider>
   )

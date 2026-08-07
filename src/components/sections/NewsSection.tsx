@@ -18,7 +18,7 @@ export default function NewsSection({ locale, announcements }: { locale: string;
         <div className="flex items-end justify-between mb-10">
           <div>
             <h2 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">{t('title')}</h2>
-            <p className="text-gray-500">{t('subtitle')}</p>
+            <p className="text-gray-600">{t('subtitle')}</p>
           </div>
           <Link href="/news" className="flex items-center gap-1 text-primary-600 hover:text-primary-700 font-medium text-sm">
             {t('more')} <ArrowRight size={16} />
@@ -35,7 +35,7 @@ export default function NewsSection({ locale, announcements }: { locale: string;
               <h3 className="font-semibold text-gray-900 line-clamp-2 mb-3">
                 {locale === 'zh-TW' ? item.titleZh : item.titleEn}
               </h3>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-gray-600">
                 {formatDate(item.publishedAt || item.createdAt, locale)}
               </p>
             </Link>

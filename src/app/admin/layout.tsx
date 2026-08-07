@@ -9,6 +9,7 @@ const navItems = [
   { href: '/admin/announcements', label: '公告管理', icon: Megaphone },
   { href: '/admin/banners', label: 'Banner 輪播', icon: GalleryHorizontal },
   { href: '/admin/albums', label: '相簿管理', icon: Image },
+  { href: '/admin/videos', label: '影片管理', icon: Video },
   { href: '/admin/teachers', label: '師資管理', icon: GraduationCap },
   { href: '/admin/documents', label: '文件管理', icon: FileText },
   { href: '/admin/media', label: '媒體庫', icon: Library },
@@ -21,7 +22,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname()
   const router = useRouter()
 
-  if (pathname === '/admin/login') return <>{children}</>
+  if (pathname === '/admin/login') return <main id="main-content">{children}</main>
 
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' })
@@ -59,7 +60,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </button>
         </div>
       </aside>
-      <main className="flex-1 ml-60 p-8">{children}</main>
+      <main id="main-content" className="flex-1 ml-60 p-8">{children}</main>
     </div>
   )
 }

@@ -11,7 +11,7 @@ export default function AboutSection({ locale }: { locale: string }) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-3xl font-bold text-gray-900 mb-4 tracking-tight">{t('title')}</h2>
-            <p className="text-gray-500 mb-4">{t('subtitle')}</p>
+            <p className="text-gray-600 mb-4">{t('subtitle')}</p>
             <p className="text-gray-600 leading-relaxed mb-6">{t('description')}</p>
             <div className="space-y-4 mb-8">
               {[

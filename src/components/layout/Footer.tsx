@@ -104,7 +104,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) 
                   {t('legal.security_policy')}
                 </Link>
               </li>
-              <li className="text-gray-500 pt-1">
+              <li className="text-gray-400 pt-1">
                 {t('footer.last_updated')}：{formatDate(lastUpdated, locale)}
               </li>
             </ul>
@@ -133,7 +133,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) 
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-500">
+        <div className="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-400">
           © {new Date().getFullYear()} 基隆市英語資源中心 {t('footer.rights')}
         </div>
       </div>
