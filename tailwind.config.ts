@@ -1,5 +1,4 @@
 import type { Config } from 'tailwindcss'
-
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -9,31 +8,29 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Formal navy — primary brand color (nav, buttons, links)
         primary: {
-          50:  '#eef2f7',
-          100: '#d6e0eb',
-          200: '#adc1d6',
-          300: '#7d9cbc',
-          400: '#4d739e',
-          500: '#305980',
-          600: '#234367',
-          700: '#1c3654',
-          800: '#162a41',
-          900: '#101f30',
+          50:  '#f0f9ff',
+          100: '#e0f2fe',
+          200: '#bae6fd',
+          300: '#7dd3fc',
+          400: '#38bdf8',
+          500: '#0ea5e9',
+          600: '#0284c7',
+          700: '#0369a1',
+          800: '#075985',
+          900: '#0c4a6e',
         },
-        // Muted gold — used sparingly for accents, highlights, and badges
         accent: {
-          50:  '#fdf8ee',
-          100: '#f9edcf',
-          200: '#f2d896',
-          300: '#e9bd5c',
-          400: '#dba435',
-          500: '#c28c26',
-          600: '#9c6d1d',
-          700: '#77521a',
-          800: '#5a3f18',
-          900: '#3e2b13',
+          50:  '#fffbeb',
+          100: '#fef3c7',
+          200: '#fde68a',
+          300: '#fcd34d',
+          400: '#fbbf24',
+          500: '#f59e0b',
+          600: '#d97706',
+          700: '#b45309',
+          800: '#92400e',
+          900: '#78350f',
         },
       },
       fontFamily: {
@@ -43,5 +40,4 @@ const config: Config = {
   },
   plugins: [],
 }
-
 export default config
