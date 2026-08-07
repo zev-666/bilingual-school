@@ -10,8 +10,8 @@ const updateSchema = z.object({
   titleEn:     z.string().min(1).optional(),
   descZh:      z.string().optional(),
   descEn:      z.string().optional(),
-  videoUrl:    z.string().url().optional(),
-  thumbnail:   z.string().url().optional().nullable(),
+  videoUrl:    z.string().url().optional().or(z.literal('')).transform(v => v || undefined),
+  thumbnail:   z.string().url().optional().nullable().or(z.literal('')).transform(v => v || null),
   duration:    z.number().positive().optional().nullable(),
   isPublished: z.boolean().optional(),
 })

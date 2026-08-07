@@ -12,7 +12,7 @@ const updateBannerSchema = z.object({
   titleEn: z.string().min(1).optional(),
   subtitleZh: z.string().nullable().optional(),
   subtitleEn: z.string().nullable().optional(),
-  imageUrl: z.string().url().optional(),
+  imageUrl: z.string().url().optional().or(z.literal('')).transform(v => v || undefined),
   linkUrl: z.string().nullable().optional(),
   linkTextZh: z.string().nullable().optional(),
   linkTextEn: z.string().nullable().optional(),

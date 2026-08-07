@@ -15,6 +15,7 @@ const NAV = [
   { href: '/admin/dashboard',      label: '儀表板',     icon: LayoutDashboard },
   { href: '/admin/announcements',  label: '公告管理',   icon: Megaphone },
   { href: '/admin/albums',         label: '相簿管理',   icon: Image },
+  { href: '/admin/videos',         label: '影片管理',   icon: Video },
   { href: '/admin/documents',      label: '文件管理',   icon: FileText },
   { href: '/admin/teachers',       label: '師資管理',   icon: Users },
   { href: '/admin/contacts',       label: '聯絡訊息',   icon: MessageSquare },
@@ -133,3 +134,4 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     </div>
   )
 }
+

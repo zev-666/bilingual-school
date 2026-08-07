@@ -11,7 +11,7 @@ const updateSchema = z.object({
   descZh:      z.string().optional(),
   descEn:      z.string().optional(),
   category:    z.enum(['FORM', 'REGULATION', 'BROCHURE', 'REPORT', 'OTHER']).optional(),
-  fileUrl:     z.string().url().optional(),
+  fileUrl:     z.string().url().optional().or(z.literal('')).transform(v => v || undefined),
   fileName:    z.string().optional(),
   fileSize:    z.number().positive().optional(),
   fileType:    z.string().optional(),

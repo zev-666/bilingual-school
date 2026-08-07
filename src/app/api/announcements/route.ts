@@ -50,7 +50,7 @@ const createSchema = z.object({
   contentZh:  z.string().min(1),
   contentEn:  z.string().min(1),
   category:   z.enum(['ANNOUNCEMENT','ACTIVITY','ADMISSION','COMPETITION','NEWS']),
-  coverImage: z.string().url().optional(),
+  coverImage: z.string().url().optional().or(z.literal('')).transform(v => v || undefined),
   isPinned:   z.boolean().optional().default(false),
   isPublished:z.boolean().optional().default(false),
 })

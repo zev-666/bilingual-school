@@ -10,7 +10,7 @@ const updateSchema = z.object({
   titleEn:     z.string().min(1).optional(),
   descZh:      z.string().optional(),
   descEn:      z.string().optional(),
-  coverImage:  z.string().url().optional().or(z.literal('')),
+  coverImage:  z.string().url().optional().or(z.literal('')).transform(v => v || undefined),
   eventDate:   z.string().datetime().optional().nullable(),
   isPublished: z.boolean().optional(),
   sortOrder:   z.number().optional(),

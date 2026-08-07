@@ -12,7 +12,7 @@ const updateSchema = z.object({
   titleEn:   z.string().min(1).optional(),
   bioZh:     z.string().optional(),
   bioEn:     z.string().optional(),
-  avatar:    z.string().url().optional().nullable(),
+  avatar:    z.string().url().optional().nullable().or(z.literal('')).transform(v => v || null),
   type:      z.enum(['FULL_TIME', 'PART_TIME', 'STAFF']).optional(),
   subjects:  z.array(z.string()).optional(),
   email:     z.string().email().optional().nullable(),

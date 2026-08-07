@@ -20,28 +20,35 @@ export async function GET(req: NextRequest) {
   const page    = parseInt(searchParams.get('page')    ?? '1', 10)
   const perPage = parseInt(searchParams.get('perPage') ?? '12', 10)
   const slug    = searchParams.get('slug')
+  const admin   = searchParams.get('admin') === 'true'
+  const authUser = getAuthUserFromRequest(req)
+  const isAdminView = admin && !!authUser
 
   // Single video by slug
   if (slug) {
     const video = await prisma.video.findUnique({
-      where: { slug, isPublished: true },
+      where: { slug },
       include: { author: { select: { name: true } } },
     })
     if (!video) return apiError('Not found', 404)
-    // Increment view count
-    await prisma.video.update({ where: { id: video.id }, data: { viewCount: { increment: 1 } } })
+    if (!video.isPublished && !isAdminView) return apiError('Not found', 404)
+    if (!isAdminView) {
+      await prisma.video.update({ where: { id: video.id }, data: { viewCount: { increment: 1 } } })
+    }
     return apiSuccess(video)
   }
 
+  const where = isAdminView ? {} : { isPublished: true }
+
   const [data, total] = await Promise.all([
     prisma.video.findMany({
-      where:   { isPublished: true },
+      where,
       orderBy: { publishedAt: 'desc' },
       skip:    (page - 1) * perPage,
       take:    perPage,
       include: { author: { select: { name: true } } },
     }),
-    prisma.video.count({ where: { isPublished: true } }),
+    prisma.video.count({ where }),
   ])
 
   return apiSuccess({ data, meta: { total, page, perPage, totalPages: Math.ceil(total / perPage) } })
@@ -54,7 +61,7 @@ const createSchema = z.object({
   descEn:      z.string().optional(),
   videoUrl:    z.string().url(),
   source:      z.enum(['YOUTUBE', 'VIMEO', 'SELF_HOSTED']).default('YOUTUBE'),
-  thumbnail:   z.string().url().optional(),
+  thumbnail:   z.string().url().optional().or(z.literal('')).transform(v => v || undefined),
   duration:    z.number().positive().optional(),
   isPublished: z.boolean().default(false),
 })

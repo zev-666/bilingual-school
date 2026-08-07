@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
 const createSchema = z.object({
   titleZh: z.string().min(1), titleEn: z.string().min(1),
   descZh: z.string().optional(), descEn: z.string().optional(),
-  coverImage: z.string().url().optional(),
+  coverImage: z.string().url().optional().or(z.literal('')).transform(v => v || undefined),
   eventDate: z.string().datetime().optional(),
   isPublished: z.boolean().default(false),
 })

@@ -22,7 +22,7 @@ const createSchema = z.object({
   nameZh: z.string().min(1), nameEn: z.string().min(1),
   titleZh: z.string().min(1), titleEn: z.string().min(1),
   bioZh: z.string().optional(), bioEn: z.string().optional(),
-  avatar: z.string().url().optional(),
+  avatar: z.string().url().optional().or(z.literal('')).transform(v => v || undefined),
   type: z.enum(['FULL_TIME','PART_TIME','STAFF']).default('FULL_TIME'),
   subjects: z.array(z.string()).default([]),
   email: z.string().email().optional(),
