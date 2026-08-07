@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/routing'
-import { Mail, Phone, Printer, MapPin, Landmark, ExternalLink } from 'lucide-react'
+import { Mail, Phone, Printer, MapPin, Landmark, ExternalLink, ShieldCheck } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
 
@@ -16,7 +16,6 @@ async function getLastUpdated() {
   }
 }
 
-// 後台「網站設定」找不到對應 key 時的預設值，跟 admin/settings/page.tsx 的 DEFAULT_SETTINGS 保持一致
 const DEFAULT_CONTACT_SETTINGS = {
   contact_address_zh: '基隆市中正區（請填入實際地址）',
   contact_address_en: '(Please fill in actual address), Zhongzheng Dist., Keelung',
@@ -61,12 +60,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) 
               <span className="font-bold text-white">基隆市英語資源中心</span>
             </div>
             <p className="text-sm text-gray-400 mb-4">支援教師與外師的英語教學資源與研習平台</p>
-            <a
-              href="https://bilingual-school.vercel.app/zh-TW"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white transition-colors"
-            >
+            <a href="https://bilingual-school.vercel.app/zh-TW" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white transition-colors">
               <Landmark size={13} className="flex-shrink-0" />
               主管機關：基隆市政府教育處
               <ExternalLink size={11} className="flex-shrink-0" />
@@ -133,8 +127,14 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) 
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-400">
-          © {new Date().getFullYear()} 基隆市英語資源中心 {t('footer.rights')}
+        <div className="border-t border-gray-800 mt-8 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="text-center md:text-left text-sm text-gray-400">
+            © {new Date().getFullYear()} 基隆市英語資源中心 {t('footer.rights')}
+          </div>
+          <a href="https://www.a11y.nat.gov.tw/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs text-gray-400 hover:text-white transition-colors border border-gray-700 rounded-md px-3 py-1.5 flex-shrink-0">
+            <ShieldCheck size={14} className="text-accent-400 flex-shrink-0" />
+            {locale === 'en' ? 'This site follows WCAG 2.1 AA accessibility guidelines' : '本站依循 WCAG 2.1 AA 無障礙網頁設計原則建置'}
+          </a>
         </div>
       </div>
     </footer>
