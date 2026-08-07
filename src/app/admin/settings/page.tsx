@@ -14,6 +14,7 @@ const DEFAULT_SETTINGS = {
   instagram_url: '',
   youtube_url: '',
   line_url: '',
+  cool_english_url: '',
   google_maps_embed: '',
   footer_copyright_zh: '© 2024 基隆市英語資源中心 版權所有',
   footer_copyright_en: '© 2024 Keelung City English Resource Center. All rights reserved.',

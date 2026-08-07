@@ -128,6 +128,7 @@ export default function SettingsForm({ initialSettings }: Props) {
                 { key: 'instagram_url', label: 'Instagram', placeholder: 'https://instagram.com/...' },
                 { key: 'youtube_url', label: 'YouTube', placeholder: 'https://youtube.com/...' },
                 { key: 'line_url', label: 'LINE 官方帳號', placeholder: 'https://line.me/...' },
+                { key: 'cool_english_url', label: 'Cool English 專區連結', placeholder: 'https://www.coolenglish.edu.tw/...' },
               ].map(({ key, label, placeholder }) => (
                 <div key={key}>
                   <label className="mb-1.5 block text-sm font-medium text-gray-700">{label}</label>

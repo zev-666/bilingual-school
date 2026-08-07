@@ -2,6 +2,7 @@
 import { useTranslations } from 'next-intl'
 import { useInView } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
+
 function Counter({ end, duration = 2000 }: { end: number; duration?: number }) {
   const [count, setCount] = useState(0)
   const ref = useRef(null)
@@ -19,11 +20,18 @@ function Counter({ end, duration = 2000 }: { end: number; duration?: number }) {
   }, [isInView, end, duration])
   return <span ref={ref}>{count.toLocaleString()}</span>
 }
-export default function StatsSection({ locale }: { locale: string }) {
+
+interface StatsSectionProps {
+  locale: string
+  schoolsCount?: number
+  teachersCount?: number
+}
+
+export default function StatsSection({ locale, schoolsCount = 20, teachersCount = 30 }: StatsSectionProps) {
   const t = useTranslations('home.stats')
   const stats = [
-    { value: 20, label: t('schools'), suffix: '+' },
-    { value: 30, label: t('teachers_served'), suffix: '+' },
+    { value: schoolsCount, label: t('schools'), suffix: '+' },
+    { value: teachersCount, label: t('teachers_served'), suffix: '+' },
   ]
   return (
     <section className="bg-primary-800 py-12">
