@@ -1,0 +1,2 @@
+ALTER TYPE "AnnouncementCategory" ADD VALUE 'WORKSHOP';
+ALTER TYPE "TeacherType" ADD VALUE 'FOREIGN';
