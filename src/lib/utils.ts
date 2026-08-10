@@ -86,3 +86,12 @@ export const CATEGORY_COLORS: Record<string, string> = {
   NEWS:         'bg-gray-100 text-gray-700',
   WORKSHOP:     'bg-teal-100 text-teal-700',
 }
+
+export const CALENDAR_TYPE_COLORS: Record<string, string> = {
+  HOLIDAY:  'bg-rose-100 text-rose-700',
+  MEETING:  'bg-blue-100 text-blue-700',
+  WORKSHOP: 'bg-teal-100 text-teal-700',
+  DEADLINE: 'bg-amber-100 text-amber-700',
+  ACTIVITY: 'bg-green-100 text-green-700',
+  OTHER:    'bg-gray-100 text-gray-700',
+}

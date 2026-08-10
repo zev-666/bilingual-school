@@ -272,6 +272,33 @@ model Teacher {
   @@map("teachers")
 }
 
+// ─── Calendar Events ─────────────────────────────────────────────────────────
+
+enum CalendarEventType {
+  HOLIDAY   // 假期
+  MEETING   // 會議
+  WORKSHOP  // 研習活動
+  DEADLINE  // 截止日期
+  ACTIVITY  // 活動
+  OTHER     // 其他
+}
+
+model CalendarEvent {
+  id          String            @id @default(cuid())
+  titleZh     String            // 標題 (中文)
+  titleEn     String            // Title (English)
+  descZh      String?           @db.Text
+  descEn      String?           @db.Text
+  startDate   DateTime          // 開始日期
+  endDate     DateTime?         // 結束日期（選填，跨日活動用）
+  type        CalendarEventType @default(OTHER)
+  isPublished Boolean           @default(true)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@map("calendar_events")
+}
+
 // ─── Contact Messages ────────────────────────────────────────────────────────
 
 enum ContactStatus {

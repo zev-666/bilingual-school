@@ -2,7 +2,7 @@
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import Image from 'next/image'
-import { Globe, BookOpen, Lightbulb, Heart, CheckCircle } from 'lucide-react'
+import { Globe, BookOpen, Lightbulb, Heart, CheckCircle, Users, Landmark } from 'lucide-react'
 
 interface Props { params: { locale: string } }
 
@@ -69,6 +69,58 @@ export default async function AboutPage({ params: { locale } }: Props) {
               <p className="text-gray-600 leading-relaxed">{t(`${key}.content`)}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Organizational structure */}
+      <section className="bg-gray-50 py-20">
+        <div className="container-school">
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">{t('orgStructure.title')}</h2>
+            <div className="w-12 h-1 bg-primary-600 mx-auto rounded-full mb-5" />
+            <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">{t('orgStructure.desc')}</p>
+          </div>
+
+          <div className="max-w-3xl mx-auto">
+            {/* Top: governing body */}
+            <div className="flex flex-col items-center">
+              <div className="card px-6 py-3 flex items-center gap-2 border border-gray-100">
+                <Landmark size={18} className="text-primary-600" />
+                <span className="font-semibold text-gray-800 text-sm">
+                  {locale === 'zh-TW' ? '基隆市政府教育處' : 'Keelung City Government Education Department'}
+                </span>
+              </div>
+              <div className="w-0.5 h-8 bg-primary-200" />
+
+              {/* Convener / Deputy Convener */}
+              <div className="grid sm:grid-cols-2 gap-6 w-full">
+                {(['convener', 'deputyConvener'] as const).map((key) => (
+                  <div key={key} className="card p-6 text-center border border-gray-100">
+                    <span className="inline-block text-xs font-bold text-primary-600 bg-primary-50 px-3 py-1 rounded-full mb-3">
+                      {t(`orgStructure.${key}.role`)}
+                    </span>
+                    <p className="font-bold text-gray-900">{t(`orgStructure.${key}.name`)}</p>
+                    <p className="text-sm text-gray-500 mt-1">{t(`orgStructure.${key}.org`)}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="w-0.5 h-8 bg-primary-200" />
+
+              {/* Team */}
+              <div className="grid sm:grid-cols-2 gap-6 w-full">
+                {(['staff', 'consultants'] as const).map((key) => (
+                  <div key={key} className="rounded-2xl border border-primary-100 bg-primary-50 p-6">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Users size={18} className="text-primary-600" />
+                      <h3 className="font-bold text-gray-900">{t(`orgStructure.team.${key}.title`)}</h3>
+                    </div>
+                    <p className="text-sm text-gray-600 leading-relaxed">{t(`orgStructure.team.${key}.desc`)}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

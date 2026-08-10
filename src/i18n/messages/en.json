@@ -12,7 +12,8 @@
     "groups": {
       "about": "About Us",
       "activities": "Student Events"
-    }
+    },
+    "calendar": "Calendar"
   },
   "home": {
     "hero": {
@@ -152,22 +153,80 @@
     "history": {
       "title": "Our History",
       "events": [
-        { "year": "Aug 2024", "title": "Official Establishment", "desc": "The Keelung City Government issued the Directive on the Establishment and Operation of the English Education Resource Center, formally founding the Center to oversee English and bilingual education policy for the city's elementary and junior high schools." },
-        { "year": "2024", "title": "Team Formation", "desc": "Selection of the convener, deputy convener, and specialist staff, along with recruitment of a foreign English teaching advisor, established the Center's task-force operating model." },
-        { "year": "2025", "title": "Expanding Partnerships", "desc": "Worked with Keelung's elementary and junior high schools to advance co-teaching programs such as TFETP and ELTA, steadily growing the number of partner schools." },
-        { "year": "Present", "title": "Ongoing Growth", "desc": "Hosts summer camps with foreign teachers, English speaking showcases, and other events supporting English and bilingual teaching citywide." }
+        {
+          "year": "Aug 2024",
+          "title": "Official Establishment",
+          "desc": "The Keelung City Government issued the Directive on the Establishment and Operation of the English Education Resource Center, formally founding the Center to oversee English and bilingual education policy for the city's elementary and junior high schools."
+        },
+        {
+          "year": "2024",
+          "title": "Team Formation",
+          "desc": "Selection of the convener, deputy convener, and specialist staff, along with recruitment of a foreign English teaching advisor, established the Center's task-force operating model."
+        },
+        {
+          "year": "2025",
+          "title": "Expanding Partnerships",
+          "desc": "Worked with Keelung's elementary and junior high schools to advance co-teaching programs such as TFETP and ELTA, steadily growing the number of partner schools."
+        },
+        {
+          "year": "Present",
+          "title": "Ongoing Growth",
+          "desc": "Hosts summer camps with foreign teachers, English speaking showcases, and other events supporting English and bilingual teaching citywide."
+        }
       ]
     },
     "facilities": {
       "title": "Facilities",
       "items": [
-        { "name": "Library", "desc": "A well-stocked bilingual library offering a comfortable space for reading and self-study." },
-        { "name": "Science Labs", "desc": "Fully equipped physics, chemistry, and biology labs that foster scientific inquiry." },
-        { "name": "Gymnasium", "desc": "A multi-purpose indoor gymnasium for ball sports, gymnastics, and large assemblies." },
-        { "name": "Art Studios", "desc": "Dedicated art and music classrooms where students can develop their creative talents." },
-        { "name": "Computer Lab", "desc": "Equipped with the latest computers for programming and information technology courses." },
-        { "name": "Outdoor Sports Field", "desc": "A spacious outdoor field for sports activities and extracurricular events." }
+        {
+          "name": "Library",
+          "desc": "A well-stocked bilingual library offering a comfortable space for reading and self-study."
+        },
+        {
+          "name": "Science Labs",
+          "desc": "Fully equipped physics, chemistry, and biology labs that foster scientific inquiry."
+        },
+        {
+          "name": "Gymnasium",
+          "desc": "A multi-purpose indoor gymnasium for ball sports, gymnastics, and large assemblies."
+        },
+        {
+          "name": "Art Studios",
+          "desc": "Dedicated art and music classrooms where students can develop their creative talents."
+        },
+        {
+          "name": "Computer Lab",
+          "desc": "Equipped with the latest computers for programming and information technology courses."
+        },
+        {
+          "name": "Outdoor Sports Field",
+          "desc": "A spacious outdoor field for sports activities and extracurricular events."
+        }
       ]
+    },
+    "orgStructure": {
+      "title": "Organizational Structure",
+      "desc": "The Center operates under the supervision of the Keelung City Government Education Department, using a task-force model to coordinate English and bilingual education policy for all city schools.",
+      "convener": {
+        "role": "Convener",
+        "name": "Principal Chang Yen-Ting",
+        "org": "Dingnei Junior High School"
+      },
+      "deputyConvener": {
+        "role": "Deputy Convener",
+        "name": "Principal Li Hsin-Jung",
+        "org": "Zhongzheng Elementary School"
+      },
+      "team": {
+        "staff": {
+          "title": "Program Staff",
+          "desc": "Handle day-to-day operations, event planning, and cross-school coordination"
+        },
+        "consultants": {
+          "title": "Foreign English Teaching Consultants",
+          "desc": "Support co-teaching in classrooms under TFETP, ELTA and related programs"
+        }
+      }
     }
   },
   "admission": {
@@ -228,10 +287,22 @@
     "faq": {
       "title": "Frequently Asked Questions",
       "items": [
-        { "q": "When is the application deadline?", "a": "Admission periods vary each academic year. Please check the school website or contact the admissions office for the latest information." },
-        { "q": "Is school bus service available?", "a": "The school offers bus service on multiple routes. Please contact the admissions office for route details and fees." },
-        { "q": "Can transfer students apply at any time?", "a": "Transfer applications depend on available spots per grade in a given year. We recommend contacting the admissions office early to confirm availability." },
-        { "q": "Are scholarships or tuition reductions available?", "a": "The school offers several scholarships and financial aid programs. Please see the Scholarships section or contact the admissions office for details." }
+        {
+          "q": "When is the application deadline?",
+          "a": "Admission periods vary each academic year. Please check the school website or contact the admissions office for the latest information."
+        },
+        {
+          "q": "Is school bus service available?",
+          "a": "The school offers bus service on multiple routes. Please contact the admissions office for route details and fees."
+        },
+        {
+          "q": "Can transfer students apply at any time?",
+          "a": "Transfer applications depend on available spots per grade in a given year. We recommend contacting the admissions office early to confirm availability."
+        },
+        {
+          "q": "Are scholarships or tuition reductions available?",
+          "a": "The school offers several scholarships and financial aid programs. Please see the Scholarships section or contact the admissions office for details."
+        }
       ]
     }
   },
@@ -271,5 +342,20 @@
     "draft": "Draft",
     "pinned": "Pinned",
     "detail": "Details"
+  },
+  "calendar": {
+    "title": "Calendar",
+    "subtitle": "Stay up to date with important dates and events",
+    "allTypes": "All",
+    "empty": "No calendar events yet",
+    "until": "until",
+    "types": {
+      "HOLIDAY": "Holiday",
+      "MEETING": "Meeting",
+      "WORKSHOP": "Workshop",
+      "DEADLINE": "Deadline",
+      "ACTIVITY": "Activity",
+      "OTHER": "Other"
+    }
   }
 }
