@@ -1,0 +1,96 @@
+From 419da56fc465a90a9a89eb480831f30211f7e82f Mon Sep 17 00:00:00 2001
+From: Claude <assistant@local>
+Date: Mon, 10 Aug 2026 06:01:09 +0000
+Subject: [PATCH] =?UTF-8?q?fix:=20=E6=96=B0=E5=A2=9E=E6=96=87=E4=BB=B6?=
+ =?UTF-8?q?=E8=A1=A8=E5=96=AE=E7=BC=BA=E5=B0=91=20fileName/fileType=20?=
+ =?UTF-8?q?=E6=AC=84=E4=BD=8D=E5=B0=8E=E8=87=B4=E4=B8=8A=E5=82=B3=E5=A4=B1?=
+ =?UTF-8?q?=E6=95=97=E7=9A=84=E5=95=8F=E9=A1=8C?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ src/app/admin/documents/DocumentEditor.tsx | 12 +++++++++++-
+ src/app/admin/documents/[id]/page.tsx      |  2 ++
+ 2 files changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/src/app/admin/documents/DocumentEditor.tsx b/src/app/admin/documents/DocumentEditor.tsx
+index 35f7073..be42e99 100644
+--- a/src/app/admin/documents/DocumentEditor.tsx
++++ b/src/app/admin/documents/DocumentEditor.tsx
+@@ -27,7 +27,9 @@ const schema = z.object({
+   formType: z.enum(['TEACHING', 'ADMINISTRATIVE']),
+   isPublished: z.boolean(),
+   fileUrl: z.string().min(1, '請上傳文件'),
++  fileName: z.string().min(1, '請上傳文件'),
+   fileSize: z.number().min(0),
++  fileType: z.string().min(1, '請上傳文件'),
+ })
+ 
+ type FormData = z.infer<typeof schema>
+@@ -40,7 +42,9 @@ interface DocumentData {
+   formType?: string
+   isPublished?: boolean
+   fileUrl?: string
++  fileName?: string
+   fileSize?: number
++  fileType?: string
+ }
+ 
+ interface Props {
+@@ -58,7 +62,7 @@ export default function DocumentEditor({ initialData, mode }: Props) {
+   const router = useRouter()
+   const [activeTab, setActiveTab] = useState<'zh' | 'en'>('zh')
+   const [uploading, setUploading] = useState(false)
+-  const [uploadedFileName, setUploadedFileName] = useState<string>('')
++  const [uploadedFileName, setUploadedFileName] = useState<string>(initialData?.fileName ?? '')
+ 
+   const {
+     register,
+@@ -75,7 +79,9 @@ export default function DocumentEditor({ initialData, mode }: Props) {
+       formType: (initialData?.formType as FormData['formType']) ?? 'ADMINISTRATIVE',
+       isPublished: initialData?.isPublished ?? true,
+       fileUrl: initialData?.fileUrl ?? '',
++      fileName: initialData?.fileName ?? '',
+       fileSize: initialData?.fileSize ?? 0,
++      fileType: initialData?.fileType ?? '',
+     },
+   })
+ 
+@@ -98,7 +104,9 @@ export default function DocumentEditor({ initialData, mode }: Props) {
+       const data = await res.json()
+ 
+       setValue('fileUrl', data.data.url, { shouldValidate: true })
++      setValue('fileName', file.name, { shouldValidate: true })
+       setValue('fileSize', file.size, { shouldValidate: true })
++      setValue('fileType', file.type, { shouldValidate: true })
+       setUploadedFileName(file.name)
+     } catch (err) {
+       alert(err instanceof Error ? err.message : '上傳失敗')
+@@ -233,7 +241,9 @@ export default function DocumentEditor({ initialData, mode }: Props) {
+               type="button"
+               onClick={() => {
+                 setValue('fileUrl', '')
++                setValue('fileName', '')
+                 setValue('fileSize', 0)
++                setValue('fileType', '')
+                 setUploadedFileName('')
+               }}
+               className="rounded-full p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+diff --git a/src/app/admin/documents/[id]/page.tsx b/src/app/admin/documents/[id]/page.tsx
+index b06dbbf..0cb4522 100644
+--- a/src/app/admin/documents/[id]/page.tsx
++++ b/src/app/admin/documents/[id]/page.tsx
+@@ -46,7 +46,9 @@ export default async function EditDocumentPage({ params }: Props) {
+           formType: doc.formType,
+           isPublished: doc.isPublished,
+           fileUrl: doc.fileUrl,
++          fileName: doc.fileName ?? '',
+           fileSize: doc.fileSize ?? 0,
++          fileType: doc.fileType ?? '',
+         }}
+       />
+     </div>
+-- 
+2.43.0
+

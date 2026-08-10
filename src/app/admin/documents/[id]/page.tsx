@@ -46,7 +46,9 @@ export default async function EditDocumentPage({ params }: Props) {
           formType: doc.formType,
           isPublished: doc.isPublished,
           fileUrl: doc.fileUrl,
+          fileName: doc.fileName ?? '',
           fileSize: doc.fileSize ?? 0,
+          fileType: doc.fileType ?? '',
         }}
       />
     </div>

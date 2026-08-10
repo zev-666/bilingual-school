@@ -27,7 +27,9 @@ const schema = z.object({
   formType: z.enum(['TEACHING', 'ADMINISTRATIVE']),
   isPublished: z.boolean(),
   fileUrl: z.string().min(1, '請上傳文件'),
+  fileName: z.string().min(1, '請上傳文件'),
   fileSize: z.number().min(0),
+  fileType: z.string().min(1, '請上傳文件'),
 })
 
 type FormData = z.infer<typeof schema>
@@ -40,7 +42,9 @@ interface DocumentData {
   formType?: string
   isPublished?: boolean
   fileUrl?: string
+  fileName?: string
   fileSize?: number
+  fileType?: string
 }
 
 interface Props {
@@ -58,7 +62,7 @@ export default function DocumentEditor({ initialData, mode }: Props) {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<'zh' | 'en'>('zh')
   const [uploading, setUploading] = useState(false)
-  const [uploadedFileName, setUploadedFileName] = useState<string>('')
+  const [uploadedFileName, setUploadedFileName] = useState<string>(initialData?.fileName ?? '')
 
   const {
     register,
@@ -75,7 +79,9 @@ export default function DocumentEditor({ initialData, mode }: Props) {
       formType: (initialData?.formType as FormData['formType']) ?? 'ADMINISTRATIVE',
       isPublished: initialData?.isPublished ?? true,
       fileUrl: initialData?.fileUrl ?? '',
+      fileName: initialData?.fileName ?? '',
       fileSize: initialData?.fileSize ?? 0,
+      fileType: initialData?.fileType ?? '',
     },
   })
 
@@ -98,7 +104,9 @@ export default function DocumentEditor({ initialData, mode }: Props) {
       const data = await res.json()
 
       setValue('fileUrl', data.data.url, { shouldValidate: true })
+      setValue('fileName', file.name, { shouldValidate: true })
       setValue('fileSize', file.size, { shouldValidate: true })
+      setValue('fileType', file.type, { shouldValidate: true })
       setUploadedFileName(file.name)
     } catch (err) {
       alert(err instanceof Error ? err.message : '上傳失敗')
@@ -233,7 +241,9 @@ export default function DocumentEditor({ initialData, mode }: Props) {
               type="button"
               onClick={() => {
                 setValue('fileUrl', '')
+                setValue('fileName', '')
                 setValue('fileSize', 0)
+                setValue('fileType', '')
                 setUploadedFileName('')
               }}
               className="rounded-full p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
