@@ -13,11 +13,13 @@ const TYPE_LABELS: Record<string, string> = {
   FULL_TIME: '專任',
   PART_TIME: '兼任',
   STAFF:     '行政',
+  FOREIGN:   '外師',
 }
 const TYPE_COLORS: Record<string, string> = {
   FULL_TIME: 'bg-blue-100 text-blue-700',
   PART_TIME: 'bg-purple-100 text-purple-700',
   STAFF:     'bg-amber-100 text-amber-700',
+  FOREIGN:   'bg-teal-100 text-teal-700',
 }
 
 async function getTeachers() {
@@ -36,6 +38,7 @@ export default async function AdminTeachersPage() {
   const grouped = {
     FULL_TIME: teachers.filter((t) => t.type === 'FULL_TIME'),
     PART_TIME: teachers.filter((t) => t.type === 'PART_TIME'),
+    FOREIGN:   teachers.filter((t) => t.type === 'FOREIGN'),
     STAFF:     teachers.filter((t) => t.type === 'STAFF'),
   }
 

@@ -18,11 +18,12 @@ interface AnnouncementEditorProps {
 }
 
 const CATEGORIES = [
+  { value: 'ANNOUNCEMENT', label: '公告' },
   { value: 'NEWS', label: '新聞' },
-  { value: 'EVENT', label: '活動' },
+  { value: 'ACTIVITY', label: '活動' },
   { value: 'ADMISSION', label: '招生' },
-  { value: 'ACADEMIC', label: '學術' },
-  { value: 'OTHER', label: '其他' },
+  { value: 'COMPETITION', label: '競賽' },
+  { value: 'WORKSHOP', label: '研習活動' },
 ]
 
 export default function AnnouncementEditor({ mode = 'create', initialData }: AnnouncementEditorProps) {

@@ -61,6 +61,7 @@ enum AnnouncementCategory {
   ADMISSION     // 招生
   COMPETITION   // 競賽
   NEWS          // 新聞
+  WORKSHOP      // 研習活動
 }
 
 model Announcement {
@@ -248,6 +249,7 @@ enum TeacherType {
   FULL_TIME  // 專任
   PART_TIME  // 兼任
   STAFF      // 行政
+  FOREIGN    // 外師 (FET/ETA)
 }
 
 model Teacher {

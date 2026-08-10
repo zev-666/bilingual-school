@@ -11,11 +11,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 
-const TEACHER_TYPES = ['FULL_TIME', 'PART_TIME', 'STAFF'] as const
+const TEACHER_TYPES = ['FULL_TIME', 'PART_TIME', 'STAFF', 'FOREIGN'] as const
 const TYPE_LABELS: Record<string, string> = {
   FULL_TIME: '專任教師',
   PART_TIME: '兼任教師',
   STAFF:     '行政人員',
+  FOREIGN:   '外師 (FET/ETA)',
 }
 
 const schema = z.object({

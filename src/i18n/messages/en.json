@@ -8,7 +8,11 @@
     "teachers": "Teachers",
     "about": "About",
     "admission": "Admission",
-    "contact": "Contact"
+    "contact": "Contact",
+    "groups": {
+      "about": "About Us",
+      "activities": "Student Events"
+    }
   },
   "home": {
     "hero": {
@@ -55,7 +59,8 @@
       "ACTIVITY": "Activity",
       "ADMISSION": "Admission",
       "COMPETITION": "Competition",
-      "NEWS": "News"
+      "NEWS": "News",
+      "WORKSHOP": "Workshop"
     }
   },
   "albums": {

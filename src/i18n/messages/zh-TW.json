@@ -8,7 +8,11 @@
     "teachers": "師資介紹",
     "about": "關於學校",
     "admission": "招生資訊",
-    "contact": "聯絡我們"
+    "contact": "聯絡我們",
+    "groups": {
+      "about": "關於本中心",
+      "activities": "學生競賽與活動"
+    }
   },
   "home": {
     "hero": {
@@ -55,7 +59,8 @@
       "ACTIVITY": "活動",
       "ADMISSION": "招生",
       "COMPETITION": "競賽",
-      "NEWS": "新聞"
+      "NEWS": "新聞",
+      "WORKSHOP": "研習活動"
     }
   },
   "albums": {

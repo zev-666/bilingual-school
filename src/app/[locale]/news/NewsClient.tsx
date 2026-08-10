@@ -10,7 +10,7 @@ import { Search, Pin, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Link as IntlLink } from '@/i18n/routing'
 import { cn, formatDate, CATEGORY_COLORS } from '@/lib/utils'
 
-const CATEGORIES = ['all', 'ANNOUNCEMENT', 'ACTIVITY', 'ADMISSION', 'COMPETITION', 'NEWS'] as const
+const CATEGORIES = ['all', 'ANNOUNCEMENT', 'ACTIVITY', 'ADMISSION', 'COMPETITION', 'NEWS', 'WORKSHOP'] as const
 
 interface Announcement {
   id: string; slug: string; titleZh: string; titleEn: string

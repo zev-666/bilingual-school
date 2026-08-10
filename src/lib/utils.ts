@@ -84,4 +84,5 @@ export const CATEGORY_COLORS: Record<string, string> = {
   ADMISSION:    'bg-purple-100 text-purple-700',
   COMPETITION:  'bg-amber-100 text-amber-700',
   NEWS:         'bg-gray-100 text-gray-700',
+  WORKSHOP:     'bg-teal-100 text-teal-700',
 }
