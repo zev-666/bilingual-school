@@ -88,7 +88,13 @@
       "BROCHURE": "Brochure",
       "REPORT": "Report",
       "OTHER": "Other"
-    }
+    },
+    "tabs": {
+      "teaching": "Teaching Forms",
+      "admin": "Administrative Forms",
+      "other": "Regulations & Other"
+    },
+    "no_documents_in_tab": "No documents in this category yet"
   },
   "teachers": {
     "title": "Our Teachers",

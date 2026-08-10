@@ -8,11 +8,13 @@ import { z } from 'zod'
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const category = searchParams.get('category')
+  const formType = searchParams.get('formType')
   const page     = parseInt(searchParams.get('page') ?? '1', 10)
   const perPage  = 12
   const where = {
     isPublished: true,
     ...(category && category !== 'all' ? { category: category as 'FORM' | 'REGULATION' | 'BROCHURE' | 'REPORT' | 'OTHER' } : {}),
+    ...(formType && formType !== 'all' ? { formType: formType as 'TEACHING' | 'ADMINISTRATIVE' } : {}),
   }
   const [data, total] = await Promise.all([
     prisma.document.findMany({
@@ -29,6 +31,7 @@ const createSchema = z.object({
   titleZh: z.string().min(1), titleEn: z.string().min(1),
   descZh: z.string().optional(), descEn: z.string().optional(),
   category: z.enum(['FORM','REGULATION','BROCHURE','REPORT','OTHER']).default('OTHER'),
+  formType: z.enum(['TEACHING','ADMINISTRATIVE']).default('ADMINISTRATIVE'),
   fileUrl: z.string().url(), fileName: z.string().min(1),
   fileSize: z.number().positive(), fileType: z.string(),
   isPublished: z.boolean().default(true),

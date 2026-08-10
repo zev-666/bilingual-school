@@ -88,7 +88,13 @@
       "BROCHURE": "簡章",
       "REPORT": "報告",
       "OTHER": "其他"
-    }
+    },
+    "tabs": {
+      "teaching": "教學表單",
+      "admin": "行政表單",
+      "other": "法規與其他文件"
+    },
+    "no_documents_in_tab": "此分類目前尚無文件"
   },
   "teachers": {
     "title": "師資介紹",

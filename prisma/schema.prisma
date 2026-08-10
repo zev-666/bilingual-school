@@ -221,22 +221,29 @@ enum DocumentCategory {
   OTHER      // 其他
 }
 
+// 表單子分類：僅在 category = FORM 時有意義，用於前台「教學表單／行政表單」分頁
+enum DocumentFormType {
+  TEACHING       // 教學表單
+  ADMINISTRATIVE // 行政表單
+}
+
 model Document {
-  id           String           @id @default(cuid())
+  id           String            @id @default(cuid())
   titleZh      String
   titleEn      String
   descZh       String?
   descEn       String?
-  category     DocumentCategory @default(OTHER)
+  category     DocumentCategory  @default(OTHER)
+  formType     DocumentFormType  @default(ADMINISTRATIVE)
   fileUrl      String
   fileName     String
-  fileSize     Int              // bytes
-  fileType     String           // MIME type
-  downloadCount Int             @default(0)
-  isPublished  Boolean          @default(true)
+  fileSize     Int               // bytes
+  fileType     String            // MIME type
+  downloadCount Int              @default(0)
+  isPublished  Boolean           @default(true)
   authorId     String
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
 
   author User @relation(fields: [authorId], references: [id])
 

@@ -11,6 +11,11 @@ const CATEGORY_LABELS: Record<string, { zh: string; en: string; color: string }>
   OTHER: { zh: '其他', en: 'Other', color: 'bg-gray-100 text-gray-700' },
 }
 
+const FORM_TYPE_LABELS: Record<string, { zh: string; color: string }> = {
+  TEACHING: { zh: '教學表單', color: 'bg-teal-50 text-teal-700' },
+  ADMINISTRATIVE: { zh: '行政表單', color: 'bg-sky-50 text-sky-700' },
+}
+
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
@@ -92,6 +97,13 @@ export default async function AdminDocumentsPage() {
                       <p className="truncate font-medium text-gray-900">{doc.titleZh}</p>
                       {!doc.isPublished && (
                         <span className="badge badge-gray flex-shrink-0">草稿</span>
+                      )}
+                      {cat === 'FORM' && FORM_TYPE_LABELS[doc.formType] && (
+                        <span
+                          className={`flex-shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${FORM_TYPE_LABELS[doc.formType].color}`}
+                        >
+                          {FORM_TYPE_LABELS[doc.formType].zh}
+                        </span>
                       )}
                     </div>
                     <p className="truncate text-sm text-gray-500">{doc.titleEn}</p>

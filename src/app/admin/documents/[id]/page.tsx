@@ -43,6 +43,7 @@ export default async function EditDocumentPage({ params }: Props) {
           titleZh: doc.titleZh,
           titleEn: doc.titleEn,
           category: doc.category,
+          formType: doc.formType,
           isPublished: doc.isPublished,
           fileUrl: doc.fileUrl,
           fileSize: doc.fileSize ?? 0,

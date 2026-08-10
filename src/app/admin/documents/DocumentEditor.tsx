@@ -15,10 +15,16 @@ const CATEGORIES = [
   { value: 'OTHER', labelZh: '其他', labelEn: 'Other' },
 ]
 
+const FORM_TYPES = [
+  { value: 'TEACHING', labelZh: '教學表單', labelEn: 'Teaching Form' },
+  { value: 'ADMINISTRATIVE', labelZh: '行政表單', labelEn: 'Administrative Form' },
+]
+
 const schema = z.object({
   titleZh: z.string().min(1, '請輸入中文標題'),
   titleEn: z.string().min(1, 'Please enter English title'),
   category: z.enum(['FORM', 'REGULATION', 'BROCHURE', 'REPORT', 'OTHER']),
+  formType: z.enum(['TEACHING', 'ADMINISTRATIVE']),
   isPublished: z.boolean(),
   fileUrl: z.string().min(1, '請上傳文件'),
   fileSize: z.number().min(0),
@@ -31,6 +37,7 @@ interface DocumentData {
   titleZh?: string
   titleEn?: string
   category?: string
+  formType?: string
   isPublished?: boolean
   fileUrl?: string
   fileSize?: number
@@ -65,6 +72,7 @@ export default function DocumentEditor({ initialData, mode }: Props) {
       titleZh: initialData?.titleZh ?? '',
       titleEn: initialData?.titleEn ?? '',
       category: (initialData?.category as FormData['category']) ?? 'FORM',
+      formType: (initialData?.formType as FormData['formType']) ?? 'ADMINISTRATIVE',
       isPublished: initialData?.isPublished ?? true,
       fileUrl: initialData?.fileUrl ?? '',
       fileSize: initialData?.fileSize ?? 0,
@@ -73,6 +81,7 @@ export default function DocumentEditor({ initialData, mode }: Props) {
 
   const fileUrl = watch('fileUrl')
   const fileSize = watch('fileSize')
+  const category = watch('category')
 
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -147,6 +156,21 @@ export default function DocumentEditor({ initialData, mode }: Props) {
             </label>
           </div>
         </div>
+        {category === 'FORM' && (
+          <div className="mt-4">
+            <label className="mb-1.5 block text-sm font-medium text-gray-700">表單子分類</label>
+            <select {...register('formType')} className="input">
+              {FORM_TYPES.map((ft) => (
+                <option key={ft.value} value={ft.value}>
+                  {ft.labelZh} / {ft.labelEn}
+                </option>
+              ))}
+            </select>
+            <p className="mt-1 text-xs text-gray-400">
+              決定這份表單出現在前台「文件下載」頁面的「教學表單」還是「行政表單」分頁
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Bilingual Titles */}
