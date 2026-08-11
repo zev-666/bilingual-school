@@ -82,15 +82,21 @@ export default function Navbar() {
   }, [pathname])
 
   return (
-    <nav ref={navRef} className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-200">
+    <nav ref={navRef} className="sticky top-0 z-50 border-b border-amber-100 bg-[#fffaf0]/95 backdrop-blur-sm">
       <div className="container-school">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-primary-800 rounded-md flex items-center justify-center">
-              <span className="text-white font-bold text-sm tracking-tight">K</span>
+            <div className="relative flex h-11 w-11 items-center justify-center rounded-full bg-sky-500 shadow-sm">
+              <Globe size={18} className="text-white" strokeWidth={2.5} />
+              <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-rose-400 ring-2 ring-[#fffaf0]" aria-hidden="true" />
             </div>
-            <span className="font-bold text-gray-900 leading-tight hidden sm:block">
-              {locale === 'zh-TW' ? '基隆市英語資源中心' : 'Keelung City English Resource Center'}
+            <span className="hidden leading-tight sm:block">
+              <span className="block text-[11px] font-bold tracking-[0.18em] text-sky-600">
+                KEELUNG · ENGLISH
+              </span>
+              <span className="block font-black text-slate-800">
+                {locale === 'zh-TW' ? '基隆市英語資源中心' : 'Keelung City English Resource Center'}
+              </span>
             </span>
           </Link>
 
@@ -101,7 +107,7 @@ export default function Navbar() {
                 <Link
                   key={entry.href}
                   href={entry.href as any}
-                  className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-700 hover:bg-primary-50 rounded-md transition-colors"
+                  className="rounded-full px-3 py-2 text-sm font-bold text-slate-700 transition-colors hover:bg-sky-50 hover:text-sky-700"
                 >
                   {entry.label}
                 </Link>
@@ -112,7 +118,7 @@ export default function Navbar() {
                     aria-haspopup="true"
                     aria-expanded={openGroup === i}
                     onClick={() => setOpenGroup(openGroup === i ? null : i)}
-                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-700 hover:bg-primary-50 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    className="flex items-center gap-1 rounded-full px-3 py-2 text-sm font-bold text-slate-700 transition-colors hover:bg-sky-50 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-400"
                   >
                     {entry.label}
                     <ChevronDown
@@ -123,7 +129,7 @@ export default function Navbar() {
                   {openGroup === i && (
                     <div
                       role="menu"
-                      className="absolute left-0 top-full mt-1 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-50"
+                      className="absolute left-0 top-full mt-2 w-48 rounded-2xl border border-amber-100 bg-white py-1 shadow-lg z-50"
                     >
                       {entry.items.map((item) => (
                         <Link
@@ -131,7 +137,7 @@ export default function Navbar() {
                           href={item.href as any}
                           role="menuitem"
                           onClick={() => setOpenGroup(null)}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-colors"
+                          className="block px-4 py-2 text-sm text-slate-700 transition-colors hover:bg-sky-50 hover:text-sky-700"
                         >
                           {item.label}
                         </Link>
@@ -143,23 +149,25 @@ export default function Navbar() {
             )}
             <SearchBar locale={locale} />
             <FontSizeAdjuster />
-            <button onClick={toggleLocale} className="ml-2 flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-700 border border-gray-300 rounded-md transition-colors">
-              <Globe size={14} />
-              {locale === 'zh-TW' ? 'EN' : '中'}
+            <button
+              onClick={toggleLocale}
+              className="ml-2 flex items-center gap-1 rounded-full border border-sky-200 bg-white px-3 py-1.5 text-sm font-bold text-sky-700 transition-colors hover:bg-sky-50"
+            >
+              {locale === 'zh-TW' ? '中 / EN' : 'EN / 中'}
             </button>
           </div>
 
           {/* Mobile */}
           <div className="lg:hidden flex items-center gap-2">
             <FontSizeAdjuster />
-            <button onClick={toggleLocale} className="p-2 text-gray-600">
+            <button onClick={toggleLocale} className="p-2 text-slate-600">
               <Globe size={18} />
             </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
               aria-expanded={isOpen}
               aria-label={isOpen ? '關閉選單' : '開啟選單'}
-              className="p-2 text-gray-600"
+              className="rounded-full p-2 text-slate-600 hover:bg-sky-50"
             >
               {isOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -167,14 +175,14 @@ export default function Navbar() {
         </div>
 
         {isOpen && (
-          <div className="lg:hidden border-t border-gray-100 py-3">
+          <div className="lg:hidden border-t border-amber-100 py-3">
             {navEntries.map((entry, i) =>
               entry.type === 'link' ? (
                 <Link
                   key={entry.href}
                   href={entry.href as any}
                   onClick={() => setIsOpen(false)}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600"
+                  className="block rounded-lg px-4 py-2 text-sm font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-700"
                 >
                   {entry.label}
                 </Link>
@@ -184,7 +192,7 @@ export default function Navbar() {
                     type="button"
                     aria-expanded={openMobileGroup === i}
                     onClick={() => setOpenMobileGroup(openMobileGroup === i ? null : i)}
-                    className="w-full flex items-center justify-between px-4 py-2 text-sm font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600"
+                    className="w-full flex items-center justify-between rounded-lg px-4 py-2 text-sm font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-700"
                   >
                     {entry.label}
                     <ChevronDown
@@ -193,13 +201,13 @@ export default function Navbar() {
                     />
                   </button>
                   {openMobileGroup === i && (
-                    <div className="bg-gray-50">
+                    <div className="bg-amber-50/60 rounded-lg mx-2">
                       {entry.items.map((item) => (
                         <Link
                           key={item.href}
                           href={item.href as any}
                           onClick={() => setIsOpen(false)}
-                          className="block px-8 py-2 text-sm text-gray-600 hover:bg-primary-50 hover:text-primary-600"
+                          className="block px-8 py-2 text-sm text-slate-600 hover:text-sky-700"
                         >
                           {item.label}
                         </Link>
