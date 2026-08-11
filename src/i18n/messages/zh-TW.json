@@ -17,9 +17,10 @@
   },
   "home": {
     "hero": {
-      "badge": "為基隆的每一個學習現場加油",
+      "badge": "一起學，一起看見更大的世界",
       "title": "讓英語，成為孩子看世界的窗。",
-      "subtitle": "我們陪伴基隆市國中小教師、學生與家庭，把英語學習帶進教室、社區與日常生活，找到適合自己的學習節奏。",
+      "title_highlight": "成為孩子",
+      "subtitle": "我們相信，語言不只是考試的答案，而是孩子探索海洋、認識朋友、說出自己故事的勇氣。",
       "cta_primary": "探索我們的資源",
       "cta_secondary": "招生資訊"
     },
@@ -28,9 +29,11 @@
       "teachers_served": "服務教師人次"
     },
     "news": {
-      "title": "最新消息",
+      "eyebrow": "FROM THE CENTER",
+      "title": "中心最新消息",
       "subtitle": "掌握學校最新動態與活動資訊",
-      "more": "查看更多"
+      "featured_badge": "焦點活動",
+      "more": "查看全部"
     },
     "about": {
       "title": "關於我們",

@@ -17,9 +17,10 @@
   },
   "home": {
     "hero": {
-      "badge": "Cheering on every classroom in Keelung",
+      "badge": "Learning together, seeing a bigger world",
       "title": "Let English be the window through which children see the world.",
-      "subtitle": "We walk alongside Keelung's teachers, students, and families — bringing English learning into classrooms, communities, and everyday life at a pace that fits.",
+      "title_highlight": "children",
+      "subtitle": "We believe language isn't just an answer on a test — it's the courage for a child to explore the ocean, meet friends, and tell their own story.",
       "cta_primary": "Explore Our Resources",
       "cta_secondary": "Admission Info"
     },
@@ -28,9 +29,11 @@
       "teachers_served": "Teachers Served"
     },
     "news": {
-      "title": "Latest News",
+      "eyebrow": "FROM THE CENTER",
+      "title": "Latest From the Center",
       "subtitle": "Stay updated with our latest news and events",
-      "more": "View More"
+      "featured_badge": "Featured",
+      "more": "View All"
     },
     "about": {
       "title": "About Us",
