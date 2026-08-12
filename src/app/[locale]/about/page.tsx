@@ -13,16 +13,16 @@ export async function generateMetadata({ params: { locale } }: Props): Promise<M
 
 const VALUE_ICONS = {
   bilingual:  <Globe      size={28} className="text-primary-600" />,
-  culture:    <BookOpen   size={28} className="text-indigo-600"  />,
-  innovation: <Lightbulb  size={28} className="text-amber-500"   />,
-  character:  <Heart      size={28} className="text-rose-500"    />,
+  culture:    <BookOpen   size={28} className="text-[#0F6E56]"   />,
+  innovation: <Lightbulb  size={28} className="text-accent-600"  />,
+  character:  <Heart      size={28} className="text-[#993556]"   />,
 }
 
 const VALUE_BG = {
   bilingual:  'bg-primary-50 border-primary-100',
-  culture:    'bg-indigo-50 border-indigo-100',
-  innovation: 'bg-amber-50 border-amber-100',
-  character:  'bg-rose-50 border-rose-100',
+  culture:    'bg-[#E1F5EE] border-[#9FE1CB]',
+  innovation: 'bg-accent-50 border-accent-100',
+  character:  'bg-[#FBEAF0] border-[#F4C0D1]',
 }
 
 const FACILITY_IMAGES = [
@@ -44,11 +44,15 @@ export default async function AboutPage({ params: { locale } }: Props) {
   return (
     <div className="pt-20 min-h-screen">
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-primary-700 via-primary-600 to-indigo-700 text-white py-24 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full translate-y-1/2 -translate-x-1/2" />
-        </div>
+      <section className="relative overflow-hidden text-white py-24" style={{
+        backgroundColor: '#2B5FE0',
+        backgroundImage:
+          'radial-gradient(at 15% 20%, #3F6FE8 0%, transparent 55%),' +
+          'radial-gradient(at 55% 10%, #3FB6A8 0%, transparent 50%),' +
+          'radial-gradient(at 88% 30%, #6FD0C0 0%, transparent 45%),' +
+          'radial-gradient(at 90% 80%, #E2E87A 0%, transparent 55%),' +
+          'radial-gradient(at 40% 95%, #4CC2B0 0%, transparent 50%)',
+      }}>
         <div className="container-school relative text-center">
           <span className="inline-block bg-white/20 backdrop-blur-sm text-white/90 text-sm font-medium px-4 py-1.5 rounded-full mb-6">
             {t('title')}
