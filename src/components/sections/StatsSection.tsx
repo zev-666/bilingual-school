@@ -30,20 +30,19 @@ interface StatsSectionProps {
 export default function StatsSection({ locale, schoolsCount = 20, teachersCount = 30 }: StatsSectionProps) {
   const t = useTranslations('home.stats')
   const stats = [
-    { value: schoolsCount, label: t('schools'), suffix: '+' },
-    { value: teachersCount, label: t('teachers_served'), suffix: '+' },
+    { value: schoolsCount, label: t('schools') },
+    { value: teachersCount, label: t('teachers_served') },
   ]
   return (
-    <section className="bg-slate-900 py-14">
+    <section className="border-y border-[#DDD6C7] bg-[#f5f0e7] py-8">
       <div className="container-school">
-        <div className="grid max-w-md grid-cols-2 gap-8 mx-auto">
+        <div className="mx-auto grid max-w-md grid-cols-2 divide-x divide-[#DDD6C7]">
           {stats.map((stat, i) => (
-            <div key={i} className="text-center text-white">
-              <div className="mb-1 text-4xl font-black tracking-tight">
-                <Counter end={stat.value} />
-                <span className="text-amber-400">{stat.suffix}</span>
-              </div>
-              <div className="text-sm text-white/60">{stat.label}</div>
+            <div key={i} className="px-6 text-center first:pl-0 last:pr-0">
+              <p className="text-3xl font-bold text-[#A98262]">
+                <Counter end={stat.value} />+
+              </p>
+              <p className="mt-1 text-xs tracking-widest text-[#858379]">{stat.label}</p>
             </div>
           ))}
         </div>

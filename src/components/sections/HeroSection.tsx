@@ -24,29 +24,27 @@ export default function HeroSection({ locale, banners }: { locale: string; banne
     ? (locale === 'zh-TW' ? banners[current].subtitleZh : banners[current].subtitleEn)
     : t('subtitle')
 
-  // 預設文案支援三段式著色（前段 / 中段強調色 / 後段），
-  // 若是 banner 動態內容則無法保證含有 highlight 片語，原樣輸出即可。
   const highlight = t('title_highlight')
   const titleParts = !hasBanner && title.includes(highlight) ? title.split(highlight) : null
 
   return (
-    <section className="relative isolate overflow-hidden bg-gradient-to-br from-sky-500 via-[#45c4df] to-[#8adbd7]">
-      <div className="pointer-events-none absolute -right-24 top-14 h-72 w-72 rounded-full border-[32px] border-white/15" aria-hidden="true" />
-      <div className="pointer-events-none absolute right-[16%] top-28 h-10 w-10 rounded-full bg-rose-400/80" aria-hidden="true" />
+    <section className="relative isolate overflow-hidden bg-[#FBF8F1]">
+      <div className="pointer-events-none absolute -right-16 top-10 h-72 w-72 rounded-[45%] rotate-6 bg-[#E9E5D6] border border-[#CDBB9D]/40" aria-hidden="true" />
+      <div className="pointer-events-none absolute right-[18%] top-32 h-8 w-8 rounded-full bg-[#A8C7D5]" aria-hidden="true" />
 
-      <div className="mx-auto grid min-h-[625px] max-w-7xl items-center gap-10 px-5 py-16 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:py-20">
+      <div className="mx-auto grid min-h-[600px] max-w-7xl items-center gap-10 px-5 py-16 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:py-24">
         {/* 左側文字 */}
         <div className="relative z-10 max-w-2xl motion-safe:animate-[fadeInUp_.6s_ease-out]">
-          <div className="mb-7 inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-xs font-bold tracking-wide text-white backdrop-blur-sm">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#CDBB9D] bg-[#f2eadc] px-4 py-2 text-xs font-semibold tracking-wide text-[#A98262]">
             <SparklesIcon size={14} aria-hidden="true" />
             {t('badge')}
           </div>
-          <h1 className="max-w-[700px] text-[clamp(2.8rem,7vw,6.2rem)] font-black leading-[1.05] tracking-[-0.06em] text-white">
+          <h1 className="max-w-xl text-4xl font-bold leading-[1.25] tracking-tight text-[#4E514B] md:text-6xl">
             {titleParts ? (
               <>
                 {titleParts[0]}
                 <br />
-                <span className="text-slate-900">{highlight}</span>
+                <span className="text-[#A98262]">{highlight}</span>
                 <br />
                 {titleParts[1]}
               </>
@@ -55,19 +53,19 @@ export default function HeroSection({ locale, banners }: { locale: string; banne
             )}
           </h1>
           {subtitle && (
-            <p className="mt-7 max-w-lg text-base leading-8 text-white/90 sm:text-lg">{subtitle}</p>
+            <p className="mt-6 max-w-lg text-base leading-8 text-[#77786e] md:text-lg">{subtitle}</p>
           )}
-          <div className="mt-9 flex flex-wrap items-center gap-4">
+          <div className="mt-9 flex flex-wrap items-center gap-3">
             <Link
               href="/about"
-              className="inline-flex items-center gap-3 rounded-full bg-amber-500 px-6 py-4 text-sm font-extrabold text-slate-900 shadow-[0_8px_0_#d67f0a] transition hover:-translate-y-1 hover:shadow-[0_11px_0_#d67f0a] focus:outline-none focus:ring-4 focus:ring-white/50"
+              className="inline-flex items-center gap-3 rounded-full bg-[#A98262] px-6 py-3.5 text-sm font-semibold text-[#fffaf1] shadow-[0_8px_24px_rgba(126,103,72,.18)] transition hover:bg-[#967554] focus:outline-none focus:ring-4 focus:ring-[#A8C7D5]/50"
             >
               {t('cta_primary')}
-              <ArrowDown size={18} aria-hidden="true" />
+              <ArrowDown size={16} aria-hidden="true" />
             </Link>
             <Link
               href="/admission"
-              className="inline-flex items-center justify-center rounded-full border-2 border-white/70 bg-white/10 px-6 py-3.5 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/25 focus:outline-none focus:ring-4 focus:ring-white/40"
+              className="inline-flex items-center justify-center rounded-full border border-[#CDBB9D] px-6 py-3.5 text-sm font-semibold text-[#A98262] transition hover:bg-[#f2eadc] focus:outline-none focus:ring-4 focus:ring-[#A8C7D5]/40"
             >
               {t('cta_secondary')}
             </Link>
@@ -75,38 +73,31 @@ export default function HeroSection({ locale, banners }: { locale: string; banne
         </div>
 
         {/* 右側插畫組合 */}
-        <div className="relative mx-auto hidden h-[340px] w-full max-w-[450px] sm:h-[430px] lg:block">
-          <div className="absolute inset-8 rotate-[-7deg] rounded-[42px] border-2 border-white/40 bg-white/15 backdrop-blur-sm motion-safe:animate-[float_8s_ease-in-out_infinite]" />
-          <div className="absolute inset-12 rotate-[7deg] rounded-[42px] border-2 border-slate-900/10 bg-white/20 motion-safe:animate-[float_9s_ease-in-out_infinite_1.2s]" />
-          <div className="absolute left-1/2 top-1/2 flex h-56 w-56 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-[20px_25px_0_rgba(23,38,58,0.12)]">
-            <Globe size={112} strokeWidth={1.2} className="text-sky-500" aria-hidden="true" />
-            <span className="absolute -right-3 top-8 flex h-11 w-11 items-center justify-center rounded-full bg-rose-400 text-white shadow-md">
+        <div className="relative mx-auto hidden h-[340px] w-full max-w-[440px] sm:h-[420px] lg:block">
+          <div className="absolute inset-6 rotate-3 rounded-[42%] border border-[#CDBB9D] bg-[#f7f0e3] shadow-[0_16px_45px_rgba(126,103,72,.10)] motion-safe:animate-[float_9s_ease-in-out_infinite]" />
+          <div className="absolute left-1/2 top-1/2 flex h-56 w-56 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[42%] -rotate-3 border border-[#CDBB9D] bg-[#f9f6ef]">
+            <Globe size={80} strokeWidth={1.2} className="text-[#A98262]" aria-hidden="true" />
+            <span className="absolute -right-2 top-6 flex h-11 w-11 items-center justify-center rounded-full border border-[#CDBB9D] bg-[#f4eadb] text-[#A98262] shadow-sm">
               <BookOpen size={20} aria-hidden="true" />
             </span>
-            <span className="absolute -bottom-2 left-1 flex h-11 w-11 items-center justify-center rounded-full bg-amber-500 text-slate-900 shadow-md">
+            <span className="absolute -bottom-3 left-2 flex h-11 w-11 items-center justify-center rounded-full border border-[#A8C7D5]/60 bg-[#eaf1ef] text-[#718087] shadow-sm">
               <SparklesIcon size={20} aria-hidden="true" />
             </span>
           </div>
-          <span className="absolute left-0 top-20 rounded-2xl bg-white/80 px-4 py-3 text-xs font-extrabold text-slate-900 shadow-lg">
-            learn / connect
-          </span>
-          <span className="absolute bottom-4 right-0 rounded-2xl bg-slate-900 px-4 py-3 text-xs font-extrabold text-white shadow-lg">
-            基隆出發
+          <span className="absolute bottom-6 right-6 rounded-full bg-[#dce9eb] px-3 py-1.5 text-xs font-semibold text-[#647f87] shadow-sm">
+            Learn in Keelung
           </span>
         </div>
       </div>
 
-      {/* 底部弧形轉場，銜接下一區塊 */}
-      <div className="absolute -bottom-px left-0 h-12 w-full rounded-t-[50%] bg-[#fffaf0]" aria-hidden="true" />
-
       {banners.length > 1 && (
-        <div className="absolute bottom-16 left-1/2 z-10 flex -translate-x-1/2 gap-2">
+        <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 gap-2">
           {banners.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrent(i)}
               aria-label={`${i + 1}`}
-              className={`h-2 rounded-full transition-all ${i === current ? 'w-6 bg-white' : 'w-2 bg-white/50'}`}
+              className={`h-2 rounded-full transition-all ${i === current ? 'w-6 bg-[#A98262]' : 'w-2 bg-[#CDBB9D]'}`}
             />
           ))}
         </div>

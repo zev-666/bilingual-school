@@ -23,8 +23,6 @@ export default function Navbar() {
   const [openMobileGroup, setOpenMobileGroup] = useState<number | null>(null)
   const navRef = useRef<HTMLDivElement>(null)
 
-  // 7 大類架構第一階段：只納入已有實際頁面的類別，
-  // 「雙語教學推動」「教師研習與專業發展」等尚無內容的類別待 Phase 2 補上頁面後再加入選單。
   const navEntries: NavEntry[] = [
     { type: 'link', href: '/', label: t('home') },
     {
@@ -80,15 +78,15 @@ export default function Navbar() {
   }, [pathname])
 
   return (
-    <nav ref={navRef} className="sticky top-0 z-50 border-b border-sky-100/80 bg-[#fffaf0]/95 backdrop-blur-xl">
+    <nav ref={navRef} className="sticky top-0 z-50 border-b border-[#DDD6C7]/80 bg-[#FBF8F1]/95 backdrop-blur">
       <div className="container-school">
-        <div className="flex h-[76px] items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 rounded-2xl focus:outline-none focus:ring-4 focus:ring-sky-400/20">
-            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-sky-500 text-white shadow-[5px_5px_0_#f59e0b]">
-              <Globe size={22} strokeWidth={1.8} />
+        <div className="flex h-[72px] items-center justify-between">
+          <Link href="/" className="flex items-center gap-3 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#A8C7D5]">
+            <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#CDBB9D] bg-[#f2eadc] text-[#A98262]">
+              <Globe size={20} strokeWidth={1.8} />
             </span>
             <span className="hidden leading-tight sm:block">
-              <span className="block font-black text-slate-900">
+              <span className="block font-bold text-[#4E514B]">
                 {locale === 'zh-TW' ? '基隆市英語資源中心' : 'Keelung City English Resource Center'}
               </span>
             </span>
@@ -101,7 +99,7 @@ export default function Navbar() {
                 <Link
                   key={entry.href}
                   href={entry.href as any}
-                  className="py-3 text-sm font-bold text-slate-600 transition hover:text-sky-600"
+                  className="py-3 text-sm font-medium text-[#6d7068] transition hover:text-[#A98262]"
                 >
                   {entry.label}
                 </Link>
@@ -112,7 +110,7 @@ export default function Navbar() {
                     aria-haspopup="true"
                     aria-expanded={openGroup === i}
                     onClick={() => setOpenGroup(openGroup === i ? null : i)}
-                    className="flex items-center gap-1 py-3 text-sm font-bold text-slate-600 transition hover:text-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-400 rounded"
+                    className="flex items-center gap-1 py-3 text-sm font-medium text-[#6d7068] transition hover:text-[#A98262] focus:outline-none focus:ring-2 focus:ring-[#A8C7D5] rounded"
                   >
                     {entry.label}
                     <ChevronDown
@@ -123,7 +121,7 @@ export default function Navbar() {
                   {openGroup === i && (
                     <div
                       role="menu"
-                      className="absolute left-0 top-full mt-2 w-48 rounded-2xl border border-sky-100 bg-white py-1 shadow-lg z-50"
+                      className="absolute left-0 top-full mt-2 w-48 rounded-2xl border border-[#DDD6C7] bg-[#FBF8F1] py-1 shadow-[0_16px_35px_rgba(126,103,72,.13)] z-50"
                     >
                       {entry.items.map((item) => (
                         <Link
@@ -131,7 +129,7 @@ export default function Navbar() {
                           href={item.href as any}
                           role="menuitem"
                           onClick={() => setOpenGroup(null)}
-                          className="block px-4 py-2 text-sm text-slate-700 transition-colors hover:bg-sky-50 hover:text-sky-700"
+                          className="block px-4 py-2 text-sm text-[#6d7068] transition-colors hover:bg-[#f2eadc] hover:text-[#A98262]"
                         >
                           {item.label}
                         </Link>
@@ -142,20 +140,18 @@ export default function Navbar() {
               )
             )}
 
-            <div className="flex items-center gap-2 border-l border-sky-100 pl-4">
+            <div className="flex items-center gap-2 border-l border-[#DDD6C7] pl-4">
               <SearchBar locale={locale} />
               <FontSizeAdjuster />
               <button
                 onClick={toggleLocale}
-                className="rounded-full border border-sky-200 px-3 py-2 text-xs font-black text-slate-600 transition hover:border-sky-400 hover:text-sky-600"
+                className="rounded-full border border-[#CDBB9D] px-3 py-2 text-xs font-semibold tracking-widest text-[#A98262] transition hover:bg-[#f2eadc]"
               >
-                <span className={locale === 'zh-TW' ? 'text-sky-600' : 'text-slate-400'}>中</span>
-                <span className="text-slate-300"> / </span>
-                <span className={locale === 'en' ? 'text-sky-600' : 'text-slate-400'}>EN</span>
+                {locale === 'zh-TW' ? 'EN / 中' : '中 / EN'}
               </button>
               <Link
                 href="/contact"
-                className="rounded-full bg-slate-900 px-5 py-3 text-sm font-bold text-white transition hover:bg-sky-600"
+                className="rounded-full bg-[#A98262] px-5 py-3 text-sm font-semibold text-[#fffaf1] transition hover:bg-[#967554]"
               >
                 {locale === 'zh-TW' ? '找我們聊聊 →' : 'Get in touch →'}
               </Link>
@@ -165,29 +161,29 @@ export default function Navbar() {
           {/* Mobile */}
           <div className="lg:hidden flex items-center gap-2">
             <FontSizeAdjuster />
-            <button onClick={toggleLocale} className="p-2 text-slate-600">
+            <button onClick={toggleLocale} className="p-2 text-[#6d7068]">
               <Globe size={18} />
             </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
               aria-expanded={isOpen}
               aria-label={isOpen ? '關閉選單' : '開啟選單'}
-              className="rounded-xl p-2 text-slate-900"
+              className="rounded-xl border border-[#CDBB9D] bg-[#f2eadc] p-2 text-[#A98262]"
             >
-              {isOpen ? <X size={22} /> : <Menu size={22} />}
+              {isOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
 
         {isOpen && (
-          <div className="lg:hidden border-t border-sky-100 bg-[#fffaf0] py-3">
+          <div className="lg:hidden border-t border-[#DDD6C7] bg-[#FBF8F1] py-3">
             {navEntries.map((entry, i) =>
               entry.type === 'link' ? (
                 <Link
                   key={entry.href}
                   href={entry.href as any}
                   onClick={() => setIsOpen(false)}
-                  className="block rounded-xl px-3 py-3 font-bold text-slate-600 hover:bg-sky-50 hover:text-sky-700"
+                  className="block rounded-xl px-3 py-3 font-medium text-[#6d7068] hover:bg-[#f2eadc] hover:text-[#A98262]"
                 >
                   {entry.label}
                 </Link>
@@ -197,7 +193,7 @@ export default function Navbar() {
                     type="button"
                     aria-expanded={openMobileGroup === i}
                     onClick={() => setOpenMobileGroup(openMobileGroup === i ? null : i)}
-                    className="w-full flex items-center justify-between rounded-xl px-3 py-3 font-bold text-slate-600 hover:bg-sky-50 hover:text-sky-700"
+                    className="w-full flex items-center justify-between rounded-xl px-3 py-3 font-medium text-[#6d7068] hover:bg-[#f2eadc] hover:text-[#A98262]"
                   >
                     {entry.label}
                     <ChevronDown
@@ -206,13 +202,13 @@ export default function Navbar() {
                     />
                   </button>
                   {openMobileGroup === i && (
-                    <div className="mx-2 rounded-xl bg-sky-50/60">
+                    <div className="mx-2 rounded-xl bg-[#f2eadc]/60">
                       {entry.items.map((item) => (
                         <Link
                           key={item.href}
                           href={item.href as any}
                           onClick={() => setIsOpen(false)}
-                          className="block px-6 py-2 text-sm text-slate-600 hover:text-sky-700"
+                          className="block px-6 py-2 text-sm text-[#6d7068] hover:text-[#A98262]"
                         >
                           {item.label}
                         </Link>
@@ -224,7 +220,7 @@ export default function Navbar() {
             )}
             <button
               onClick={toggleLocale}
-              className="mt-2 border-t border-sky-100 px-3 py-4 text-left text-sm font-bold text-sky-600"
+              className="mt-2 border-t border-[#DDD6C7] px-3 py-4 text-left text-sm font-semibold text-[#A98262]"
             >
               中 / EN
             </button>

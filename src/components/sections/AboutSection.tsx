@@ -3,9 +3,9 @@ import { Link } from '@/i18n/routing'
 import { ArrowRight, BookOpen, Globe, Heart } from 'lucide-react'
 
 const FEATURE_STYLES = [
-  { bg: 'bg-sky-100', text: 'text-sky-600' },
-  { bg: 'bg-amber-100', text: 'text-amber-600' },
-  { bg: 'bg-rose-100', text: 'text-rose-600' },
+  { bg: 'bg-[#f9f6ef]' },
+  { bg: 'bg-[#eaf1ef]' },
+  { bg: 'bg-[#f4eadb]' },
 ]
 
 export default function AboutSection({ locale }: { locale: string }) {
@@ -18,47 +18,44 @@ export default function AboutSection({ locale }: { locale: string }) {
   ]
 
   return (
-    <section className="bg-white px-5 py-20 sm:px-8 lg:py-28">
+    <section className="bg-[#f1ece2] px-5 py-20 sm:px-8 lg:py-28">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
           <div>
-            <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-sky-600">
-              ABOUT US
-            </p>
-            <h2 className="mb-4 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">{t('title')}</h2>
-            <p className="mb-4 text-slate-500">{t('subtitle')}</p>
-            <p className="mb-8 leading-relaxed text-slate-600">{t('description')}</p>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#A98262]">ABOUT US</p>
+            <h2 className="mb-4 text-3xl font-bold text-[#5b5d55] sm:text-4xl">{t('title')}</h2>
+            <p className="mb-4 text-[#858379]">{t('subtitle')}</p>
+            <p className="mb-8 leading-relaxed text-[#77786e]">{t('description')}</p>
             <div className="mb-8 space-y-4">
-              {features.map(({ icon: Icon, text }, i) => {
-                const style = FEATURE_STYLES[i % FEATURE_STYLES.length]
-                return (
-                  <div key={i} className="flex items-center gap-3">
-                    <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full ${style.bg}`}>
-                      <Icon size={16} className={style.text} />
-                    </div>
-                    <span className="text-slate-700">{text}</span>
+              {features.map(({ icon: Icon, text }, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-[#CDBB9D] bg-[#f2eadc]">
+                    <Icon size={16} className="text-[#A98262]" />
                   </div>
-                )
-              })}
+                  <span className="text-[#64665d]">{text}</span>
+                </div>
+              ))}
             </div>
             <Link
               href="/about"
-              className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-sky-600"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#A98262] hover:gap-3"
             >
               {t('learn_more')} <ArrowRight size={16} />
             </Link>
           </div>
 
-          <div className="relative flex h-80 items-center justify-center overflow-hidden rounded-[32px] bg-gradient-to-br from-sky-100 via-amber-50 to-amber-100">
-            <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/50" aria-hidden="true" />
-            <div className="pointer-events-none absolute -bottom-12 -left-8 h-36 w-36 rounded-full bg-sky-200/50" aria-hidden="true" />
-            <div className="relative z-10 text-center text-slate-800">
-              <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-md">
-                <Globe size={30} className="text-sky-500" />
+          <div className="grid gap-4 sm:grid-cols-3">
+            {features.map(({ icon: Icon }, i) => (
+              <div
+                key={i}
+                className={`rounded-[1.5rem] border border-[#DDD6C7] ${FEATURE_STYLES[i % FEATURE_STYLES.length].bg} p-5 ${i === 0 ? 'sm:mt-8' : i === 2 ? 'sm:mt-16' : ''}`}
+              >
+                <Icon size={32} strokeWidth={1.4} className="mb-8 text-[#A98262]" />
+                <h3 className="font-bold text-[#64665d]">
+                  {i === 0 ? (locale === 'zh-TW' ? '教學共備' : 'Co-planning') : i === 1 ? (locale === 'zh-TW' ? '閱讀資源' : 'Reading') : (locale === 'zh-TW' ? '跨校連結' : 'Network')}
+                </h3>
               </div>
-              <div className="mb-1 text-5xl font-black tracking-tight">ERC</div>
-              <div className="text-lg font-bold">{locale === 'zh-TW' ? '英語資源中心' : 'English Resource Center'}</div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
