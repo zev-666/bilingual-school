@@ -24,7 +24,7 @@ const updateSchema = z.object({
   titleZh: z.string().optional(), titleEn: z.string().optional(),
   summaryZh: z.string().optional(), summaryEn: z.string().optional(),
   contentZh: z.string().optional(), contentEn: z.string().optional(),
-  category: z.enum(['ANNOUNCEMENT','ACTIVITY','ADMISSION','COMPETITION','NEWS']).optional(),
+  category: z.enum(['ANNOUNCEMENT','ACTIVITY','ADMISSION','COMPETITION','NEWS','WORKSHOP']).optional(),
   coverImage: z.string().url().nullable().optional(),
   isPinned: z.boolean().optional(),
   isPublished: z.boolean().optional(),

@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
   const type = searchParams.get('type')
   const where = {
     isActive: true,
-    ...(type && type !== 'all' ? { type: type as 'FULL_TIME' | 'PART_TIME' | 'STAFF' } : {}),
+    ...(type && type !== 'all' ? { type: type as 'FULL_TIME' | 'PART_TIME' | 'STAFF' | 'FOREIGN' } : {}),
   }
   const teachers = await prisma.teacher.findMany({
     where, orderBy: [{ sortOrder: 'asc' }, { nameZh: 'asc' }],
@@ -23,7 +23,7 @@ const createSchema = z.object({
   titleZh: z.string().min(1), titleEn: z.string().min(1),
   bioZh: z.string().optional(), bioEn: z.string().optional(),
   avatar: z.string().url().optional().or(z.literal('')).transform(v => v || undefined),
-  type: z.enum(['FULL_TIME','PART_TIME','STAFF']).default('FULL_TIME'),
+  type: z.enum(['FULL_TIME','PART_TIME','STAFF','FOREIGN']).default('FULL_TIME'),
   subjects: z.array(z.string()).default([]),
   email: z.string().email().optional(),
   sortOrder: z.number().default(0),
