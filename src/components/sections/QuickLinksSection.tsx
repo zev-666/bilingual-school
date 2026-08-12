@@ -1,4 +1,4 @@
-﻿import { useTranslations } from 'next-intl'
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/routing'
 import { FileText, Calendar, Download, Mail } from 'lucide-react'
 
@@ -19,19 +19,22 @@ export default function QuickLinksSection({ locale }: { locale: string }) {
   ]
 
   return (
-    <section className="section-padding bg-sky-50">
-      <div className="container-school">
-        <h2 className="text-2xl font-bold text-slate-800 text-center mb-8 tracking-tight">{t('title')}</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <section className="bg-amber-50 px-5 py-20 sm:px-8 lg:py-28">
+      <div className="mx-auto max-w-7xl">
+        <h2 className="mb-10 text-center text-3xl font-black tracking-tight text-slate-900">{t('title')}</h2>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {links.map(({ href, label, icon: Icon }, i) => {
             const ramp = COLOR_RAMPS[i % COLOR_RAMPS.length]
             return (
-              <Link key={href} href={href as any}
-                className="card p-6 text-center group">
-                <div className={`w-14 h-14 ${ramp.bg} rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform`}>
+              <Link
+                key={href}
+                href={href as any}
+                className="group rounded-[28px] border border-amber-100 bg-white p-6 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+              >
+                <div className={`mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full ${ramp.bg} transition-transform group-hover:scale-110`}>
                   <Icon size={24} className={ramp.icon} />
                 </div>
-                <span className="text-sm font-medium text-slate-700">{label}</span>
+                <span className="text-sm font-bold text-slate-700">{label}</span>
               </Link>
             )
           })}

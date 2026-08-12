@@ -34,15 +34,16 @@ export default function StatsSection({ locale, schoolsCount = 20, teachersCount 
     { value: teachersCount, label: t('teachers_served'), suffix: '+' },
   ]
   return (
-    <section className="bg-primary-800 py-12">
+    <section className="bg-slate-900 py-14">
       <div className="container-school">
-        <div className="grid grid-cols-2 gap-8 max-w-md mx-auto">
+        <div className="grid max-w-md grid-cols-2 gap-8 mx-auto">
           {stats.map((stat, i) => (
             <div key={i} className="text-center text-white">
-              <div className="text-4xl font-bold mb-1 tracking-tight">
-                <Counter end={stat.value} />{stat.suffix}
+              <div className="mb-1 text-4xl font-black tracking-tight">
+                <Counter end={stat.value} />
+                <span className="text-amber-400">{stat.suffix}</span>
               </div>
-              <div className="text-primary-200 text-sm">{stat.label}</div>
+              <div className="text-sm text-white/60">{stat.label}</div>
             </div>
           ))}
         </div>

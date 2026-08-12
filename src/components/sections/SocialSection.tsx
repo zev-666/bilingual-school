@@ -26,18 +26,24 @@ export default function SocialSection({ locale, facebookUrl, instagramUrl, youtu
   if (items.length === 0) return null
 
   return (
-    <section className="section-padding bg-white">
-      <div className="container-school">
-        <h2 className="text-2xl font-bold text-gray-900 text-center mb-8 tracking-tight">
+    <section className="bg-white px-5 py-16 sm:px-8">
+      <div className="mx-auto max-w-7xl">
+        <h2 className="mb-8 text-center text-2xl font-black tracking-tight text-slate-900">
           {locale === 'zh-TW' ? '追蹤我們' : 'Follow Us'}
         </h2>
         <div className="flex flex-wrap justify-center gap-4">
           {items.map(({ key, url, icon: Icon, color }) => (
-            <a key={key} href={url} target="_blank" rel="noopener noreferrer" className="card flex items-center gap-3 px-6 py-4 hover:border-primary-200 group">
-              <div className={`w-10 h-10 ${color} rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
+            <a
+              key={key}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-3 rounded-full border border-slate-200 bg-white px-6 py-3.5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+            >
+              <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full ${color} transition-transform group-hover:scale-110`}>
                 <Icon size={20} className="text-white" />
               </div>
-              <span className="text-sm font-medium text-gray-700">
+              <span className="text-sm font-bold text-slate-700">
                 {locale === 'zh-TW' ? LABELS[key].zh : LABELS[key].en}
               </span>
             </a>
