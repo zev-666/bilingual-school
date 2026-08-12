@@ -68,6 +68,22 @@ body { font-family: system-ui, -apple-system, sans-serif; color: #1e293b; backgr
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* 骨架屏（Skeleton）用的 shimmer 動畫：淺灰底色來回漸層掃過，
+   代表「內容正在載入」。詳見 src/components/ui/Skeleton.tsx */
+@keyframes skeleton-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+/* 尊重「減少動態效果」系統設定：骨架屏改用靜態灰底，不跑動畫 */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; background: #e2e8f0; }
+}
+
 :root {
   --font-scale: 1;
 }
