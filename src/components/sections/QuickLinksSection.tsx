@@ -1,15 +1,14 @@
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/routing'
-import { FileText, Calendar, Download, Mail } from 'lucide-react'
+import { Calendar, Download, Mail } from 'lucide-react'
 
 export default function QuickLinksSection({ locale }: { locale: string }) {
   const t = useTranslations('home.quicklinks')
 
   const links = [
-    { href: '/admission', label: t('admission'), icon: FileText, num: '01' },
-    { href: '/news', label: t('calendar'), icon: Calendar, num: '02' },
-    { href: '/documents', label: t('documents'), icon: Download, num: '03' },
-    { href: '/contact', label: t('contact'), icon: Mail, num: '04' },
+    { href: '/news', label: t('calendar'), icon: Calendar, num: '01' },
+    { href: '/documents', label: t('documents'), icon: Download, num: '02' },
+    { href: '/contact', label: t('contact'), icon: Mail, num: '03' },
   ]
 
   return (

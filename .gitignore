@@ -8,3 +8,5 @@ public/uploads
 
 .vercel
 .env*
+
+friendly-hero-navbar.patch
