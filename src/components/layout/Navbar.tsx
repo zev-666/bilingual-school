@@ -33,7 +33,6 @@ export default function Navbar() {
         { href: '/news', label: t('news') },
         { href: '/calendar', label: t('calendar') },
         { href: '/teachers', label: t('teachers') },
-        { href: '/admission', label: t('admission') },
         { href: '/contact', label: t('contact') },
       ],
     },
