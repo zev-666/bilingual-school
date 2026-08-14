@@ -6,6 +6,7 @@ import { routing } from '@/i18n/routing'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Breadcrumb from '@/components/layout/Breadcrumb'
+import PageTransition from '@/components/ui/PageTransition'
 
 export const metadata: Metadata = {
   title: { default: '基隆市英語資源中心', template: '%s | 基隆市英語資源中心' },
@@ -29,7 +30,9 @@ export default async function LocaleLayout({
     <NextIntlClientProvider messages={messages}>
       <Navbar />
       <Breadcrumb />
-      <main id="main-content">{children}</main>
+      <main id="main-content">
+        <PageTransition>{children}</PageTransition>
+      </main>
       <Footer locale={locale} />
     </NextIntlClientProvider>
   )

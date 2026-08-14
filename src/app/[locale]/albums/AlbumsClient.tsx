@@ -30,8 +30,8 @@ export default function AlbumsClient({ locale, albums }: AlbumsClientProps) {
         </div>
       </div>
 
-      <div className="container-school py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="container-school py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {albums.map((album, i) => {
             const title = isZh ? album.titleZh : album.titleEn
             const desc  = isZh ? album.descZh  : album.descEn
