@@ -4,7 +4,7 @@ import { Link, usePathname } from '@/i18n/routing'
 import { useTranslations } from 'next-intl'
 import { ChevronRight, Home } from 'lucide-react'
 
-const NAV_KEYS = ['news', 'albums', 'videos', 'documents', 'teachers', 'about', 'admission', 'contact'] as const
+const NAV_KEYS = ['news', 'albums', 'videos', 'documents', 'teachers', 'about', 'contact'] as const
 
 export default function Breadcrumb() {
   const pathname = usePathname()

@@ -7,7 +7,6 @@
     "documents": "Documents",
     "teachers": "Teachers",
     "about": "About",
-    "admission": "Admission",
     "contact": "Contact",
     "groups": {
       "about": "About Us",
@@ -21,8 +20,7 @@
       "title": "Let English be the window through which children see the world.",
       "title_highlight": "children",
       "subtitle": "We believe language isn't just an answer on a test — it's the courage for a child to explore the ocean, meet friends, and tell their own story.",
-      "cta_primary": "Explore Our Resources",
-      "cta_secondary": "Admission Info"
+      "cta_primary": "Explore Our Resources"
     },
     "stats": {
       "schools": "Partner Schools",
@@ -43,7 +41,6 @@
     },
     "quicklinks": {
       "title": "Quick Links",
-      "admission": "Admission Guide",
       "calendar": "School Calendar",
       "documents": "Form Downloads",
       "contact": "Contact Us"
@@ -236,83 +233,6 @@
           "desc": "Support co-teaching in classrooms under TFETP, ELTA and related programs"
         }
       }
-    }
-  },
-  "admission": {
-    "title": "Admission",
-    "subtitle": "Join our school family",
-    "intro": {
-      "content": "We warmly welcome every family to join our educational community as we support your child's growth together."
-    },
-    "contact": {
-      "title": "Have questions about admission?",
-      "cta": "Contact Admissions"
-    },
-    "steps": {
-      "title": "Application Process",
-      "step1": "Complete the online application",
-      "step2": "Submit required documents",
-      "step3": "Schedule an entrance assessment",
-      "step4": "Interview and review",
-      "step5": "Receive admission decision"
-    },
-    "requirements": {
-      "title": "Requirements",
-      "elementary": {
-        "label": "Elementary Division",
-        "items": [
-          "Must be at least 6 years old by the required date",
-          "Copy of household registration certificate",
-          "Two recent 2-inch photos (within 3 months)",
-          "Kindergarten enrollment or graduation proof (if applicable)"
-        ]
-      },
-      "junior": {
-        "label": "Junior High Division",
-        "items": [
-          "Completion of elementary education or equivalent",
-          "Elementary school diploma or enrollment certificate",
-          "Most recent semester's report card",
-          "Two recent 2-inch photos (within 3 months)"
-        ]
-      }
-    },
-    "tuition": {
-      "title": "Tuition",
-      "note": "The figures above are for reference only; actual amounts follow the current academic year's official announcement.",
-      "elementary": "Elementary Division",
-      "junior": "Junior High Division",
-      "items": {
-        "tuition": "Tuition",
-        "activity": "Activity Fee",
-        "lunch": "Lunch Fee",
-        "total": "Total"
-      }
-    },
-    "scholarship": {
-      "title": "Scholarships",
-      "content": "The school offers a range of scholarships, including academic excellence awards, talent awards, and need-based grants, to encourage and support students in pursuing excellence."
-    },
-    "faq": {
-      "title": "Frequently Asked Questions",
-      "items": [
-        {
-          "q": "When is the application deadline?",
-          "a": "Admission periods vary each academic year. Please check the school website or contact the admissions office for the latest information."
-        },
-        {
-          "q": "Is school bus service available?",
-          "a": "The school offers bus service on multiple routes. Please contact the admissions office for route details and fees."
-        },
-        {
-          "q": "Can transfer students apply at any time?",
-          "a": "Transfer applications depend on available spots per grade in a given year. We recommend contacting the admissions office early to confirm availability."
-        },
-        {
-          "q": "Are scholarships or tuition reductions available?",
-          "a": "The school offers several scholarships and financial aid programs. Please see the Scholarships section or contact the admissions office for details."
-        }
-      ]
     }
   },
   "footer": {

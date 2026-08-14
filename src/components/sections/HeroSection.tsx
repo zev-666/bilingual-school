@@ -73,12 +73,6 @@ export default function HeroSection({ locale, banners }: { locale: string; banne
               {t('cta_primary')}
               <ArrowDown size={16} aria-hidden="true" />
             </Link>
-            <Link
-              href="/admission"
-              className="inline-flex items-center justify-center rounded-full border border-white/50 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10 focus:outline-none focus:ring-4 focus:ring-white/30"
-            >
-              {t('cta_secondary')}
-            </Link>
           </div>
         </div>
 
