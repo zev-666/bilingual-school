@@ -6,6 +6,7 @@ import { routing } from '@/i18n/routing'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Breadcrumb from '@/components/layout/Breadcrumb'
+import HideOnHome from '@/components/layout/HideOnHome'
 import PageTransition from '@/components/ui/PageTransition'
 
 export const metadata: Metadata = {
@@ -28,12 +29,17 @@ export default async function LocaleLayout({
   const messages = await getMessages()
   return (
     <NextIntlClientProvider messages={messages}>
-      <Navbar />
-      <Breadcrumb />
+      {/* 首頁是自帶頁首頁尾的整合門戶，因此在首頁隱藏全站 Navbar / Breadcrumb / Footer */}
+      <HideOnHome>
+        <Navbar />
+        <Breadcrumb />
+      </HideOnHome>
       <main id="main-content">
         <PageTransition>{children}</PageTransition>
       </main>
-      <Footer locale={locale} />
+      <HideOnHome>
+        <Footer locale={locale} />
+      </HideOnHome>
     </NextIntlClientProvider>
   )
 }

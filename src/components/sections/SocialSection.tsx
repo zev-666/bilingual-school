@@ -27,21 +27,21 @@ export default function SocialSection({ locale, facebookUrl, instagramUrl, youtu
   if (items.length === 0) return null
 
   return (
-    <section className="bg-[#E1F5EE] px-5 py-16 sm:px-8">
+    <section className="bg-[#E8F6EF] px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <h2 className="mb-8 text-center text-2xl font-bold text-[#0F2A4A]">
+          <h2 className="mb-8 text-center text-2xl font-bold text-[#2D241E]">
             {locale === 'zh-TW' ? '追蹤我們' : 'Follow Us'}
           </h2>
         </Reveal>
         <div className="flex flex-wrap justify-center gap-4">
           {items.map(({ key, url, icon: Icon, color }, index) => (
             <Reveal key={key} delay={index * 0.1}>
-              <a href={url} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3 rounded-full border border-[#D7E3EF] bg-white px-6 py-3.5 transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_35px_rgba(24,95,165,.13)]">
+              <a href={url} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3 rounded-full border border-[#EFE9E1] bg-white px-6 py-3.5 transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_35px_rgba(195,78,36,.13)]">
                 <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full ${color} transition-transform group-hover:scale-110`}>
                   <Icon size={18} className="text-white" />
                 </div>
-                <span className="text-sm font-semibold text-[#0F2A4A]">
+                <span className="text-sm font-semibold text-[#2D241E]">
                   {locale === 'zh-TW' ? LABELS[key].zh : LABELS[key].en}
                 </span>
               </a>

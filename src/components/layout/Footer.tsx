@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/routing'
-import { Mail, Phone, Printer, MapPin, Landmark, ExternalLink, ShieldCheck, Globe } from 'lucide-react'
+import { Mail, Phone, Printer, MapPin, Landmark, ExternalLink, ShieldCheck } from 'lucide-react'
+import Logo from './Logo'
 import { prisma } from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
 
@@ -55,9 +56,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) 
           {/* 品牌 */}
           <div>
             <Link href="/" className="flex items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#B5D4F4] bg-[#E6F1FB] text-[#185FA5]">
-                <Globe size={18} />
-              </span>
+              <Logo size={36} />
               <span className="font-bold text-[#0F2A4A]">基隆市英語資源中心</span>
             </Link>
             <p className="mt-5 max-w-xs text-sm leading-7 text-[#4A6B8A]">

@@ -13,16 +13,16 @@ export async function generateMetadata({ params: { locale } }: Props): Promise<M
 
 const VALUE_ICONS = {
   bilingual:  <Globe      size={28} className="text-primary-600" />,
-  culture:    <BookOpen   size={28} className="text-[#0F6E56]"   />,
+  culture:    <BookOpen   size={28} className="text-[#2E7A57]"   />,
   innovation: <Lightbulb  size={28} className="text-accent-600"  />,
-  character:  <Heart      size={28} className="text-[#993556]"   />,
+  character:  <Heart      size={28} className="text-[#4A90E2]"   />,
 }
 
 const VALUE_BG = {
   bilingual:  'bg-primary-50 border-primary-100',
-  culture:    'bg-[#E1F5EE] border-[#9FE1CB]',
+  culture:    'bg-[#E8F6EF] border-[#B7E4CE]',
   innovation: 'bg-accent-50 border-accent-100',
-  character:  'bg-[#FBEAF0] border-[#F4C0D1]',
+  character:  'bg-[#EFF6FF] border-[#BFE0F7]',
 }
 
 const FACILITY_IMAGES = [
@@ -45,13 +45,13 @@ export default async function AboutPage({ params: { locale } }: Props) {
     <div className="pt-20 min-h-screen">
       {/* Hero */}
       <section className="relative overflow-hidden text-white py-24" style={{
-        backgroundColor: '#2B5FE0',
+        backgroundColor: '#C34E24',
         backgroundImage:
-          'radial-gradient(at 15% 20%, #3F6FE8 0%, transparent 55%),' +
-          'radial-gradient(at 55% 10%, #3FB6A8 0%, transparent 50%),' +
-          'radial-gradient(at 88% 30%, #6FD0C0 0%, transparent 45%),' +
-          'radial-gradient(at 90% 80%, #E2E87A 0%, transparent 55%),' +
-          'radial-gradient(at 40% 95%, #4CC2B0 0%, transparent 50%)',
+          'radial-gradient(at 15% 20%, #FF7849 0%, transparent 55%),' +
+          'radial-gradient(at 55% 10%, #FBBF24 0%, transparent 50%),' +
+          'radial-gradient(at 88% 30%, #52B788 0%, transparent 45%),' +
+          'radial-gradient(at 90% 80%, #4A90E2 0%, transparent 55%),' +
+          'radial-gradient(at 40% 95%, #FFF0EA 0%, transparent 50%)',
       }}>
         <div className="container-school relative text-center">
           <span className="inline-block bg-white/20 backdrop-blur-sm text-white/90 text-sm font-medium px-4 py-1.5 rounded-full mb-6">

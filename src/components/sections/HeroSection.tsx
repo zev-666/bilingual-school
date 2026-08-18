@@ -7,13 +7,13 @@ import { Globe, BookOpen, Sparkles as SparklesIcon, ArrowDown } from 'lucide-rea
 interface Banner { titleZh: string; titleEn: string; subtitleZh?: string | null; subtitleEn?: string | null; imageUrl: string; linkUrl?: string | null }
 
 const MESH_GRADIENT = {
-  backgroundColor: '#2B5FE0',
+  backgroundColor: '#C34E24',
   backgroundImage:
-    'radial-gradient(at 15% 20%, #3F6FE8 0%, transparent 55%),' +
-    'radial-gradient(at 55% 10%, #3FB6A8 0%, transparent 50%),' +
-    'radial-gradient(at 88% 30%, #6FD0C0 0%, transparent 45%),' +
-    'radial-gradient(at 90% 80%, #E2E87A 0%, transparent 55%),' +
-    'radial-gradient(at 40% 95%, #4CC2B0 0%, transparent 50%)',
+    'radial-gradient(at 15% 20%, #FF7849 0%, transparent 55%),' +
+    'radial-gradient(at 55% 10%, #FBBF24 0%, transparent 50%),' +
+    'radial-gradient(at 88% 30%, #52B788 0%, transparent 45%),' +
+    'radial-gradient(at 90% 80%, #4A90E2 0%, transparent 55%),' +
+    'radial-gradient(at 40% 95%, #FFF0EA 0%, transparent 50%)',
 }
 
 export default function HeroSection({ locale, banners }: { locale: string; banners: Banner[] }) {
@@ -45,7 +45,7 @@ export default function HeroSection({ locale, banners }: { locale: string; banne
       <div className="mx-auto grid min-h-[600px] max-w-7xl items-center gap-10 px-5 py-16 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:py-24">
         {/* 左側文字 */}
         <div className="relative z-10 max-w-2xl motion-safe:animate-[fadeInUp_.6s_ease-out]">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-xs font-semibold tracking-wide text-[#0F2A4A]">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-xs font-semibold tracking-wide text-[#2D241E]">
             <SparklesIcon size={14} aria-hidden="true" />
             {t('badge')}
           </div>
@@ -54,7 +54,7 @@ export default function HeroSection({ locale, banners }: { locale: string; banne
               <>
                 {titleParts[0]}
                 <br />
-                <span className="text-[#FDE68A]">{highlight}</span>
+                <span className="text-[#BEE3F8]">{highlight}</span>
                 <br />
                 {titleParts[1]}
               </>
@@ -68,7 +68,7 @@ export default function HeroSection({ locale, banners }: { locale: string; banne
           <div className="mt-9 flex flex-wrap items-center gap-3">
             <Link
               href="/about"
-              className="inline-flex items-center gap-3 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-[#0F2A4A] shadow-[0_8px_24px_rgba(0,0,0,.18)] transition hover:bg-[#EAF2FF] focus:outline-none focus:ring-4 focus:ring-white/50"
+              className="inline-flex items-center gap-3 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-[#2D241E] shadow-[0_8px_24px_rgba(0,0,0,.18)] transition hover:bg-[#FFF0EA] focus:outline-none focus:ring-4 focus:ring-white/50"
             >
               {t('cta_primary')}
               <ArrowDown size={16} aria-hidden="true" />
@@ -88,7 +88,7 @@ export default function HeroSection({ locale, banners }: { locale: string; banne
               <SparklesIcon size={20} aria-hidden="true" />
             </span>
           </div>
-          <span className="absolute bottom-6 right-6 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-[#0F2A4A] shadow-sm">
+          <span className="absolute bottom-6 right-6 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-[#2D241E] shadow-sm">
             Learn in Keelung
           </span>
         </div>

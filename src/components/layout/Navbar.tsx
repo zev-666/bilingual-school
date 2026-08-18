@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl'
 import { Link, usePathname } from '@/i18n/routing'
 import { Menu, X, Globe, ChevronDown } from 'lucide-react'
 import { useRouter } from '@/i18n/routing'
+import Logo from './Logo'
 import SearchBar from './SearchBar'
 import FontSizeAdjuster from './FontSizeAdjuster'
 
@@ -81,9 +82,7 @@ export default function Navbar() {
       <div className="container-school">
         <div className="flex h-[72px] items-center justify-between">
           <Link href="/" className="flex items-center gap-3 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#85B7EB]">
-            <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#B5D4F4] bg-[#E6F1FB] text-[#185FA5]">
-              <Globe size={20} strokeWidth={1.8} />
-            </span>
+            <Logo size={40} priority />
             <span className="hidden leading-tight sm:block">
               <span className="block font-bold text-[#0F2A4A]">
                 {locale === 'zh-TW' ? '基隆市英語資源中心' : 'Keelung City English Resource Center'}
