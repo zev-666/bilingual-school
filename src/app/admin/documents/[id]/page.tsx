@@ -27,7 +27,7 @@ export default async function EditDocumentPage({ params }: Props) {
       <div className="flex items-center gap-3">
         <Link
           href="/admin/documents"
-          className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+          className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-600"
         >
           <ChevronLeft className="h-5 w-5" />
         </Link>

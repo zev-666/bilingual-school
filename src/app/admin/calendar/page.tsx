@@ -68,7 +68,7 @@ export default async function AdminCalendarPage() {
                   </td>
                   <td className="px-4 py-3">
                     <p className="font-medium text-gray-900">{event.titleZh}</p>
-                    <p className="text-xs text-gray-400">{event.titleEn}</p>
+                    <p className="text-xs text-gray-500">{event.titleEn}</p>
                   </td>
                   <td className="px-4 py-3">
                     <span className={cn('badge text-xs', CALENDAR_TYPE_COLORS[event.type])}>
@@ -86,7 +86,7 @@ export default async function AdminCalendarPage() {
                     <div className="flex items-center gap-1">
                       <Link
                         href={`/admin/calendar/${event.id}`}
-                        className="p-1.5 rounded-lg text-gray-400 hover:text-primary-600 hover:bg-primary-50 transition-colors"
+                        className="p-1.5 rounded-lg text-gray-500 hover:text-primary-600 hover:bg-primary-50 transition-colors"
                         aria-label="編輯"
                       >
                         <Edit size={15} />

@@ -71,7 +71,7 @@ export default async function AdminAlbumsPage() {
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <p className="font-semibold text-gray-900 line-clamp-1">{album.titleZh}</p>
-                    <p className="text-xs text-gray-400 line-clamp-1">{album.titleEn}</p>
+                    <p className="text-xs text-gray-500 line-clamp-1">{album.titleEn}</p>
                   </div>
                   <span className={cn(
                     'shrink-0 inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full font-medium',
@@ -83,7 +83,7 @@ export default async function AdminAlbumsPage() {
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between text-xs text-gray-400">
+                <div className="flex items-center justify-between text-xs text-gray-500">
                   <span>{album.eventDate ? formatDate(album.eventDate, 'zh-TW') : '未設定日期'}</span>
                   <span>{album.author?.name ?? '—'}</span>
                 </div>

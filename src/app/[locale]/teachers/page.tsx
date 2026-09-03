@@ -41,14 +41,14 @@ export default async function TeachersPage({ params: { locale } }: { params: { l
                       ? <img src={teacher.photoUrl} alt="" className="w-full h-full rounded-full object-cover" />
                       : <User size={32} className="text-primary-400" />}
                   </div>
-                  <h3 className="font-semibold text-gray-900">
+                  <h2 className="font-semibold text-gray-900">
                     {locale === 'zh-TW' ? teacher.nameZh : teacher.nameEn}
-                  </h3>
+                  </h2>
                   <p className="text-sm text-primary-600 mt-1">
                     {locale === 'zh-TW' ? teacher.titleZh : teacher.titleEn}
                   </p>
                   {teacher.subjects.length > 0 && (
-                    <p className="text-xs text-gray-400 mt-2">{teacher.subjects.join(', ')}</p>
+                    <p className="text-xs text-gray-500 mt-2">{teacher.subjects.join(', ')}</p>
                   )}
                 </div>
               ))}

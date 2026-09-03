@@ -876,7 +876,7 @@ export default function PortalClient({ locale, news, docs, events, trend }: Prop
                         <span className="text-[11px] font-bold text-earthPrimary bg-earthMuted px-2 py-0.5 rounded">
                           {s.district}
                         </span>
-                        <h3 className="font-bold text-sm text-earthText mt-1">{s.name}</h3>
+                        <h2 className="font-bold text-sm text-earthText mt-1">{s.name}</h2>
                       </div>
                       <span className="bg-earthAccent/30 text-earthText text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
                         {s.type === 'ELEMENTARY' ? pick('國小', 'Elementary') : pick('國中', 'Junior high')}

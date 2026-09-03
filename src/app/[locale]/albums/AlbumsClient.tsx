@@ -74,7 +74,7 @@ export default function AlbumsClient({ locale, albums }: AlbumsClientProps) {
                   {/* Info */}
                   <div className="p-5">
                     {album.eventDate && (
-                      <div className="flex items-center gap-1.5 text-xs text-gray-400 mb-2">
+                      <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-2">
                         <Calendar size={12} aria-hidden="true" />
                         <time dateTime={new Date(album.eventDate).toISOString()}>
                           {formatDate(album.eventDate, locale)}

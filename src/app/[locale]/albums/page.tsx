@@ -38,9 +38,9 @@ export default async function AlbumsPage({ params: { locale } }: { params: { loc
                 )}
               </div>
               <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-1">
+                <h2 className="font-semibold text-gray-900 mb-1">
                   {locale === 'zh-TW' ? album.titleZh : album.titleEn}
-                </h3>
+                </h2>
                 <p className="text-sm text-gray-500">{album._count.photos} {t('photos')}</p>
               </div>
             </div>

@@ -42,7 +42,7 @@ function isImage(mimeType: string) {
 
 function fileIcon(mimeType: string) {
   if (isImage(mimeType)) return <ImageIcon size={28} className="text-primary-400" />
-  return <FileText size={28} className="text-gray-400" />
+  return <FileText size={28} className="text-gray-500" />
 }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
@@ -110,18 +110,18 @@ function MediaCard({
           {isImage(item.mimeType) ? (
             <Image src={item.url} alt={item.filename} width={40} height={40} className="object-cover w-full h-full" />
           ) : (
-            <FileText size={18} className="text-gray-400" />
+            <FileText size={18} className="text-gray-500" />
           )}
         </div>
 
         {/* Info */}
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium text-gray-800 truncate">{item.filename}</p>
-          <p className="text-xs text-gray-400">{formatSize(item.size)} · {item.mimeType}</p>
+          <p className="text-xs text-gray-500">{formatSize(item.size)} · {item.mimeType}</p>
         </div>
 
         {/* URL */}
-        <p className="text-xs text-gray-400 truncate max-w-[200px] hidden md:block">{item.url}</p>
+        <p className="text-xs text-gray-500 truncate max-w-[200px] hidden md:block">{item.url}</p>
 
         {/* Actions */}
         <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
@@ -198,7 +198,7 @@ function MediaCard({
       {/* Info strip */}
       <div className="p-2 bg-white">
         <p className="text-xs font-medium text-gray-700 truncate">{item.filename}</p>
-        <p className="text-xs text-gray-400">{formatSize(item.size)}</p>
+        <p className="text-xs text-gray-500">{formatSize(item.size)}</p>
       </div>
     </div>
   )
@@ -408,7 +408,7 @@ export default function MediaLibrary() {
       <div className="flex flex-wrap items-center gap-3">
         {/* Search */}
         <div className="relative flex-1 min-w-[200px] max-w-xs">
-          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
           <input
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
@@ -500,7 +500,7 @@ export default function MediaLibrary() {
       ) : items.length === 0 ? (
         <div className="card flex flex-col items-center justify-center py-24 text-center">
           <ImageIcon size={48} className="text-gray-200 mb-4" />
-          <p className="text-gray-400 text-sm">
+          <p className="text-gray-500 text-sm">
             {search ? '找不到符合的檔案' : '媒體庫是空的，點選右上角上傳'}
           </p>
         </div>
@@ -553,7 +553,7 @@ export default function MediaLibrary() {
             }, [])
             .map((p, i) =>
               p === '...' ? (
-                <span key={`dot-${i}`} className="px-2 text-gray-400">…</span>
+                <span key={`dot-${i}`} className="px-2 text-gray-500">…</span>
               ) : (
                 <button
                   key={p}

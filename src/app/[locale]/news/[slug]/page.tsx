@@ -26,7 +26,7 @@ export default async function NewsDetailPage({ params: { locale, slug } }: { par
         <h1 className="text-3xl font-bold text-gray-900 mb-4">
           {locale === 'zh-TW' ? item.titleZh : item.titleEn}
         </h1>
-        <p className="text-sm text-gray-400 mb-8">
+        <p className="text-sm text-gray-500 mb-8">
           {t('published')}: {formatDate(item.publishedAt || item.createdAt, locale)}
         </p>
         <div className="prose prose-gray max-w-none">

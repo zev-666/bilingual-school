@@ -35,8 +35,8 @@ const config: Config = {
         // ── 首頁整合門戶專用「磚紅暖灰色系」（Terracotta Red）──────────────
         // 只有首頁門戶會用到這組，其他頁面仍沿用上面的 primary / accent，
         // 所以改這裡不會動到既有的師資／相簿／文件／後台頁面。
-        // 對比度已實測：primary 對白底 6.6:1、text 對底色 11.7:1、
-        // textMuted 對底色 4.7:1，全部通過 WCAG 2.1 AA。
+        // 對比度已用 axe-core 實測：primary 對白底 6.6:1、text 對底色 11.7:1、
+        // textMuted 對最深底色 4.8:1，全部通過 WCAG 2.2 AA（政府網站要求等級）。
         earthBg: '#FAF6F3',        // 主要淺底色（暖米）
         earthSurface: '#FFFFFF',   // 卡片表面色
         earthMuted: '#EDE3DE',     // 次要淺底色（暖灰）
@@ -44,7 +44,7 @@ const config: Config = {
         earthPrimaryHover: '#7F2E25',
         earthAccent: '#4A7C8C',    // 點綴藍灰
         earthText: '#3B3230',      // 內文（暖炭）
-        earthTextMuted: '#7A6B67',
+        earthTextMuted: '#6E5F5B',   // 次要文字（在最深的 earthMuted 底色上仍有 4.8:1）
         earthBorder: '#E3D6D0',
       },
       fontFamily: {

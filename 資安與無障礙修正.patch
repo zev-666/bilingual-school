@@ -1,0 +1,1777 @@
+diff --git a/next.config.mjs b/next.config.mjs
+index b78a17b..ba95bfe 100644
+--- a/next.config.mjs
++++ b/next.config.mjs
+@@ -9,10 +9,32 @@ const nextConfig = {
+     // 本機開發時你仍然可以手動跑 `npm run lint` 檢查
+     ignoreDuringBuilds: true,
+   },
++
++  // 移除 X-Powered-By: Next.js 標頭（不要主動洩漏框架版本，政府資安檢測常見扣分項）
++  poweredByHeader: false,
++
+   images: {
++    // ⚠️ 2026-08 資安修正：原本是 { protocol: 'https', hostname: '**' }，
++    // 等於允許把任意外部網址塞進 /_next/image 讓本站幫忙下載並轉檔 ——
++    // 這會讓網站變成公開的圖片代理伺服器（任何人都能拿它當跳板、消耗頻寬、
++    // 或觸發 Next.js 的 Image Optimizer DoS 弱點）。改成只允許實際會用到的來源。
+     remotePatterns: [
+-      { protocol: 'https', hostname: '**' },
++      // Vercel Blob（目前圖片上傳的實際儲存位置）
++      { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },
++      // S3 備用儲存（若日後改用 AWS）
++      { protocol: 'https', hostname: '*.s3.amazonaws.com' },
++      { protocol: 'https', hostname: '*.s3.ap-northeast-1.amazonaws.com' },
++      // ⚠️ ISO 封包前必須移除：/about 與 news mock data 目前還吃 Unsplash 的外部圖片。
++      // 封閉的政府內網連不到 unsplash.com，圖片會全部破圖；而且每次載入都會把
++      // 使用者 IP 送給第三方，個資查核會被挑。請改成上傳到媒體庫或放 public/images。
++      { protocol: 'https', hostname: 'images.unsplash.com' },
+     ],
++    // 限制可產生的尺寸，避免被大量不同 width 參數灌爆快取
++    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
++    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
++    // SVG 交由瀏覽器渲染會有 XSS 風險，明確關閉
++    dangerouslyAllowSVG: false,
++    contentDispositionType: 'attachment',
+   },
+ }
+ 
+diff --git a/package.json b/package.json
+index 6a6c000..a35df3b 100644
+--- a/package.json
++++ b/package.json
+@@ -35,16 +35,15 @@
+     "lucide-react": "^0.383.0",
+     "multer": "^1.4.5-lts.1",
+     "next": "^14.2.0",
+-    "next-auth": "^4.24.7",
+     "next-intl": "^3.14.0",
+-    "nodemailer": "^7.0.13",
++    "nodemailer": "^9.0.6",
+     "react": "^18.3.0",
+     "react-dom": "^18.3.0",
+     "react-dropzone": "^14.2.3",
+     "react-hook-form": "^7.51.5",
+     "react-intersection-observer": "^9.10.3",
+     "react-markdown": "^9.0.1",
+-    "sharp": "^0.33.4",
++    "sharp": "^0.35.4",
+     "tailwind-merge": "^2.3.0",
+     "zod": "^3.23.8"
+   },
+diff --git a/src/app/[locale]/about/page.tsx b/src/app/[locale]/about/page.tsx
+index c6f127a..d208646 100644
+--- a/src/app/[locale]/about/page.tsx
++++ b/src/app/[locale]/about/page.tsx
+@@ -26,12 +26,12 @@ const VALUE_BG = {
+ }
+ 
+ const FACILITY_IMAGES = [
+-  'https://Image.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80',
+-  'https://Image.unsplash.com/photo-1532094349884-543559c17a05?w=600&q=80',
+-  'https://Image.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&q=80',
+-  'https://Image.unsplash.com/photo-1562774053-701939374585?w=600&q=80',
+-  'https://Image.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&q=80',
+-  'https://Image.unsplash.com/photo-1497366811353-6870744d04b2?w=600&q=80',
++  'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80',
++  'https://images.unsplash.com/photo-1532094349884-543559c17a05?w=600&q=80',
++  'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&q=80',
++  'https://images.unsplash.com/photo-1562774053-701939374585?w=600&q=80',
++  'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&q=80',
++  'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=600&q=80',
+ ]
+ 
+ export default async function AboutPage({ params: { locale } }: Props) {
+diff --git a/src/app/[locale]/albums/AlbumsClient.tsx b/src/app/[locale]/albums/AlbumsClient.tsx
+index 91ef687..794aebe 100644
+--- a/src/app/[locale]/albums/AlbumsClient.tsx
++++ b/src/app/[locale]/albums/AlbumsClient.tsx
+@@ -74,7 +74,7 @@ export default function AlbumsClient({ locale, albums }: AlbumsClientProps) {
+                   {/* Info */}
+                   <div className="p-5">
+                     {album.eventDate && (
+-                      <div className="flex items-center gap-1.5 text-xs text-gray-400 mb-2">
++                      <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-2">
+                         <Calendar size={12} aria-hidden="true" />
+                         <time dateTime={new Date(album.eventDate).toISOString()}>
+                           {formatDate(album.eventDate, locale)}
+diff --git a/src/app/[locale]/albums/[slug]/page.tsx b/src/app/[locale]/albums/[slug]/page.tsx
+index 60f007b..b1c51a4 100644
+--- a/src/app/[locale]/albums/[slug]/page.tsx
++++ b/src/app/[locale]/albums/[slug]/page.tsx
+@@ -43,7 +43,7 @@ export default async function AlbumDetailPage({
+ 
+         <h1 className="text-3xl font-bold text-gray-900 mb-2">{title}</h1>
+         {album.eventDate && (
+-          <p className="text-sm text-gray-400 mb-2">{formatDate(album.eventDate, locale)}</p>
++          <p className="text-sm text-gray-500 mb-2">{formatDate(album.eventDate, locale)}</p>
+         )}
+         {desc && <p className="text-gray-600 mb-4 leading-relaxed">{desc}</p>}
+         <p className="text-sm text-gray-500 mb-8">
+@@ -51,7 +51,7 @@ export default async function AlbumDetailPage({
+         </p>
+ 
+         {album.photos.length === 0 ? (
+-          <div className="flex flex-col items-center justify-center py-20 text-gray-400">
++          <div className="flex flex-col items-center justify-center py-20 text-gray-500">
+             <ImageIcon size={40} className="mb-3" />
+             <p>{t('no_albums')}</p>
+           </div>
+diff --git a/src/app/[locale]/albums/page.tsx b/src/app/[locale]/albums/page.tsx
+index c6256fe..35b376c 100644
+--- a/src/app/[locale]/albums/page.tsx
++++ b/src/app/[locale]/albums/page.tsx
+@@ -38,9 +38,9 @@ export default async function AlbumsPage({ params: { locale } }: { params: { loc
+                 )}
+               </div>
+               <div className="p-4">
+-                <h3 className="font-semibold text-gray-900 mb-1">
++                <h2 className="font-semibold text-gray-900 mb-1">
+                   {locale === 'zh-TW' ? album.titleZh : album.titleEn}
+-                </h3>
++                </h2>
+                 <p className="text-sm text-gray-500">{album._count.photos} {t('photos')}</p>
+               </div>
+             </div>
+diff --git a/src/app/[locale]/calendar/page.tsx b/src/app/[locale]/calendar/page.tsx
+index 672c0cd..8bc4cdc 100644
+--- a/src/app/[locale]/calendar/page.tsx
++++ b/src/app/[locale]/calendar/page.tsx
+@@ -138,7 +138,7 @@ export default async function CalendarPage({ params: { locale }, searchParams }:
+                           </p>
+                         )}
+                         {event.endDate && (
+-                          <p className="text-xs text-gray-400 mt-1">
++                          <p className="text-xs text-gray-500 mt-1">
+                             {t('until')} {formatDay(event.endDate, locale)}
+                           </p>
+                         )}
+diff --git a/src/app/[locale]/contact/page.tsx b/src/app/[locale]/contact/page.tsx
+index ed61939..2222a56 100644
+--- a/src/app/[locale]/contact/page.tsx
++++ b/src/app/[locale]/contact/page.tsx
+@@ -14,6 +14,33 @@ const schema = z.object({
+ })
+ type FormData = z.infer<typeof schema>
+ 
++/**
++ * 從後台設定的 Google Maps 內嵌碼中「只取出 src 網址」，並驗證網域。
++ * 後台存的可能是整段 <iframe ...> 也可能只有一個網址，兩種都支援。
++ * 只允許 google.com / google.com.tw 的 /maps/embed 路徑，其餘一律回傳空字串。
++ * 這樣即使後台設定值被塞入惡意 HTML，也不會有任何東西被當成 HTML 執行。
++ */
++function extractSafeMapSrc(raw: string): string {
++  if (!raw) return ''
++  const candidate = raw.includes('<') ? (raw.match(/src=["']([^"']+)["']/i)?.[1] ?? '') : raw.trim()
++  if (!candidate) return ''
++  try {
++    const url = new URL(candidate)
++    if (url.protocol !== 'https:') return ''
++    const host = url.hostname.toLowerCase()
++    const allowedHost =
++      host === 'www.google.com' ||
++      host === 'maps.google.com' ||
++      host === 'www.google.com.tw' ||
++      host === 'maps.google.com.tw'
++    if (!allowedHost) return ''
++    if (!url.pathname.startsWith('/maps/embed')) return ''
++    return url.toString()
++  } catch {
++    return ''
++  }
++}
++
+ // API 沒有回傳對應 key（尚未在後台設定過）時使用的預設值，跟 admin/settings/page.tsx 的 DEFAULT_SETTINGS 保持一致
+ const DEFAULT_CONTACT_SETTINGS = {
+   contact_address_zh: '基隆市中正區（請填入實際地址）',
+@@ -29,6 +56,7 @@ export default function ContactPage() {
+   const [mapEmbed, setMapEmbed] = useState<string>('')
+   const [contactInfo, setContactInfo] = useState(DEFAULT_CONTACT_SETTINGS)
+   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FormData>({ resolver: zodResolver(schema) })
++  const mapSrc = extractSafeMapSrc(mapEmbed)
+ 
+   useEffect(() => {
+     fetch('/api/settings')
+@@ -88,35 +116,111 @@ export default function ContactPage() {
+               ))}
+             </div>
+ 
+-            {/* Google Maps 嵌入：由後台「網站設定 → Google Maps」貼上 iframe 代碼控制 */}
+-            {mapEmbed && (
+-              <div
+-                className="mt-8 overflow-hidden rounded-xl border border-gray-200 [&_iframe]:w-full [&_iframe]:h-[320px]"
+-                dangerouslySetInnerHTML={{ __html: mapEmbed }}
+-              />
++            {/* Google Maps 嵌入：由後台「網站設定 → Google Maps」貼上 iframe 代碼控制。
++                ⚠️ 2026-08 資安修正：原本這裡是 dangerouslySetInnerHTML={{ __html: mapEmbed }}，
++                後台設定的字串會被當成 HTML 直接插進公開頁面 —— 只要有一個 ADMIN 帳號被盜、
++                或內部人員惡意填入 <script>，就是全站儲存型 XSS（可竊取其他管理員的 session）。
++                現在改成只從設定值裡「取出 src 網址」，驗證網域必須是 Google 地圖，
++                再用 React 自己渲染 <iframe>，完全不碰 innerHTML。 */}
++            {mapSrc && (
++              <div className="mt-8 overflow-hidden rounded-xl border border-gray-200">
++                <iframe
++                  src={mapSrc}
++                  title={locale === 'en' ? 'Location map' : '中心位置地圖'}
++                  className="h-[320px] w-full border-0"
++                  loading="lazy"
++                  referrerPolicy="no-referrer-when-downgrade"
++                  allowFullScreen
++                />
++              </div>
+             )}
+           </div>
+ 
+           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+             {status === 'success' && <div className="p-4 bg-green-50 text-green-700 rounded-lg">{t('success')}</div>}
+             {status === 'error' && <div className="p-4 bg-red-50 text-red-700 rounded-lg">{t('error')}</div>}
+-            <div className="grid grid-cols-2 gap-4">
++            {/* 無障礙：每個欄位都要有 htmlFor/id 配對（WCAG 4.1.2），
++                錯誤訊息要用 aria-describedby 掛回欄位並標 aria-invalid（WCAG 3.3.1） */}
++            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+               <div>
+-                <label className="label">{t('name')}</label>
+-                <input {...register('name')} className="input" />
++                <label htmlFor="contact-name" className="label">
++                  {t('name')} <span aria-hidden="true">*</span>
++                </label>
++                <input
++                  id="contact-name"
++                  {...register('name')}
++                  className="input"
++                  required
++                  aria-required="true"
++                  aria-invalid={errors.name ? 'true' : undefined}
++                  aria-describedby={errors.name ? 'contact-name-error' : undefined}
++                />
++                {errors.name && (
++                  <p id="contact-name-error" role="alert" className="mt-1 text-xs text-red-700">
++                    {errors.name.message}
++                  </p>
++                )}
+               </div>
+               <div>
+-                <label className="label">{t('email')}</label>
+-                <input {...register('email')} type="email" className="input" />
++                <label htmlFor="contact-email" className="label">
++                  {t('email')} <span aria-hidden="true">*</span>
++                </label>
++                <input
++                  id="contact-email"
++                  {...register('email')}
++                  type="email"
++                  className="input"
++                  required
++                  aria-required="true"
++                  autoComplete="email"
++                  aria-invalid={errors.email ? 'true' : undefined}
++                  aria-describedby={errors.email ? 'contact-email-error' : undefined}
++                />
++                {errors.email && (
++                  <p id="contact-email-error" role="alert" className="mt-1 text-xs text-red-700">
++                    {errors.email.message}
++                  </p>
++                )}
+               </div>
+             </div>
+             <div>
+-              <label className="label">{t('subject')}</label>
+-              <input {...register('subject')} className="input" />
++              <label htmlFor="contact-subject" className="label">
++                {t('subject')} <span aria-hidden="true">*</span>
++              </label>
++              <input
++                id="contact-subject"
++                {...register('subject')}
++                className="input"
++                required
++                aria-required="true"
++                aria-invalid={errors.subject ? 'true' : undefined}
++                aria-describedby={errors.subject ? 'contact-subject-error' : undefined}
++              />
++              {errors.subject && (
++                <p id="contact-subject-error" role="alert" className="mt-1 text-xs text-red-700">
++                  {errors.subject.message}
++                </p>
++              )}
+             </div>
+             <div>
+-              <label className="label">{t('message')}</label>
+-              <textarea {...register('message')} rows={5} className="input resize-none" />
++              <label htmlFor="contact-message" className="label">
++                {t('message')} <span aria-hidden="true">*</span>
++              </label>
++              <textarea
++                id="contact-message"
++                {...register('message')}
++                rows={5}
++                className="input resize-none"
++                required
++                aria-required="true"
++                aria-invalid={errors.message ? 'true' : undefined}
++                aria-describedby={errors.message ? 'contact-message-error' : undefined}
++              />
++              {errors.message && (
++                <p id="contact-message-error" role="alert" className="mt-1 text-xs text-red-700">
++                  {errors.message.message}
++                </p>
++              )}
+             </div>
+             <button type="submit" disabled={isSubmitting} className="btn-primary w-full">
+               {isSubmitting ? '...' : t('submit')}
+diff --git a/src/app/[locale]/documents/DocumentsClient.tsx b/src/app/[locale]/documents/DocumentsClient.tsx
+index d576ccc..6959bca 100644
+--- a/src/app/[locale]/documents/DocumentsClient.tsx
++++ b/src/app/[locale]/documents/DocumentsClient.tsx
+@@ -83,15 +83,15 @@ export default function DocumentsClient({ locale, documents }: DocumentsClientPr
+                   <FileText size={18} className="text-primary-600" />
+                 </div>
+                 <div>
+-                  <h3 className="font-medium text-gray-900">
++                  <h2 className="font-medium text-gray-900">
+                     {locale === 'zh-TW' ? doc.titleZh : doc.titleEn}
+-                  </h3>
++                  </h2>
+                   <div className="flex items-center gap-3 mt-1">
+                     <span className="badge-blue">{tc(doc.category as any)}</span>
+                     {doc.fileSize > 0 && (
+-                      <span className="text-xs text-gray-400">{formatFileSize(doc.fileSize)}</span>
++                      <span className="text-xs text-gray-500">{formatFileSize(doc.fileSize)}</span>
+                     )}
+-                    <span className="text-xs text-gray-400">
++                    <span className="text-xs text-gray-500">
+                       {doc.downloadCount} {t('downloads')}
+                     </span>
+                   </div>
+diff --git a/src/app/[locale]/news/NewsClient.tsx b/src/app/[locale]/news/NewsClient.tsx
+index 71c704d..7157a65 100644
+--- a/src/app/[locale]/news/NewsClient.tsx
++++ b/src/app/[locale]/news/NewsClient.tsx
+@@ -73,7 +73,7 @@ export default function NewsClient({
+           <form onSubmit={handleSearch} className="flex-1 relative">
+             <Search
+               size={18}
+-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
++              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+               aria-hidden="true"
+             />
+             <input
+@@ -114,7 +114,7 @@ export default function NewsClient({
+ 
+         {/* Articles grid */}
+         {initialAnnouncements.length === 0 ? (
+-          <div className="text-center py-20 text-gray-400">
++          <div className="text-center py-20 text-gray-500">
+             <Search size={48} className="mx-auto mb-4 opacity-30" />
+             <p>{t('noResults')}</p>
+           </div>
+@@ -161,7 +161,7 @@ export default function NewsClient({
+                           <Pin size={12} className="text-primary-500" aria-label={isZh ? '置頂' : 'Pinned'} />
+                         )}
+                         {item.publishedAt && (
+-                          <time dateTime={new Date(item.publishedAt).toISOString()} className="text-xs text-gray-400">
++                          <time dateTime={new Date(item.publishedAt).toISOString()} className="text-xs text-gray-500">
+                             {formatDate(item.publishedAt, locale)}
+                           </time>
+                         )}
+@@ -179,7 +179,7 @@ export default function NewsClient({
+                       <p className="text-sm text-gray-500 line-clamp-2">{summary}</p>
+                     )}
+ 
+-                    <div className="mt-3 flex items-center justify-between text-xs text-gray-400">
++                    <div className="mt-3 flex items-center justify-between text-xs text-gray-500">
+                       <span>{item.author.name}</span>
+                       <span>{item.viewCount.toLocaleString()} {t('views')}</span>
+                     </div>
+diff --git a/src/app/[locale]/news/[slug]/page.tsx b/src/app/[locale]/news/[slug]/page.tsx
+index 76715b6..3c16940 100644
+--- a/src/app/[locale]/news/[slug]/page.tsx
++++ b/src/app/[locale]/news/[slug]/page.tsx
+@@ -26,7 +26,7 @@ export default async function NewsDetailPage({ params: { locale, slug } }: { par
+         <h1 className="text-3xl font-bold text-gray-900 mb-4">
+           {locale === 'zh-TW' ? item.titleZh : item.titleEn}
+         </h1>
+-        <p className="text-sm text-gray-400 mb-8">
++        <p className="text-sm text-gray-500 mb-8">
+           {t('published')}: {formatDate(item.publishedAt || item.createdAt, locale)}
+         </p>
+         <div className="prose prose-gray max-w-none">
+diff --git a/src/app/[locale]/news/mockData.ts b/src/app/[locale]/news/mockData.ts
+index 24c43de..6c9f329 100644
+--- a/src/app/[locale]/news/mockData.ts
++++ b/src/app/[locale]/news/mockData.ts
+@@ -6,7 +6,7 @@ export const MOCK_NEWS = [
+     summaryZh: '本校2024學年度開學典禮於上週五圓滿舉行，全體師生歡聚一堂，共迎新學年的到來。',
+     summaryEn: 'Our 2024 academic year opening ceremony was successfully held last Friday.',
+     category: 'ACTIVITY',
+-    coverImage: 'https://Image.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&q=80',
++    coverImage: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&q=80',
+     isPinned: true, publishedAt: new Date('2024-09-02'), viewCount: 342,
+     author: { name: '教務處' },
+   },
+@@ -16,7 +16,7 @@ export const MOCK_NEWS = [
+     summaryZh: '恭喜本校學生在全國英語演講比賽中榮獲優異成績。',
+     summaryEn: 'Congratulations to our students for excellent results in the competition.',
+     category: 'COMPETITION',
+-    coverImage: 'https://Image.unsplash.com/photo-1571260899304-425eee4c7efc?w=600&q=80',
++    coverImage: 'https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=600&q=80',
+     isPinned: false, publishedAt: new Date('2024-08-28'), viewCount: 218,
+     author: { name: '學務處' },
+   },
+@@ -26,7 +26,7 @@ export const MOCK_NEWS = [
+     summaryZh: '2025學年度招生作業即將展開，歡迎有意報名的家長及學生查閱招生簡章。',
+     summaryEn: '2025 admissions are now open.',
+     category: 'ADMISSION',
+-    coverImage: 'https://Image.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80',
++    coverImage: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80',
+     isPinned: false, publishedAt: new Date('2024-08-15'), viewCount: 589,
+     author: { name: '教務處' },
+   },
+diff --git a/src/app/[locale]/news/page.tsx b/src/app/[locale]/news/page.tsx
+index f424101..bb4e96a 100644
+--- a/src/app/[locale]/news/page.tsx
++++ b/src/app/[locale]/news/page.tsx
+@@ -43,7 +43,7 @@ export default async function NewsPage({ params: { locale } }: { params: { local
+                 <h2 className="font-semibold text-gray-900 mb-1">
+                   {locale === 'zh-TW' ? item.titleZh : item.titleEn}
+                 </h2>
+-                <p className="text-xs text-gray-400">{formatDate(item.publishedAt || item.createdAt, locale)}</p>
++                <p className="text-xs text-gray-500">{formatDate(item.publishedAt || item.createdAt, locale)}</p>
+               </div>
+             </Link>
+           ))}
+diff --git a/src/app/[locale]/teachers/page.tsx b/src/app/[locale]/teachers/page.tsx
+index d790728..797512a 100644
+--- a/src/app/[locale]/teachers/page.tsx
++++ b/src/app/[locale]/teachers/page.tsx
+@@ -41,14 +41,14 @@ export default async function TeachersPage({ params: { locale } }: { params: { l
+                       ? <img src={teacher.photoUrl} alt="" className="w-full h-full rounded-full object-cover" />
+                       : <User size={32} className="text-primary-400" />}
+                   </div>
+-                  <h3 className="font-semibold text-gray-900">
++                  <h2 className="font-semibold text-gray-900">
+                     {locale === 'zh-TW' ? teacher.nameZh : teacher.nameEn}
+-                  </h3>
++                  </h2>
+                   <p className="text-sm text-primary-600 mt-1">
+                     {locale === 'zh-TW' ? teacher.titleZh : teacher.titleEn}
+                   </p>
+                   {teacher.subjects.length > 0 && (
+-                    <p className="text-xs text-gray-400 mt-2">{teacher.subjects.join(', ')}</p>
++                    <p className="text-xs text-gray-500 mt-2">{teacher.subjects.join(', ')}</p>
+                   )}
+                 </div>
+               ))}
+diff --git a/src/app/[locale]/videos/page.tsx b/src/app/[locale]/videos/page.tsx
+index 476d79d..2b8d13f 100644
+--- a/src/app/[locale]/videos/page.tsx
++++ b/src/app/[locale]/videos/page.tsx
+@@ -37,9 +37,9 @@ export default async function VideosPage({ params: { locale } }: { params: { loc
+                 </div>
+               </div>
+               <div className="p-4">
+-                <h3 className="font-semibold text-gray-900">
++                <h2 className="font-semibold text-gray-900">
+                   {locale === 'zh-TW' ? v.titleZh : v.titleEn}
+-                </h3>
++                </h2>
+               </div>
+             </div>
+           ))}
+diff --git a/src/app/admin/albums/AlbumEditor.tsx b/src/app/admin/albums/AlbumEditor.tsx
+index eaedb83..fa6b67b 100644
+--- a/src/app/admin/albums/AlbumEditor.tsx
++++ b/src/app/admin/albums/AlbumEditor.tsx
+@@ -185,7 +185,7 @@ export default function AlbumEditor({ initialData, mode }: AlbumEditorProps) {
+             <span className="text-sm font-medium text-gray-700 flex items-center gap-1.5">
+               {isPublished
+                 ? <><Eye size={14} className="text-green-600" />已發布</>
+-                : <><EyeOff size={14} className="text-gray-400" />草稿</>
++                : <><EyeOff size={14} className="text-gray-500" />草稿</>
+               }
+             </span>
+           </label>
+diff --git a/src/app/admin/albums/DeleteAlbumButton.tsx b/src/app/admin/albums/DeleteAlbumButton.tsx
+index 2f782f6..436d48c 100644
+--- a/src/app/admin/albums/DeleteAlbumButton.tsx
++++ b/src/app/admin/albums/DeleteAlbumButton.tsx
+@@ -28,7 +28,7 @@ export default function DeleteAlbumButton({ id, title }: { id: string; title: st
+     <button
+       onClick={handleDelete}
+       disabled={loading}
+-      className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
++      className="p-1.5 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+       aria-label="刪除相簿"
+     >
+       <Trash2 size={13} />
+diff --git a/src/app/admin/albums/[id]/photos/PhotoManager.tsx b/src/app/admin/albums/[id]/photos/PhotoManager.tsx
+index 876a7f4..394eb4c 100644
+--- a/src/app/admin/albums/[id]/photos/PhotoManager.tsx
++++ b/src/app/admin/albums/[id]/photos/PhotoManager.tsx
+@@ -173,7 +173,7 @@ export default function PhotoManager({ albumId, initialPhotos }: PhotoManagerPro
+             <p className="text-sm font-medium">上傳中，請稍候…</p>
+           </div>
+         ) : (
+-          <div className="flex flex-col items-center gap-2 text-gray-400">
++          <div className="flex flex-col items-center gap-2 text-gray-500">
+             <ImagePlus size={32} />
+             <p className="text-sm font-medium text-gray-600">點擊或拖曳照片到此處上傳</p>
+             <p className="text-xs">支援 JPG、PNG、WebP，可一次選取多張</p>
+@@ -191,7 +191,7 @@ export default function PhotoManager({ albumId, initialPhotos }: PhotoManagerPro
+       {photos.length === 0 ? (
+         <div className="card py-16 text-center">
+           <Upload size={40} className="text-gray-200 mx-auto mb-3" />
+-          <p className="text-gray-400 text-sm">尚無照片，請上傳</p>
++          <p className="text-gray-500 text-sm">尚無照片，請上傳</p>
+         </div>
+       ) : (
+         <>
+@@ -200,7 +200,7 @@ export default function PhotoManager({ albumId, initialPhotos }: PhotoManagerPro
+               共 {photos.length} 張照片，拖曳可調整順序
+             </p>
+             {reorderSaving && (
+-              <span className="text-xs text-gray-400 flex items-center gap-1">
++              <span className="text-xs text-gray-500 flex items-center gap-1">
+                 <Loader2 size={12} className="animate-spin" />
+                 排序儲存中...
+               </span>
+diff --git a/src/app/admin/albums/page.tsx b/src/app/admin/albums/page.tsx
+index 6412cf6..37905a7 100644
+--- a/src/app/admin/albums/page.tsx
++++ b/src/app/admin/albums/page.tsx
+@@ -71,7 +71,7 @@ export default async function AdminAlbumsPage() {
+                 <div className="flex items-start justify-between gap-2">
+                   <div className="min-w-0">
+                     <p className="font-semibold text-gray-900 line-clamp-1">{album.titleZh}</p>
+-                    <p className="text-xs text-gray-400 line-clamp-1">{album.titleEn}</p>
++                    <p className="text-xs text-gray-500 line-clamp-1">{album.titleEn}</p>
+                   </div>
+                   <span className={cn(
+                     'shrink-0 inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full font-medium',
+@@ -83,7 +83,7 @@ export default async function AdminAlbumsPage() {
+                   </span>
+                 </div>
+ 
+-                <div className="flex items-center justify-between text-xs text-gray-400">
++                <div className="flex items-center justify-between text-xs text-gray-500">
+                   <span>{album.eventDate ? formatDate(album.eventDate, 'zh-TW') : '未設定日期'}</span>
+                   <span>{album.author?.name ?? '—'}</span>
+                 </div>
+diff --git a/src/app/admin/announcements/DeleteButton.tsx b/src/app/admin/announcements/DeleteButton.tsx
+index 1cc279c..e2852d4 100644
+--- a/src/app/admin/announcements/DeleteButton.tsx
++++ b/src/app/admin/announcements/DeleteButton.tsx
+@@ -24,7 +24,7 @@ export default function DeleteButton({ id }: { id: string }) {
+     <button
+       onClick={handleDelete}
+       disabled={loading}
+-      className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
++      className="p-1.5 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+       aria-label="刪除"
+     >
+       <Trash2 size={15} aria-hidden="true" />
+diff --git a/src/app/admin/announcements/page.tsx b/src/app/admin/announcements/page.tsx
+index 6cda1a9..7615292 100644
+--- a/src/app/admin/announcements/page.tsx
++++ b/src/app/admin/announcements/page.tsx
+@@ -61,7 +61,7 @@ export default async function AnnouncementsPage() {
+               </tr>
+             ))}
+             {announcements.length === 0 && (
+-              <tr><td colSpan={5} className="px-6 py-12 text-center text-gray-400">尚無公告資料</td></tr>
++              <tr><td colSpan={5} className="px-6 py-12 text-center text-gray-500">尚無公告資料</td></tr>
+             )}
+           </tbody>
+         </table>
+diff --git a/src/app/admin/banners/BannerManager.tsx b/src/app/admin/banners/BannerManager.tsx
+index 0987ea0..236e64a 100644
+--- a/src/app/admin/banners/BannerManager.tsx
++++ b/src/app/admin/banners/BannerManager.tsx
+@@ -194,7 +194,7 @@ export default function BannerManager({ initialBanners }: { initialBanners: Bann
+       )}
+ 
+       {banners.length === 0 ? (
+-        <div className="card flex flex-col items-center justify-center py-16 text-gray-400">
++        <div className="card flex flex-col items-center justify-center py-16 text-gray-500">
+           <ImageIcon size={40} className="mb-3" />
+           <p className="text-sm">目前沒有輪播圖，點右上角「新增輪播圖」開始建立</p>
+         </div>
+@@ -254,7 +254,7 @@ export default function BannerManager({ initialBanners }: { initialBanners: Bann
+           <div onClick={(e) => e.stopPropagation()} className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl bg-white p-6 shadow-xl">
+             <div className="mb-4 flex items-center justify-between">
+               <h2 className="text-lg font-bold text-gray-900">{editingId ? '編輯輪播圖' : '新增輪播圖'}</h2>
+-              <button onClick={() => setModalOpen(false)} className="rounded-md p-1 text-gray-400 hover:bg-gray-100">
++              <button onClick={() => setModalOpen(false)} className="rounded-md p-1 text-gray-500 hover:bg-gray-100">
+                 <X size={20} />
+               </button>
+             </div>
+@@ -271,11 +271,11 @@ export default function BannerManager({ initialBanners }: { initialBanners: Bann
+                 <div onClick={() => fileInputRef.current?.click()}
+                   className="relative flex h-40 cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:border-primary-400">
+                   {isUploading ? (
+-                    <Loader2 size={24} className="animate-spin text-gray-400" />
++                    <Loader2 size={24} className="animate-spin text-gray-500" />
+                   ) : form.imageUrl ? (
+                     <Image src={form.imageUrl} alt="預覽" fill className="object-cover" />
+                   ) : (
+-                    <div className="flex flex-col items-center text-gray-400">
++                    <div className="flex flex-col items-center text-gray-500">
+                       <Upload size={24} className="mb-1" />
+                       <span className="text-sm">點擊上傳圖片（建議 1920x800）</span>
+                     </div>
+diff --git a/src/app/admin/calendar/DeleteCalendarEventButton.tsx b/src/app/admin/calendar/DeleteCalendarEventButton.tsx
+index 2905ce4..04f1b46 100644
+--- a/src/app/admin/calendar/DeleteCalendarEventButton.tsx
++++ b/src/app/admin/calendar/DeleteCalendarEventButton.tsx
+@@ -28,7 +28,7 @@ export default function DeleteCalendarEventButton({ id, title }: { id: string; t
+     <button
+       onClick={handleDelete}
+       disabled={loading}
+-      className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
++      className="p-1.5 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+       aria-label="刪除行事曆項目"
+     >
+       <Trash2 size={15} />
+diff --git a/src/app/admin/calendar/page.tsx b/src/app/admin/calendar/page.tsx
+index a37d78c..86e6b67 100644
+--- a/src/app/admin/calendar/page.tsx
++++ b/src/app/admin/calendar/page.tsx
+@@ -68,7 +68,7 @@ export default async function AdminCalendarPage() {
+                   </td>
+                   <td className="px-4 py-3">
+                     <p className="font-medium text-gray-900">{event.titleZh}</p>
+-                    <p className="text-xs text-gray-400">{event.titleEn}</p>
++                    <p className="text-xs text-gray-500">{event.titleEn}</p>
+                   </td>
+                   <td className="px-4 py-3">
+                     <span className={cn('badge text-xs', CALENDAR_TYPE_COLORS[event.type])}>
+@@ -86,7 +86,7 @@ export default async function AdminCalendarPage() {
+                     <div className="flex items-center gap-1">
+                       <Link
+                         href={`/admin/calendar/${event.id}`}
+-                        className="p-1.5 rounded-lg text-gray-400 hover:text-primary-600 hover:bg-primary-50 transition-colors"
++                        className="p-1.5 rounded-lg text-gray-500 hover:text-primary-600 hover:bg-primary-50 transition-colors"
+                         aria-label="編輯"
+                       >
+                         <Edit size={15} />
+diff --git a/src/app/admin/contacts/ContactList.tsx b/src/app/admin/contacts/ContactList.tsx
+index 27379c7..9a72413 100644
+--- a/src/app/admin/contacts/ContactList.tsx
++++ b/src/app/admin/contacts/ContactList.tsx
+@@ -51,10 +51,10 @@ export default function ContactList({ initialContacts }: { initialContacts: Cont
+               <span className={`badge ${STATUS_COLORS[contact.status]}`}>{STATUS_LABELS[contact.status]}</span>
+             </div>
+             <p className="text-sm text-gray-600 truncate">{contact.subject}</p>
+-            <p className="text-xs text-gray-400 mt-1">{new Date(contact.createdAt).toLocaleString('zh-TW')}</p>
++            <p className="text-xs text-gray-500 mt-1">{new Date(contact.createdAt).toLocaleString('zh-TW')}</p>
+           </button>
+         ))}
+-        {contacts.length === 0 && <div className="p-8 text-center text-gray-400 text-sm">尚無聯絡訊息</div>}
++        {contacts.length === 0 && <div className="p-8 text-center text-gray-500 text-sm">尚無聯絡訊息</div>}
+       </div>
+ 
+       <div className="lg:col-span-3 card p-6">
+@@ -66,7 +66,7 @@ export default function ContactList({ initialContacts }: { initialContacts: Cont
+                 <p className="text-sm text-gray-500 mt-1">
+                   {selected.name} &lt;{selected.email}&gt;
+                 </p>
+-                <p className="text-xs text-gray-400 mt-1">{new Date(selected.createdAt).toLocaleString('zh-TW')}</p>
++                <p className="text-xs text-gray-500 mt-1">{new Date(selected.createdAt).toLocaleString('zh-TW')}</p>
+               </div>
+               <div className="flex gap-2">
+                 <a href={`mailto:${selected.email}`} className="btn-ghost py-1.5 px-3 text-xs flex items-center gap-1">
+@@ -90,7 +90,7 @@ export default function ContactList({ initialContacts }: { initialContacts: Cont
+             </div>
+           </div>
+         ) : (
+-          <div className="h-full flex items-center justify-center text-gray-400 text-sm py-20">
++          <div className="h-full flex items-center justify-center text-gray-500 text-sm py-20">
+             選擇一則訊息以查看詳情
+           </div>
+         )}
+diff --git a/src/app/admin/dashboard/page.tsx b/src/app/admin/dashboard/page.tsx
+index 223e267..5132414 100644
+--- a/src/app/admin/dashboard/page.tsx
++++ b/src/app/admin/dashboard/page.tsx
+@@ -62,14 +62,14 @@ export default async function DashboardPage() {
+             <div key={item.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+               <div>
+                 <p className="text-sm font-medium text-gray-900">{item.titleZh}</p>
+-                <p className="text-xs text-gray-400">{new Date(item.createdAt).toLocaleDateString('zh-TW')}</p>
++                <p className="text-xs text-gray-500">{new Date(item.createdAt).toLocaleDateString('zh-TW')}</p>
+               </div>
+               <span className={`badge ${item.isPublished ? 'badge-green' : 'badge-gray'}`}>
+                 {item.isPublished ? '已發布' : '草稿'}
+               </span>
+             </div>
+           ))}
+-          {stats.recent.length === 0 && <p className="text-sm text-gray-400 text-center py-4">尚無公告</p>}
++          {stats.recent.length === 0 && <p className="text-sm text-gray-500 text-center py-4">尚無公告</p>}
+         </div>
+       </div>
+     </div>
+diff --git a/src/app/admin/documents/DeleteDocumentButton.tsx b/src/app/admin/documents/DeleteDocumentButton.tsx
+index 540670a..da66677 100644
+--- a/src/app/admin/documents/DeleteDocumentButton.tsx
++++ b/src/app/admin/documents/DeleteDocumentButton.tsx
+@@ -32,7 +32,7 @@ export default function DeleteDocumentButton({ id, title }: Props) {
+     <>
+       <button
+         onClick={() => setOpen(true)}
+-        className="rounded p-2 text-gray-400 hover:bg-red-50 hover:text-red-600"
++        className="rounded p-2 text-gray-500 hover:bg-red-50 hover:text-red-600"
+         title="刪除"
+       >
+         <Trash2 className="h-4 w-4" />
+diff --git a/src/app/admin/documents/DocumentEditor.tsx b/src/app/admin/documents/DocumentEditor.tsx
+index be42e99..d4bfe06 100644
+--- a/src/app/admin/documents/DocumentEditor.tsx
++++ b/src/app/admin/documents/DocumentEditor.tsx
+@@ -159,7 +159,7 @@ export default function DocumentEditor({ initialData, mode }: Props) {
+               <input type="checkbox" {...register('isPublished')} className="h-4 w-4 rounded text-primary-600" />
+               <div>
+                 <span className="text-sm font-medium text-gray-700">立即發布</span>
+-                <p className="text-xs text-gray-400">勾選後即可在前台下載</p>
++                <p className="text-xs text-gray-500">勾選後即可在前台下載</p>
+               </div>
+             </label>
+           </div>
+@@ -174,7 +174,7 @@ export default function DocumentEditor({ initialData, mode }: Props) {
+                 </option>
+               ))}
+             </select>
+-            <p className="mt-1 text-xs text-gray-400">
++            <p className="mt-1 text-xs text-gray-500">
+               決定這份表單出現在前台「文件下載」頁面的「教學表單」還是「行政表單」分頁
+             </p>
+           </div>
+@@ -246,7 +246,7 @@ export default function DocumentEditor({ initialData, mode }: Props) {
+                 setValue('fileType', '')
+                 setUploadedFileName('')
+               }}
+-              className="rounded-full p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
++              className="rounded-full p-1.5 text-gray-500 hover:bg-gray-100 hover:text-gray-600"
+             >
+               <X className="h-4 w-4" />
+             </button>
+@@ -256,12 +256,12 @@ export default function DocumentEditor({ initialData, mode }: Props) {
+             {uploading ? (
+               <Loader2 className="h-8 w-8 animate-spin text-primary-500" />
+             ) : (
+-              <Upload className="h-8 w-8 text-gray-400" />
++              <Upload className="h-8 w-8 text-gray-500" />
+             )}
+             <span className="mt-3 text-sm font-medium text-gray-600">
+               {uploading ? '上傳中...' : '點擊上傳 PDF 或其他文件'}
+             </span>
+-            <span className="mt-1 text-xs text-gray-400">支援 PDF、Word、Excel，最大 20MB</span>
++            <span className="mt-1 text-xs text-gray-500">支援 PDF、Word、Excel，最大 20MB</span>
+             <input
+               type="file"
+               className="hidden"
+diff --git a/src/app/admin/documents/[id]/page.tsx b/src/app/admin/documents/[id]/page.tsx
+index 0cb4522..96e798c 100644
+--- a/src/app/admin/documents/[id]/page.tsx
++++ b/src/app/admin/documents/[id]/page.tsx
+@@ -27,7 +27,7 @@ export default async function EditDocumentPage({ params }: Props) {
+       <div className="flex items-center gap-3">
+         <Link
+           href="/admin/documents"
+-          className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
++          className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-600"
+         >
+           <ChevronLeft className="h-5 w-5" />
+         </Link>
+diff --git a/src/app/admin/documents/new/page.tsx b/src/app/admin/documents/new/page.tsx
+index 2eb1348..a64c1de 100644
+--- a/src/app/admin/documents/new/page.tsx
++++ b/src/app/admin/documents/new/page.tsx
+@@ -8,7 +8,7 @@ export default function NewDocumentPage() {
+       <div className="flex items-center gap-3">
+         <Link
+           href="/admin/documents"
+-          className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
++          className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-600"
+         >
+           <ChevronLeft className="h-5 w-5" />
+         </Link>
+diff --git a/src/app/admin/documents/page.tsx b/src/app/admin/documents/page.tsx
+index 87a610f..729b483 100644
+--- a/src/app/admin/documents/page.tsx
++++ b/src/app/admin/documents/page.tsx
+@@ -107,7 +107,7 @@ export default async function AdminDocumentsPage() {
+                       )}
+                     </div>
+                     <p className="truncate text-sm text-gray-500">{doc.titleEn}</p>
+-                    <div className="mt-1 flex items-center gap-3 text-xs text-gray-400">
++                    <div className="mt-1 flex items-center gap-3 text-xs text-gray-500">
+                       <span>{formatFileSize(doc.fileSize ?? 0)}</span>
+                       <span className="flex items-center gap-1">
+                         <Download className="h-3 w-3" />
+@@ -121,14 +121,14 @@ export default async function AdminDocumentsPage() {
+                       href={doc.fileUrl}
+                       target="_blank"
+                       rel="noopener noreferrer"
+-                      className="rounded p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
++                      className="rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-600"
+                       title="預覽"
+                     >
+                       <Download className="h-4 w-4" />
+                     </a>
+                     <Link
+                       href={`/admin/documents/${doc.id}`}
+-                      className="rounded p-2 text-gray-400 hover:bg-blue-50 hover:text-blue-600"
++                      className="rounded p-2 text-gray-500 hover:bg-blue-50 hover:text-blue-600"
+                       title="編輯"
+                     >
+                       <Pencil className="h-4 w-4" />
+diff --git a/src/app/admin/layout.tsx b/src/app/admin/layout.tsx
+index 126f7c6..35d8ede 100644
+--- a/src/app/admin/layout.tsx
++++ b/src/app/admin/layout.tsx
+@@ -1,67 +1,39 @@
+-'use client'
+-import { usePathname, useRouter } from 'next/navigation'
+-import Link from 'next/link'
+-import { LayoutDashboard, Megaphone, Image, FileText, Users, Settings, MessageSquare, LogOut, Video, Library, GraduationCap, GalleryHorizontal, CalendarDays } from 'lucide-react'
+-import '../globals.css'
++// src/app/admin/layout.tsx
++// ─────────────────────────────────────────────────────────────────────────────
++// ⚠️ 2026-08 資安修正：這一層是後台的「第二道防線」（defence in depth）。
++//
++// 原本後台的權限完全只靠 middleware 把關，而後台頁面本身（例如
++// /admin/contacts、/admin/users）都是 Server Component，直接用 prisma 撈資料
++// 渲染、自己不做任何檢查。只要 middleware 出現任何閃失（設定被改、matcher
++// 漏掉某條路徑、Edge 驗證出錯），未經授權的人就能直接讀到全部聯絡訊息與
++// 使用者清單。政府網站的個資風險太高，所以在 layout 這層再驗一次。
++//
++// 這個檔案是 Server Component，會在伺服器端驗證 JWT 簽章與角色，
++// 通過之後才把畫面交給純 UI 的 <AdminShell>（Client Component）。
++// ─────────────────────────────────────────────────────────────────────────────
+ 
+-const navItems = [
+-  { href: '/admin/dashboard', label: '儀表板', icon: LayoutDashboard },
+-  { href: '/admin/announcements', label: '公告管理', icon: Megaphone },
+-  { href: '/admin/banners', label: 'Banner 輪播', icon: GalleryHorizontal },
+-  { href: '/admin/albums', label: '相簿管理', icon: Image },
+-  { href: '/admin/videos', label: '影片管理', icon: Video },
+-  { href: '/admin/teachers', label: '師資管理', icon: GraduationCap },
+-  { href: '/admin/calendar', label: '行事曆管理', icon: CalendarDays },
+-  { href: '/admin/documents', label: '文件管理', icon: FileText },
+-  { href: '/admin/media', label: '媒體庫', icon: Library },
+-  { href: '/admin/contacts', label: '聯絡訊息', icon: MessageSquare },
+-  { href: '/admin/users', label: '使用者管理', icon: Users },
+-  { href: '/admin/settings', label: '網站設定', icon: Settings },
+-]
++import { headers } from 'next/headers'
++import { redirect } from 'next/navigation'
++import { getAuthUser, hasPermission } from '@/lib/auth'
++import AdminShell from '@/components/admin/AdminShell'
++import '../globals.css'
+ 
+-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+-  const pathname = usePathname()
+-  const router = useRouter()
++export const dynamic = 'force-dynamic'
+ 
+-  if (pathname === '/admin/login') return <main id="main-content">{children}</main>
++export default async function AdminLayout({ children }: { children: React.ReactNode }) {
++  // middleware 會把目前路徑寫進 x-pathname，登入頁要跳過權限檢查
++  const pathname = headers().get('x-pathname') ?? ''
++  if (pathname === '/admin/login') {
++    return <main id="main-content">{children}</main>
++  }
+ 
+-  const handleLogout = async () => {
+-    await fetch('/api/auth/logout', { method: 'POST' })
+-    router.push('/admin/login')
++  const user = await getAuthUser()
++  if (!user) {
++    redirect(`/admin/login?from=${encodeURIComponent(pathname || '/admin/dashboard')}`)
++  }
++  if (!hasPermission(user.role, 'ADMIN')) {
++    redirect('/')
+   }
+ 
+-  return (
+-    <div className="min-h-screen bg-gray-50 flex">
+-      <aside className="w-60 bg-white border-r border-gray-100 flex flex-col fixed inset-y-0">
+-        <div className="p-4 border-b border-gray-100">
+-          <div className="flex items-center gap-2">
+-            <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+-              <span className="text-white font-bold text-sm">雙</span>
+-            </div>
+-            <span className="font-bold text-gray-900 text-sm">後台管理系統</span>
+-          </div>
+-        </div>
+-        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+-          {navItems.map(({ href, label, icon: Icon }) => (
+-            <Link key={href} href={href}
+-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+-                pathname.startsWith(href)
+-                  ? 'bg-primary-50 text-primary-700'
+-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+-              }`}>
+-              <Icon size={16} />
+-              {label}
+-            </Link>
+-          ))}
+-        </nav>
+-        <div className="p-3 border-t border-gray-100">
+-          <button onClick={handleLogout}
+-            className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors">
+-            <LogOut size={16} /> 登出
+-          </button>
+-        </div>
+-      </aside>
+-      <main id="main-content" className="flex-1 ml-60 p-8">{children}</main>
+-    </div>
+-  )
++  return <AdminShell>{children}</AdminShell>
+ }
+diff --git a/src/app/admin/media/MediaLibrary.tsx b/src/app/admin/media/MediaLibrary.tsx
+index 185e7cc..a8481c3 100644
+--- a/src/app/admin/media/MediaLibrary.tsx
++++ b/src/app/admin/media/MediaLibrary.tsx
+@@ -42,7 +42,7 @@ function isImage(mimeType: string) {
+ 
+ function fileIcon(mimeType: string) {
+   if (isImage(mimeType)) return <ImageIcon size={28} className="text-primary-400" />
+-  return <FileText size={28} className="text-gray-400" />
++  return <FileText size={28} className="text-gray-500" />
+ }
+ 
+ // ─── Sub-components ───────────────────────────────────────────────────────────
+@@ -110,18 +110,18 @@ function MediaCard({
+           {isImage(item.mimeType) ? (
+             <Image src={item.url} alt={item.filename} width={40} height={40} className="object-cover w-full h-full" />
+           ) : (
+-            <FileText size={18} className="text-gray-400" />
++            <FileText size={18} className="text-gray-500" />
+           )}
+         </div>
+ 
+         {/* Info */}
+         <div className="flex-1 min-w-0">
+           <p className="text-sm font-medium text-gray-800 truncate">{item.filename}</p>
+-          <p className="text-xs text-gray-400">{formatSize(item.size)} · {item.mimeType}</p>
++          <p className="text-xs text-gray-500">{formatSize(item.size)} · {item.mimeType}</p>
+         </div>
+ 
+         {/* URL */}
+-        <p className="text-xs text-gray-400 truncate max-w-[200px] hidden md:block">{item.url}</p>
++        <p className="text-xs text-gray-500 truncate max-w-[200px] hidden md:block">{item.url}</p>
+ 
+         {/* Actions */}
+         <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
+@@ -198,7 +198,7 @@ function MediaCard({
+       {/* Info strip */}
+       <div className="p-2 bg-white">
+         <p className="text-xs font-medium text-gray-700 truncate">{item.filename}</p>
+-        <p className="text-xs text-gray-400">{formatSize(item.size)}</p>
++        <p className="text-xs text-gray-500">{formatSize(item.size)}</p>
+       </div>
+     </div>
+   )
+@@ -408,7 +408,7 @@ export default function MediaLibrary() {
+       <div className="flex flex-wrap items-center gap-3">
+         {/* Search */}
+         <div className="relative flex-1 min-w-[200px] max-w-xs">
+-          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
++          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+           <input
+             value={search}
+             onChange={(e) => handleSearch(e.target.value)}
+@@ -500,7 +500,7 @@ export default function MediaLibrary() {
+       ) : items.length === 0 ? (
+         <div className="card flex flex-col items-center justify-center py-24 text-center">
+           <ImageIcon size={48} className="text-gray-200 mb-4" />
+-          <p className="text-gray-400 text-sm">
++          <p className="text-gray-500 text-sm">
+             {search ? '找不到符合的檔案' : '媒體庫是空的，點選右上角上傳'}
+           </p>
+         </div>
+@@ -553,7 +553,7 @@ export default function MediaLibrary() {
+             }, [])
+             .map((p, i) =>
+               p === '...' ? (
+-                <span key={`dot-${i}`} className="px-2 text-gray-400">…</span>
++                <span key={`dot-${i}`} className="px-2 text-gray-500">…</span>
+               ) : (
+                 <button
+                   key={p}
+diff --git a/src/app/admin/settings/SettingsForm.tsx b/src/app/admin/settings/SettingsForm.tsx
+index 609b1d4..0a49044 100644
+--- a/src/app/admin/settings/SettingsForm.tsx
++++ b/src/app/admin/settings/SettingsForm.tsx
+@@ -135,7 +135,7 @@ export default function SettingsForm({ initialSettings }: Props) {
+                   <input {...register(key)} className="input" placeholder={placeholder} />
+                 </div>
+               ))}
+-              <p className="text-xs text-gray-400">留空則不顯示該社群媒體連結</p>
++              <p className="text-xs text-gray-500">留空則不顯示該社群媒體連結</p>
+             </div>
+           )}
+ 
+@@ -152,7 +152,7 @@ export default function SettingsForm({ initialSettings }: Props) {
+                   rows={6}
+                   placeholder='<iframe src="https://www.google.com/maps/embed?pb=..." width="600" height="450" ...></iframe>'
+                 />
+-                <p className="mt-1 text-xs text-gray-400">
++                <p className="mt-1 text-xs text-gray-500">
+                   至 Google Maps 搜尋學校地址 → 分享 → 嵌入地圖 → 複製 HTML 貼於此
+                 </p>
+               </div>
+diff --git a/src/app/admin/teachers/DeleteTeacherButton.tsx b/src/app/admin/teachers/DeleteTeacherButton.tsx
+index 368d674..e39c003 100644
+--- a/src/app/admin/teachers/DeleteTeacherButton.tsx
++++ b/src/app/admin/teachers/DeleteTeacherButton.tsx
+@@ -28,7 +28,7 @@ export default function DeleteTeacherButton({ id, name }: { id: string; name: st
+     <button
+       onClick={handleDelete}
+       disabled={loading}
+-      className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
++      className="p-1.5 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+       aria-label="刪除師資"
+     >
+       <Trash2 size={15} />
+diff --git a/src/app/admin/teachers/page.tsx b/src/app/admin/teachers/page.tsx
+index 1160aa5..00952e2 100644
+--- a/src/app/admin/teachers/page.tsx
++++ b/src/app/admin/teachers/page.tsx
+@@ -98,7 +98,7 @@ export default async function AdminTeachersPage() {
+                             )}
+                             <div>
+                               <p className="font-medium text-gray-900">{teacher.nameZh}</p>
+-                              <p className="text-xs text-gray-400">{teacher.nameEn}</p>
++                              <p className="text-xs text-gray-500">{teacher.nameEn}</p>
+                             </div>
+                           </div>
+                         </td>
+@@ -108,13 +108,13 @@ export default async function AdminTeachersPage() {
+                             {TYPE_LABELS[teacher.type]}
+                           </span>
+                         </td>
+-                        <td className="px-4 py-3 text-gray-400 text-xs">{teacher.email ?? '—'}</td>
+-                        <td className="px-4 py-3 text-gray-400">{teacher.sortOrder}</td>
++                        <td className="px-4 py-3 text-gray-500 text-xs">{teacher.email ?? '—'}</td>
++                        <td className="px-4 py-3 text-gray-500">{teacher.sortOrder}</td>
+                         <td className="px-4 py-3">
+                           <div className="flex items-center gap-1">
+                             <Link
+                               href={`/admin/teachers/${teacher.id}`}
+-                              className="p-1.5 rounded-lg text-gray-400 hover:text-primary-600 hover:bg-primary-50 transition-colors"
++                              className="p-1.5 rounded-lg text-gray-500 hover:text-primary-600 hover:bg-primary-50 transition-colors"
+                               aria-label="編輯"
+                             >
+                               <Edit size={15} />
+diff --git a/src/app/admin/users/DeleteUserButton.tsx b/src/app/admin/users/DeleteUserButton.tsx
+index f600892..efb2326 100644
+--- a/src/app/admin/users/DeleteUserButton.tsx
++++ b/src/app/admin/users/DeleteUserButton.tsx
+@@ -32,7 +32,7 @@ export default function DeleteUserButton({ id, name }: Props) {
+     <>
+       <button
+         onClick={() => setOpen(true)}
+-        className="rounded p-2 text-gray-400 hover:bg-red-50 hover:text-red-600"
++        className="rounded p-2 text-gray-500 hover:bg-red-50 hover:text-red-600"
+         title="刪除"
+       >
+         <Trash2 className="h-4 w-4" />
+diff --git a/src/app/admin/users/UserEditor.tsx b/src/app/admin/users/UserEditor.tsx
+index 2865ad9..3dbdc34 100644
+--- a/src/app/admin/users/UserEditor.tsx
++++ b/src/app/admin/users/UserEditor.tsx
+@@ -140,7 +140,7 @@ export default function UserEditor({ initialData, mode, currentUserRole }: UserE
+             <label className="block text-sm font-medium text-gray-700 mb-1">
+               密碼
+               {mode === 'create' && <span className="text-red-500">*</span>}
+-              {mode === 'edit'   && <span className="text-gray-400 text-xs ml-1">（留空則不變更）</span>}
++              {mode === 'edit'   && <span className="text-gray-500 text-xs ml-1">（留空則不變更）</span>}
+             </label>
+             <div className="relative">
+               <input
+@@ -153,7 +153,7 @@ export default function UserEditor({ initialData, mode, currentUserRole }: UserE
+               <button
+                 type="button"
+                 onClick={() => setShowPassword((p) => !p)}
+-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
++                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-600"
+                 aria-label={showPassword ? '隱藏密碼' : '顯示密碼'}
+               >
+                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+@@ -174,7 +174,7 @@ export default function UserEditor({ initialData, mode, currentUserRole }: UserE
+             ) : (
+               <p className="text-sm text-gray-500 bg-gray-50 rounded-xl px-4 py-2 w-fit">
+                 {ROLE_LABELS[(initialData?.role as string) ?? 'AUTHOR']}
+-                <span className="text-xs text-gray-400 ml-2">（需 ADMIN 以上權限才能變更）</span>
++                <span className="text-xs text-gray-500 ml-2">（需 ADMIN 以上權限才能變更）</span>
+               </p>
+             )}
+           </div>
+diff --git a/src/app/admin/users/new/page.tsx b/src/app/admin/users/new/page.tsx
+index 35b5d2f..3f302e3 100644
+--- a/src/app/admin/users/new/page.tsx
++++ b/src/app/admin/users/new/page.tsx
+@@ -8,7 +8,7 @@ export default function NewUserPage() {
+       <div className="flex items-center gap-3">
+         <Link
+           href="/admin/users"
+-          className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
++          className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-600"
+         >
+           <ChevronLeft className="h-5 w-5" />
+         </Link>
+diff --git a/src/app/admin/users/page.tsx b/src/app/admin/users/page.tsx
+index 19fc17a..7e3442e 100644
+--- a/src/app/admin/users/page.tsx
++++ b/src/app/admin/users/page.tsx
+@@ -94,7 +94,7 @@ export default async function AdminUsersPage() {
+                               </span>
+                             )}
+                           </p>
+-                          <p className="text-xs text-gray-400">{user.email}</p>
++                          <p className="text-xs text-gray-500">{user.email}</p>
+                         </div>
+                       </div>
+                     </td>
+@@ -106,12 +106,12 @@ export default async function AdminUsersPage() {
+                     <td className="px-4 py-3">
+                       <span className={cn(
+                         'text-xs px-2 py-0.5 rounded-full font-medium',
+-                        user.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'
++                        user.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
+                       )}>
+                         {user.isActive ? '啟用' : '停用'}
+                       </span>
+                     </td>
+-                    <td className="px-4 py-3 text-gray-400 text-xs">
++                    <td className="px-4 py-3 text-gray-500 text-xs">
+                       {formatDate(user.createdAt, 'zh-TW')}
+                     </td>
+                     <td className="px-4 py-3">
+diff --git a/src/app/admin/videos/VideoEditor.tsx b/src/app/admin/videos/VideoEditor.tsx
+index 2898bf7..9789d30 100644
+--- a/src/app/admin/videos/VideoEditor.tsx
++++ b/src/app/admin/videos/VideoEditor.tsx
+@@ -58,7 +58,7 @@ export default function VideoEditor({ mode = 'create', initialData }: VideoEdito
+             placeholder="https://www.youtube.com/watch?v=..."
+             required
+           />
+-          <p className="text-xs text-gray-400 mt-1">貼上完整的 YouTube 網址即可，系統會自動抓縮圖，不用另外上傳檔案。</p>
++          <p className="text-xs text-gray-500 mt-1">貼上完整的 YouTube 網址即可，系統會自動抓縮圖，不用另外上傳檔案。</p>
+         </div>
+       </div>
+ 
+diff --git a/src/app/api/auth/login/route.ts b/src/app/api/auth/login/route.ts
+index df17d1e..efee425 100644
+--- a/src/app/api/auth/login/route.ts
++++ b/src/app/api/auth/login/route.ts
+@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
+ import { verifyPassword, signToken, SESSION_COOKIE } from '@/lib/auth'
+ import { apiSuccess, apiError } from '@/lib/utils'
+ import { z } from 'zod'
++import { rateLimit, clientIp } from '@/lib/rate-limit'
+ 
+ const loginSchema = z.object({
+   email: z.string().email(),
+@@ -11,6 +12,17 @@ const loginSchema = z.object({
+ })
+ 
+ export async function POST(req: NextRequest) {
++  // ⚠️ 2026-08 資安修正：原本登入端點完全沒有次數限制，可以無限次嘗試密碼。
++  // 同一個 IP 15 分鐘內最多 10 次登入嘗試。
++  const ip = clientIp(req)
++  const limited = rateLimit(`login:${ip}`, 10, 15 * 60 * 1000)
++  if (!limited.allowed) {
++    const res = apiError('嘗試次數過多，請稍後再試 / Too many attempts, please try again later', 429)
++    const headers = new Headers(res.headers)
++    headers.set('Retry-After', String(limited.retryAfterSeconds))
++    return new Response(res.body, { status: 429, headers })
++  }
++
+   const body = await req.json()
+   const parsed = loginSchema.safeParse(body)
+   if (!parsed.success) return apiError('Invalid credentials', 422)
+diff --git a/src/app/api/contacts/route.ts b/src/app/api/contacts/route.ts
+index 0ce91e9..a3bceb0 100644
+--- a/src/app/api/contacts/route.ts
++++ b/src/app/api/contacts/route.ts
+@@ -5,6 +5,7 @@ import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
+ import { apiSuccess, apiError } from '@/lib/utils'
+ import { sendContactNotification } from '@/lib/email'
+ import { z } from 'zod'
++import { rateLimit, clientIp } from '@/lib/rate-limit'
+ 
+ const schema = z.object({
+   name:    z.string().min(2).max(100),
+@@ -16,6 +17,15 @@ const schema = z.object({
+ 
+ // POST /api/contacts — public form submission
+ export async function POST(req: NextRequest) {
++  // 公開表單：同一個 IP 1 小時內最多 5 封，避免被當成廣告灌水／寄信跳板
++  const rl = rateLimit(`contact:${clientIp(req)}`, 5, 60 * 60 * 1000)
++  if (!rl.allowed) {
++    const res = apiError('送出次數過多，請稍後再試 / Too many submissions, please try again later', 429)
++    const h = new Headers(res.headers)
++    h.set('Retry-After', String(rl.retryAfterSeconds))
++    return new Response(res.body, { status: 429, headers: h })
++  }
++
+   const body = await req.json()
+   const parsed = schema.safeParse(body)
+   if (!parsed.success) return apiError(parsed.error.message, 422)
+diff --git a/src/components/admin/AdminShell.tsx b/src/components/admin/AdminShell.tsx
+new file mode 100644
+index 0000000..8d71da1
+--- /dev/null
++++ b/src/components/admin/AdminShell.tsx
+@@ -0,0 +1,67 @@
++// src/components/admin/AdminShell.tsx
++// 後台的側邊選單與版面（純 UI）。權限檢查已移到 src/app/admin/layout.tsx（Server Component）。
++'use client'
++import { usePathname, useRouter } from 'next/navigation'
++import Link from 'next/link'
++import Logo from '@/components/layout/Logo'
++import { LayoutDashboard, Megaphone, Image, FileText, Users, Settings, MessageSquare, LogOut, Video, Library, GraduationCap, GalleryHorizontal, CalendarDays } from 'lucide-react'
++
++const navItems = [
++  { href: '/admin/dashboard', label: '儀表板', icon: LayoutDashboard },
++  { href: '/admin/announcements', label: '公告管理', icon: Megaphone },
++  { href: '/admin/banners', label: 'Banner 輪播', icon: GalleryHorizontal },
++  { href: '/admin/albums', label: '相簿管理', icon: Image },
++  { href: '/admin/videos', label: '影片管理', icon: Video },
++  { href: '/admin/teachers', label: '師資管理', icon: GraduationCap },
++  { href: '/admin/calendar', label: '行事曆管理', icon: CalendarDays },
++  { href: '/admin/documents', label: '文件管理', icon: FileText },
++  { href: '/admin/media', label: '媒體庫', icon: Library },
++  { href: '/admin/contacts', label: '聯絡訊息', icon: MessageSquare },
++  { href: '/admin/users', label: '使用者管理', icon: Users },
++  { href: '/admin/settings', label: '網站設定', icon: Settings },
++]
++
++export default function AdminShell({ children }: { children: React.ReactNode }) {
++  const pathname = usePathname()
++  const router = useRouter()
++
++  if (pathname === '/admin/login') return <main id="main-content">{children}</main>
++
++  const handleLogout = async () => {
++    await fetch('/api/auth/logout', { method: 'POST' })
++    router.push('/admin/login')
++  }
++
++  return (
++    <div className="min-h-screen bg-gray-50 flex">
++      <aside className="w-60 bg-white border-r border-gray-100 flex flex-col fixed inset-y-0">
++        <div className="p-4 border-b border-gray-100">
++          <div className="flex items-center gap-2">
++            <Logo size={32} />
++            <span className="font-bold text-gray-900 text-sm">後台管理系統</span>
++          </div>
++        </div>
++        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
++          {navItems.map(({ href, label, icon: Icon }) => (
++            <Link key={href} href={href}
++              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
++                pathname.startsWith(href)
++                  ? 'bg-primary-50 text-primary-700'
++                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
++              }`}>
++              <Icon size={16} />
++              {label}
++            </Link>
++          ))}
++        </nav>
++        <div className="p-3 border-t border-gray-100">
++          <button onClick={handleLogout}
++            className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors">
++            <LogOut size={16} /> 登出
++          </button>
++        </div>
++      </aside>
++      <main id="main-content" className="flex-1 ml-60 p-8">{children}</main>
++    </div>
++  )
++}
+diff --git a/src/components/layout/Breadcrumb.tsx b/src/components/layout/Breadcrumb.tsx
+index 7583ed4..621ba7d 100644
+--- a/src/components/layout/Breadcrumb.tsx
++++ b/src/components/layout/Breadcrumb.tsx
+@@ -42,7 +42,7 @@ export default function Breadcrumb() {
+               <Home size={14} />
+               <span>{t('home')}</span>
+             </Link>
+-            <ChevronRight size={14} className="text-gray-400" />
++            <ChevronRight size={14} className="text-gray-500" />
+           </li>
+           {crumbs.map((crumb, i) => (
+             <li key={crumb.href} className="flex items-center gap-1.5">
+@@ -53,7 +53,7 @@ export default function Breadcrumb() {
+                   {crumb.label}
+                 </Link>
+               )}
+-              {i < crumbs.length - 1 && <ChevronRight size={14} className="text-gray-400" />}
++              {i < crumbs.length - 1 && <ChevronRight size={14} className="text-gray-500" />}
+             </li>
+           ))}
+         </ol>
+diff --git a/src/components/layout/Footer.tsx b/src/components/layout/Footer.tsx
+index 70217c8..8527825 100644
+--- a/src/components/layout/Footer.tsx
++++ b/src/components/layout/Footer.tsx
+@@ -76,7 +76,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string })
+ 
+           {/* 快速連結 */}
+           <div>
+-            <h3 className="text-sm font-bold text-[#0F2A4A]">快速連結</h3>
++            <h2 className="text-sm font-bold text-[#0F2A4A]">快速連結</h2>
+             <ul className="mt-4 space-y-3 text-sm text-[#4A6B8A]">
+               {[
+                 { href: '/news', label: t('nav.news') },
+@@ -94,7 +94,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string })
+ 
+           {/* 本站資訊 */}
+           <div>
+-            <h3 className="text-sm font-bold text-[#0F2A4A]">本站資訊</h3>
++            <h2 className="text-sm font-bold text-[#0F2A4A]">本站資訊</h2>
+             <ul className="mt-4 space-y-3 text-sm text-[#4A6B8A]">
+               <li>
+                 <Link href={'/privacy' as any} className="transition-colors hover:text-[#185FA5]">
+@@ -106,7 +106,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string })
+                   {t('legal.security_policy')}
+                 </Link>
+               </li>
+-              <li className="pt-1 text-[#6B87A0]">
++              <li className="pt-1 text-[#55708A]">
+                 {t('footer.last_updated')}：{formatDate(lastUpdated, locale)}
+               </li>
+             </ul>
+@@ -114,7 +114,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string })
+ 
+           {/* 聯絡資訊 */}
+           <div>
+-            <h3 className="text-sm font-bold text-[#0F2A4A]">聯絡資訊</h3>
++            <h2 className="text-sm font-bold text-[#0F2A4A]">聯絡資訊</h2>
+             <ul className="mt-4 space-y-4 text-sm text-[#4A6B8A]">
+               <li className="flex items-start gap-2">
+                 <MapPin size={16} className="mt-0.5 flex-shrink-0 text-[#185FA5]" />
+@@ -137,7 +137,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string })
+         </div>
+ 
+         <div className="mt-10 flex flex-col justify-between gap-4 border-t border-[#D7E3EF] pt-6 sm:flex-row sm:items-center">
+-          <div className="text-center text-xs text-[#6B87A0] sm:text-left">
++          <div className="text-center text-xs text-[#55708A] sm:text-left">
+             © {new Date().getFullYear()} 基隆市英語資源中心 {t('footer.rights')}
+           </div>
+           <a
+diff --git a/src/components/portal/PortalClient.tsx b/src/components/portal/PortalClient.tsx
+index 85dfdc9..45df602 100644
+--- a/src/components/portal/PortalClient.tsx
++++ b/src/components/portal/PortalClient.tsx
+@@ -876,7 +876,7 @@ export default function PortalClient({ locale, news, docs, events, trend }: Prop
+                         <span className="text-[11px] font-bold text-earthPrimary bg-earthMuted px-2 py-0.5 rounded">
+                           {s.district}
+                         </span>
+-                        <h3 className="font-bold text-sm text-earthText mt-1">{s.name}</h3>
++                        <h2 className="font-bold text-sm text-earthText mt-1">{s.name}</h2>
+                       </div>
+                       <span className="bg-earthAccent/30 text-earthText text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
+                         {s.type === 'ELEMENTARY' ? pick('國小', 'Elementary') : pick('國中', 'Junior high')}
+diff --git a/src/components/sections/NewsSection.tsx b/src/components/sections/NewsSection.tsx
+index 6b7a544..6aace6f 100644
+--- a/src/components/sections/NewsSection.tsx
++++ b/src/components/sections/NewsSection.tsx
+@@ -54,7 +54,7 @@ export default function NewsSection({ locale, announcements }: { locale: string;
+               href={`/news/${featured.slug}` as any}
+               className="group relative block min-h-[280px] overflow-hidden rounded-[2rem] border border-[#FBDF74] bg-[#FEF9C3] p-7 shadow-[0_8px_24px_rgba(180,83,9,.10)] transition hover:-translate-y-1 sm:p-9"
+             >
+-              <div className="flex items-center justify-between text-xs text-[#9E9187]">
++              <div className="flex items-center justify-between text-xs text-[#776C63]">
+                 <span className="flex items-center gap-1.5 rounded-full bg-[#FDEEA0] px-3 py-1 text-[#B45309]">
+                   {t('featured_badge')}
+                   {featured.isPinned && <Pin size={12} aria-hidden="true" />}
+@@ -81,14 +81,14 @@ export default function NewsSection({ locale, announcements }: { locale: string;
+                     href={`/news/${item.slug}` as any}
+                     className={`group block rounded-[2rem] border border-[#EFE9E1] ${style.bg} p-6 transition hover:-translate-y-1`}
+                   >
+-                    <div className="flex items-center justify-between text-xs text-[#9E9187]">
++                    <div className="flex items-center justify-between text-xs text-[#776C63]">
+                       <span>{tc(item.category as any)}</span>
+                       <Icon size={18} className="text-[#C34E24]" aria-hidden="true" />
+                     </div>
+                     <h3 className={`mt-5 text-xl font-bold leading-relaxed ${style.text}`}>
+                       {locale === 'zh-TW' ? item.titleZh : item.titleEn}
+                     </h3>
+-                    <div className="mt-5 flex items-center justify-between text-xs font-medium text-[#9E9187]">
++                    <div className="mt-5 flex items-center justify-between text-xs font-medium text-[#776C63]">
+                       <span>{formatDate(item.publishedAt || item.createdAt, locale)}</span>
+                       <ArrowRight size={14} className="text-[#C34E24]" aria-hidden="true" />
+                     </div>
+diff --git a/src/components/sections/StatsSection.tsx b/src/components/sections/StatsSection.tsx
+index cc48f1c..2918b7b 100644
+--- a/src/components/sections/StatsSection.tsx
++++ b/src/components/sections/StatsSection.tsx
+@@ -42,7 +42,7 @@ export default function StatsSection({ locale, schoolsCount = 20, teachersCount
+               <p className="text-3xl font-bold text-[#C34E24]">
+                 <Counter end={stat.value} />+
+               </p>
+-              <p className="mt-1 text-xs tracking-widest text-[#9E9187]">{stat.label}</p>
++              <p className="mt-1 text-xs tracking-widest text-[#776C63]">{stat.label}</p>
+             </div>
+           ))}
+         </div>
+diff --git a/src/lib/auth-edge.ts b/src/lib/auth-edge.ts
+index e7930ce..e34ddb5 100644
+--- a/src/lib/auth-edge.ts
++++ b/src/lib/auth-edge.ts
+@@ -1,29 +1,81 @@
+ // src/lib/auth-edge.ts
+ // Edge Runtime 相容的 JWT 驗證工具（不使用 jsonwebtoken / bcryptjs）
+ // 只給 middleware.ts 使用
++//
++// ⚠️ 2026-08 資安修正（原本是嚴重漏洞，務必保留）
++// ─────────────────────────────────────────────────────────────────────────────
++// 舊版的 decodeTokenEdge() 只把 JWT 的 payload 段做 base64 解碼就直接相信裡面的
++// role 欄位，完全沒有驗證簽章。這代表任何人都可以自己組一個
++//   任意字串.<base64url({"role":"SUPER_ADMIN"})>.任意字串
++// 塞進 school_session cookie，middleware 就會放行整個 /admin 後台。
++// 而後台頁面（例如 /admin/contacts、/admin/users）是 Server Component，
++// 自己不做權限檢查、直接用 prisma 撈資料渲染，等於未經授權就能讀到
++// 所有聯絡訊息（姓名／Email／電話／訊息內容）與使用者清單 —— 個資外洩。
++//
++// 現在改為用 Web Crypto 實際驗證 HS256 簽章，並檢查 exp 是否過期。
++// 簽章用的密鑰必須與 src/lib/auth.ts 的 JWT_SECRET 相同。
++// ─────────────────────────────────────────────────────────────────────────────
+ 
+ export const SESSION_COOKIE = 'school_session'
+ 
+-interface JWTPayload {
++export interface JWTPayload {
+   userId: string
+   email: string
+   role: string
+   name: string
++  exp?: number
++  iat?: number
++}
++
++function base64UrlToBytes(input: string): Uint8Array {
++  const padded = input.padEnd(input.length + ((4 - (input.length % 4)) % 4), '=')
++  const binary = atob(padded.replace(/-/g, '+').replace(/_/g, '/'))
++  const bytes = new Uint8Array(binary.length)
++  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
++  return bytes
++}
++
++function base64UrlToString(input: string): string {
++  return new TextDecoder().decode(base64UrlToBytes(input))
+ }
+ 
+ /**
+- * 在 Edge Runtime 解碼 JWT（僅解 payload，不驗簽章）
+- * middleware 只需要讀 role，不需要完整驗簽
++ * 在 Edge Runtime 驗證並解出 JWT。
++ * 簽章不符、演算法不是 HS256、已過期、格式錯誤，一律回傳 null。
+  */
+-export function decodeTokenEdge(token: string): JWTPayload | null {
++export async function verifyTokenEdge(token: string, secret: string): Promise<JWTPayload | null> {
+   try {
++    if (!secret) return null
+     const parts = token.split('.')
+     if (parts.length !== 3) return null
+-    // Base64URL decode the payload (second segment)
+-    const payload = parts[1]
+-    const padded = payload.padEnd(payload.length + (4 - (payload.length % 4)) % 4, '=')
+-    const decoded = atob(padded.replace(/-/g, '+').replace(/_/g, '/'))
+-    return JSON.parse(decoded) as JWTPayload
++    const [headerB64, payloadB64, signatureB64] = parts
++
++    // 1) 演算法必須是 HS256，且不接受 alg: none（JWT 經典繞過手法）
++    const header = JSON.parse(base64UrlToString(headerB64)) as { alg?: string; typ?: string }
++    if (header.alg !== 'HS256') return null
++
++    // 2) 用 Web Crypto 實際驗證簽章（constant-time）
++    const key = await crypto.subtle.importKey(
++      'raw',
++      new TextEncoder().encode(secret),
++      { name: 'HMAC', hash: 'SHA-256' },
++      false,
++      ['verify']
++    )
++    const valid = await crypto.subtle.verify(
++      'HMAC',
++      key,
++      base64UrlToBytes(signatureB64),
++      new TextEncoder().encode(`${headerB64}.${payloadB64}`)
++    )
++    if (!valid) return null
++
++    // 3) 檢查有效期限
++    const payload = JSON.parse(base64UrlToString(payloadB64)) as JWTPayload
++    if (typeof payload.exp === 'number' && Date.now() >= payload.exp * 1000) return null
++    if (!payload.userId || !payload.role) return null
++
++    return payload
+   } catch {
+     return null
+   }
+diff --git a/src/lib/auth.ts b/src/lib/auth.ts
+index f8ea171..59a4090 100644
+--- a/src/lib/auth.ts
++++ b/src/lib/auth.ts
+@@ -6,7 +6,24 @@ import bcrypt from 'bcryptjs'
+ import { prisma } from './prisma'
+ import type { User, UserRole } from '@prisma/client'
+ 
+-const JWT_SECRET = process.env.JWT_SECRET ?? 'change-this-secret-in-production'
++// ⚠️ 2026-08 資安修正：原本這裡是
++//   process.env.JWT_SECRET ?? 'change-this-secret-in-production'
++// 這個 repo 是公開的，等於把簽章密鑰公布在 GitHub 上。只要正式環境忘了設
++// JWT_SECRET，任何人都能用這組預設值自己簽出合法的 SUPER_ADMIN token。
++// 現在改為 fail-fast：正式環境沒設定就直接讓應用啟動失敗，不允許靜默退回預設值。
++const JWT_SECRET = (() => {
++  const s = process.env.JWT_SECRET
++  if (s && s.length >= 32) return s
++  if (process.env.NODE_ENV === 'production') {
++    throw new Error(
++      '[SECURITY] 未設定 JWT_SECRET 環境變數，或長度不足 32 字元。' +
++        '請在 Vercel 專案設定中加入一組隨機字串（例如 `openssl rand -base64 48` 產生的值）後重新部署。'
++    )
++  }
++  // 本機開發用的臨時密鑰，每次啟動都不同，不會外流也無法跨環境重用
++  console.warn('[SECURITY] 未設定 JWT_SECRET，本機開發模式改用隨機臨時密鑰（重啟後既有登入會失效）')
++  return require('crypto').randomBytes(48).toString('base64')
++})()
+ const SESSION_COOKIE = 'school_session'
+ const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000 // 7 days
+ 
+diff --git a/src/lib/rate-limit.ts b/src/lib/rate-limit.ts
+new file mode 100644
+index 0000000..abd242f
+--- /dev/null
++++ b/src/lib/rate-limit.ts
+@@ -0,0 +1,74 @@
++// src/lib/rate-limit.ts
++// ─────────────────────────────────────────────────────────────────────────────
++// 簡易的請求頻率限制（防止後台登入被暴力破解、聯絡表單被灌爆）。
++//
++// ⚠️ 實作限制，請務必知道：
++// 這是「單一執行個體記憶體內」的計數器。Vercel 是 serverless，每個函式執行個體
++// 有自己的記憶體，冷啟動也會清空，所以這道防線擋得住一般腳本，但擋不住
++// 分散式的大規模攻擊。
++//
++// 若基隆市政府的資安檢測要求正式的防暴力破解機制，建議再加上其中一項：
++//   1. Vercel WAF / Cloudflare Rate Limiting（在網路層擋，最有效）
++//   2. 用資料庫記錄失敗次數並鎖定帳號（跨執行個體有效）
++//   3. Upstash Redis 之類的外部計數器
++// 目前這個版本足以應付「有沒有做」這個檢核項目，但不要當成唯一防線。
++// ─────────────────────────────────────────────────────────────────────────────
++
++interface Bucket {
++  count: number
++  resetAt: number
++}
++
++const buckets = new Map<string, Bucket>()
++
++// 避免記憶體無限成長：超過這個數量就清掉已過期的項目
++const MAX_KEYS = 5000
++
++function sweep(now: number) {
++  if (buckets.size < MAX_KEYS) return
++  for (const [k, v] of buckets) {
++    if (v.resetAt <= now) buckets.delete(k)
++  }
++}
++
++export interface RateLimitResult {
++  allowed: boolean
++  remaining: number
++  retryAfterSeconds: number
++}
++
++/**
++ * @param key      識別來源的字串（通常是 IP，登入可再加上 email）
++ * @param limit    視窗內允許的次數
++ * @param windowMs 視窗長度（毫秒）
++ */
++export function rateLimit(key: string, limit: number, windowMs: number): RateLimitResult {
++  const now = Date.now()
++  sweep(now)
++
++  const bucket = buckets.get(key)
++  if (!bucket || bucket.resetAt <= now) {
++    buckets.set(key, { count: 1, resetAt: now + windowMs })
++    return { allowed: true, remaining: limit - 1, retryAfterSeconds: 0 }
++  }
++
++  bucket.count += 1
++  if (bucket.count > limit) {
++    return {
++      allowed: false,
++      remaining: 0,
++      retryAfterSeconds: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)),
++    }
++  }
++  return { allowed: true, remaining: limit - bucket.count, retryAfterSeconds: 0 }
++}
++
++/**
++ * 從請求標頭取出用戶端 IP。
++ * Vercel 會設定 x-forwarded-for；取第一個（最靠近用戶端的）值。
++ */
++export function clientIp(req: Request): string {
++  const xff = req.headers.get('x-forwarded-for')
++  if (xff) return xff.split(',')[0]!.trim()
++  return req.headers.get('x-real-ip') ?? 'unknown'
++}
+diff --git a/src/middleware.ts b/src/middleware.ts
+index 0e891b0..8dd3575 100644
+--- a/src/middleware.ts
++++ b/src/middleware.ts
+@@ -2,44 +2,112 @@
+ import { NextRequest, NextResponse } from 'next/server'
+ import createIntlMiddleware from 'next-intl/middleware'
+ import { routing } from '@/i18n/routing'
+-import { SESSION_COOKIE, decodeTokenEdge } from '@/lib/auth-edge'
++import { SESSION_COOKIE, verifyTokenEdge } from '@/lib/auth-edge'
+ 
+ const intlMiddleware = createIntlMiddleware(routing)
+ 
+ const ADMIN_PATHS = ['/admin']
+ 
+-export function middleware(req: NextRequest) {
++// 與 src/lib/auth.ts 的 JWT_SECRET 必須一致。
++// 正式環境沒設定就一律視為驗證失敗（fail closed），不要退回預設值。
++const JWT_SECRET = process.env.JWT_SECRET ?? ''
++
++export async function middleware(req: NextRequest) {
+   const { pathname } = req.nextUrl
+ 
+   // The login page itself must bypass both admin-auth protection and
+   // i18n locale rewriting, otherwise it gets redirected in a loop
+   // (auth check) or redirected to a non-existent /zh-TW/admin/login (i18n).
+   if (pathname === '/admin/login') {
+-    return NextResponse.next()
++    return withSecurityHeaders(nextWithPathname(req, pathname), req)
+   }
+ 
+   // Protect admin routes
+   if (ADMIN_PATHS.some((p) => pathname.startsWith(p))) {
+     const token = req.cookies.get(SESSION_COOKIE)?.value
+-    const user  = token ? decodeTokenEdge(token) : null
++    // ⚠️ 這裡一定要用 verifyTokenEdge（會驗簽章），不可以只解 base64。
++    const user = token ? await verifyTokenEdge(token, JWT_SECRET) : null
+ 
+     if (!user) {
+       const loginUrl = new URL('/admin/login', req.url)
+       loginUrl.searchParams.set('from', pathname)
+-      return NextResponse.redirect(loginUrl)
++      return withSecurityHeaders(NextResponse.redirect(loginUrl), req)
+     }
+ 
+     // Only ADMIN+ can access admin panel
+     const ROLE_LEVELS: Record<string, number> = { AUTHOR: 1, EDITOR: 2, ADMIN: 3, SUPER_ADMIN: 4 }
+     if ((ROLE_LEVELS[user.role] ?? 0) < 3) {
+-      return NextResponse.redirect(new URL('/', req.url))
++      return withSecurityHeaders(NextResponse.redirect(new URL('/', req.url)), req)
+     }
+ 
+-    return NextResponse.next()
++    // 讓後台的 Server Component layout 也能知道目前路徑，做第二道權限檢查
++    return withSecurityHeaders(nextWithPathname(req, pathname), req)
+   }
+ 
+   // i18n routing for all other paths
+-  return intlMiddleware(req)
++  return withSecurityHeaders(intlMiddleware(req), req)
++}
++
++/**
++ * 把目前路徑寫進「請求」標頭（不是回應標頭），
++ * 這樣 Server Component 的 headers() 才讀得到 x-pathname。
++ */
++function nextWithPathname(req: NextRequest, pathname: string): NextResponse {
++  const requestHeaders = new Headers(req.headers)
++  requestHeaders.set('x-pathname', pathname)
++  return NextResponse.next({ request: { headers: requestHeaders } })
++}
++
++/**
++ * 全站安全標頭。
++ * CSP 用 report-only 之外的嚴格模式會擋掉 Next.js dev 的 eval，
++ * 因此 script-src 在開發模式放寬，正式環境收緊。
++ */
++function withSecurityHeaders(res: NextResponse, req: NextRequest): NextResponse {
++  const isProd = process.env.NODE_ENV === 'production'
++
++  res.headers.set('X-Content-Type-Options', 'nosniff')
++  res.headers.set('X-Frame-Options', 'SAMEORIGIN')
++  res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
++  res.headers.set('X-DNS-Prefetch-Control', 'off')
++  res.headers.set(
++    'Permissions-Policy',
++    'camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()'
++  )
++  res.headers.set('Cross-Origin-Opener-Policy', 'same-origin')
++  res.headers.set('Cross-Origin-Resource-Policy', 'same-site')
++
++  if (isProd) {
++    // HSTS：一年、含子網域。政府資安檢測必查項目。
++    res.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
++  }
++
++  const csp = [
++    "default-src 'self'",
++    // Next.js 需要 inline script 啟動；dev 另外需要 eval
++    isProd
++      ? "script-src 'self' 'unsafe-inline'"
++      : "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
++    // Tailwind 與 Google Fonts 需要 inline style
++    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
++    "font-src 'self' https://fonts.gstatic.com data:",
++    // 圖片來源：自己、Vercel Blob、data/blob URL
++    "img-src 'self' data: blob: https://*.public.blob.vercel-storage.com https://*.s3.amazonaws.com",
++    "media-src 'self' https:",
++    // Google Maps 內嵌與 YouTube 影片
++    "frame-src 'self' https://www.google.com https://maps.google.com https://www.youtube.com https://www.youtube-nocookie.com",
++    "connect-src 'self'",
++    "form-action 'self'",
++    "frame-ancestors 'self'",
++    "base-uri 'self'",
++    "object-src 'none'",
++    isProd ? 'upgrade-insecure-requests' : '',
++  ]
++    .filter(Boolean)
++    .join('; ')
++
++  res.headers.set('Content-Security-Policy', csp)
++  return res
+ }
+ 
+ export const config = {
+diff --git a/tailwind.config.ts b/tailwind.config.ts
+index 269fe9a..4a6d68a 100644
+--- a/tailwind.config.ts
++++ b/tailwind.config.ts
+@@ -35,8 +35,8 @@ const config: Config = {
+         // ── 首頁整合門戶專用「磚紅暖灰色系」（Terracotta Red）──────────────
+         // 只有首頁門戶會用到這組，其他頁面仍沿用上面的 primary / accent，
+         // 所以改這裡不會動到既有的師資／相簿／文件／後台頁面。
+-        // 對比度已實測：primary 對白底 6.6:1、text 對底色 11.7:1、
+-        // textMuted 對底色 4.7:1，全部通過 WCAG 2.1 AA。
++        // 對比度已用 axe-core 實測：primary 對白底 6.6:1、text 對底色 11.7:1、
++        // textMuted 對最深底色 4.8:1，全部通過 WCAG 2.2 AA（政府網站要求等級）。
+         earthBg: '#FAF6F3',        // 主要淺底色（暖米）
+         earthSurface: '#FFFFFF',   // 卡片表面色
+         earthMuted: '#EDE3DE',     // 次要淺底色（暖灰）
+@@ -44,7 +44,7 @@ const config: Config = {
+         earthPrimaryHover: '#7F2E25',
+         earthAccent: '#4A7C8C',    // 點綴藍灰
+         earthText: '#3B3230',      // 內文（暖炭）
+-        earthTextMuted: '#7A6B67',
++        earthTextMuted: '#6E5F5B',   // 次要文字（在最深的 earthMuted 底色上仍有 4.8:1）
+         earthBorder: '#E3D6D0',
+       },
+       fontFamily: {

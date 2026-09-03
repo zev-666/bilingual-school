@@ -62,14 +62,14 @@ export default async function DashboardPage() {
             <div key={item.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
               <div>
                 <p className="text-sm font-medium text-gray-900">{item.titleZh}</p>
-                <p className="text-xs text-gray-400">{new Date(item.createdAt).toLocaleDateString('zh-TW')}</p>
+                <p className="text-xs text-gray-500">{new Date(item.createdAt).toLocaleDateString('zh-TW')}</p>
               </div>
               <span className={`badge ${item.isPublished ? 'badge-green' : 'badge-gray'}`}>
                 {item.isPublished ? '已發布' : '草稿'}
               </span>
             </div>
           ))}
-          {stats.recent.length === 0 && <p className="text-sm text-gray-400 text-center py-4">尚無公告</p>}
+          {stats.recent.length === 0 && <p className="text-sm text-gray-500 text-center py-4">尚無公告</p>}
         </div>
       </div>
     </div>

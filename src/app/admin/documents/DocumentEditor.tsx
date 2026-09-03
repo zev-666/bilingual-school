@@ -159,7 +159,7 @@ export default function DocumentEditor({ initialData, mode }: Props) {
               <input type="checkbox" {...register('isPublished')} className="h-4 w-4 rounded text-primary-600" />
               <div>
                 <span className="text-sm font-medium text-gray-700">立即發布</span>
-                <p className="text-xs text-gray-400">勾選後即可在前台下載</p>
+                <p className="text-xs text-gray-500">勾選後即可在前台下載</p>
               </div>
             </label>
           </div>
@@ -174,7 +174,7 @@ export default function DocumentEditor({ initialData, mode }: Props) {
                 </option>
               ))}
             </select>
-            <p className="mt-1 text-xs text-gray-400">
+            <p className="mt-1 text-xs text-gray-500">
               決定這份表單出現在前台「文件下載」頁面的「教學表單」還是「行政表單」分頁
             </p>
           </div>
@@ -246,7 +246,7 @@ export default function DocumentEditor({ initialData, mode }: Props) {
                 setValue('fileType', '')
                 setUploadedFileName('')
               }}
-              className="rounded-full p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+              className="rounded-full p-1.5 text-gray-500 hover:bg-gray-100 hover:text-gray-600"
             >
               <X className="h-4 w-4" />
             </button>
@@ -256,12 +256,12 @@ export default function DocumentEditor({ initialData, mode }: Props) {
             {uploading ? (
               <Loader2 className="h-8 w-8 animate-spin text-primary-500" />
             ) : (
-              <Upload className="h-8 w-8 text-gray-400" />
+              <Upload className="h-8 w-8 text-gray-500" />
             )}
             <span className="mt-3 text-sm font-medium text-gray-600">
               {uploading ? '上傳中...' : '點擊上傳 PDF 或其他文件'}
             </span>
-            <span className="mt-1 text-xs text-gray-400">支援 PDF、Word、Excel，最大 20MB</span>
+            <span className="mt-1 text-xs text-gray-500">支援 PDF、Word、Excel，最大 20MB</span>
             <input
               type="file"
               className="hidden"

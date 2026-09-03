@@ -73,7 +73,7 @@ export default function NewsClient({
           <form onSubmit={handleSearch} className="flex-1 relative">
             <Search
               size={18}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
               aria-hidden="true"
             />
             <input
@@ -114,7 +114,7 @@ export default function NewsClient({
 
         {/* Articles grid */}
         {initialAnnouncements.length === 0 ? (
-          <div className="text-center py-20 text-gray-400">
+          <div className="text-center py-20 text-gray-500">
             <Search size={48} className="mx-auto mb-4 opacity-30" />
             <p>{t('noResults')}</p>
           </div>
@@ -161,7 +161,7 @@ export default function NewsClient({
                           <Pin size={12} className="text-primary-500" aria-label={isZh ? '置頂' : 'Pinned'} />
                         )}
                         {item.publishedAt && (
-                          <time dateTime={new Date(item.publishedAt).toISOString()} className="text-xs text-gray-400">
+                          <time dateTime={new Date(item.publishedAt).toISOString()} className="text-xs text-gray-500">
                             {formatDate(item.publishedAt, locale)}
                           </time>
                         )}
@@ -179,7 +179,7 @@ export default function NewsClient({
                       <p className="text-sm text-gray-500 line-clamp-2">{summary}</p>
                     )}
 
-                    <div className="mt-3 flex items-center justify-between text-xs text-gray-400">
+                    <div className="mt-3 flex items-center justify-between text-xs text-gray-500">
                       <span>{item.author.name}</span>
                       <span>{item.viewCount.toLocaleString()} {t('views')}</span>
                     </div>

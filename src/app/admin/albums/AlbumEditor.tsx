@@ -185,7 +185,7 @@ export default function AlbumEditor({ initialData, mode }: AlbumEditorProps) {
             <span className="text-sm font-medium text-gray-700 flex items-center gap-1.5">
               {isPublished
                 ? <><Eye size={14} className="text-green-600" />已發布</>
-                : <><EyeOff size={14} className="text-gray-400" />草稿</>
+                : <><EyeOff size={14} className="text-gray-500" />草稿</>
               }
             </span>
           </label>

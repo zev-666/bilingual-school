@@ -107,7 +107,7 @@ export default async function AdminDocumentsPage() {
                       )}
                     </div>
                     <p className="truncate text-sm text-gray-500">{doc.titleEn}</p>
-                    <div className="mt-1 flex items-center gap-3 text-xs text-gray-400">
+                    <div className="mt-1 flex items-center gap-3 text-xs text-gray-500">
                       <span>{formatFileSize(doc.fileSize ?? 0)}</span>
                       <span className="flex items-center gap-1">
                         <Download className="h-3 w-3" />
@@ -121,14 +121,14 @@ export default async function AdminDocumentsPage() {
                       href={doc.fileUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rounded p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                      className="rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-600"
                       title="預覽"
                     >
                       <Download className="h-4 w-4" />
                     </a>
                     <Link
                       href={`/admin/documents/${doc.id}`}
-                      className="rounded p-2 text-gray-400 hover:bg-blue-50 hover:text-blue-600"
+                      className="rounded p-2 text-gray-500 hover:bg-blue-50 hover:text-blue-600"
                       title="編輯"
                     >
                       <Pencil className="h-4 w-4" />

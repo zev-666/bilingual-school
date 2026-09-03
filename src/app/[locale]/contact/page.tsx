@@ -14,6 +14,33 @@ const schema = z.object({
 })
 type FormData = z.infer<typeof schema>
 
+/**
+ * 從後台設定的 Google Maps 內嵌碼中「只取出 src 網址」，並驗證網域。
+ * 後台存的可能是整段 <iframe ...> 也可能只有一個網址，兩種都支援。
+ * 只允許 google.com / google.com.tw 的 /maps/embed 路徑，其餘一律回傳空字串。
+ * 這樣即使後台設定值被塞入惡意 HTML，也不會有任何東西被當成 HTML 執行。
+ */
+function extractSafeMapSrc(raw: string): string {
+  if (!raw) return ''
+  const candidate = raw.includes('<') ? (raw.match(/src=["']([^"']+)["']/i)?.[1] ?? '') : raw.trim()
+  if (!candidate) return ''
+  try {
+    const url = new URL(candidate)
+    if (url.protocol !== 'https:') return ''
+    const host = url.hostname.toLowerCase()
+    const allowedHost =
+      host === 'www.google.com' ||
+      host === 'maps.google.com' ||
+      host === 'www.google.com.tw' ||
+      host === 'maps.google.com.tw'
+    if (!allowedHost) return ''
+    if (!url.pathname.startsWith('/maps/embed')) return ''
+    return url.toString()
+  } catch {
+    return ''
+  }
+}
+
 // API 沒有回傳對應 key（尚未在後台設定過）時使用的預設值，跟 admin/settings/page.tsx 的 DEFAULT_SETTINGS 保持一致
 const DEFAULT_CONTACT_SETTINGS = {
   contact_address_zh: '基隆市中正區（請填入實際地址）',
@@ -29,6 +56,7 @@ export default function ContactPage() {
   const [mapEmbed, setMapEmbed] = useState<string>('')
   const [contactInfo, setContactInfo] = useState(DEFAULT_CONTACT_SETTINGS)
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FormData>({ resolver: zodResolver(schema) })
+  const mapSrc = extractSafeMapSrc(mapEmbed)
 
   useEffect(() => {
     fetch('/api/settings')
@@ -88,35 +116,111 @@ export default function ContactPage() {
               ))}
             </div>
 
-            {/* Google Maps 嵌入：由後台「網站設定 → Google Maps」貼上 iframe 代碼控制 */}
-            {mapEmbed && (
-              <div
-                className="mt-8 overflow-hidden rounded-xl border border-gray-200 [&_iframe]:w-full [&_iframe]:h-[320px]"
-                dangerouslySetInnerHTML={{ __html: mapEmbed }}
-              />
+            {/* Google Maps 嵌入：由後台「網站設定 → Google Maps」貼上 iframe 代碼控制。
+                ⚠️ 2026-08 資安修正：原本這裡是 dangerouslySetInnerHTML={{ __html: mapEmbed }}，
+                後台設定的字串會被當成 HTML 直接插進公開頁面 —— 只要有一個 ADMIN 帳號被盜、
+                或內部人員惡意填入 <script>，就是全站儲存型 XSS（可竊取其他管理員的 session）。
+                現在改成只從設定值裡「取出 src 網址」，驗證網域必須是 Google 地圖，
+                再用 React 自己渲染 <iframe>，完全不碰 innerHTML。 */}
+            {mapSrc && (
+              <div className="mt-8 overflow-hidden rounded-xl border border-gray-200">
+                <iframe
+                  src={mapSrc}
+                  title={locale === 'en' ? 'Location map' : '中心位置地圖'}
+                  className="h-[320px] w-full border-0"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
+              </div>
             )}
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {status === 'success' && <div className="p-4 bg-green-50 text-green-700 rounded-lg">{t('success')}</div>}
             {status === 'error' && <div className="p-4 bg-red-50 text-red-700 rounded-lg">{t('error')}</div>}
-            <div className="grid grid-cols-2 gap-4">
+            {/* 無障礙：每個欄位都要有 htmlFor/id 配對（WCAG 4.1.2），
+                錯誤訊息要用 aria-describedby 掛回欄位並標 aria-invalid（WCAG 3.3.1） */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label className="label">{t('name')}</label>
-                <input {...register('name')} className="input" />
+                <label htmlFor="contact-name" className="label">
+                  {t('name')} <span aria-hidden="true">*</span>
+                </label>
+                <input
+                  id="contact-name"
+                  {...register('name')}
+                  className="input"
+                  required
+                  aria-required="true"
+                  aria-invalid={errors.name ? 'true' : undefined}
+                  aria-describedby={errors.name ? 'contact-name-error' : undefined}
+                />
+                {errors.name && (
+                  <p id="contact-name-error" role="alert" className="mt-1 text-xs text-red-700">
+                    {errors.name.message}
+                  </p>
+                )}
               </div>
               <div>
-                <label className="label">{t('email')}</label>
-                <input {...register('email')} type="email" className="input" />
+                <label htmlFor="contact-email" className="label">
+                  {t('email')} <span aria-hidden="true">*</span>
+                </label>
+                <input
+                  id="contact-email"
+                  {...register('email')}
+                  type="email"
+                  className="input"
+                  required
+                  aria-required="true"
+                  autoComplete="email"
+                  aria-invalid={errors.email ? 'true' : undefined}
+                  aria-describedby={errors.email ? 'contact-email-error' : undefined}
+                />
+                {errors.email && (
+                  <p id="contact-email-error" role="alert" className="mt-1 text-xs text-red-700">
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
             </div>
             <div>
-              <label className="label">{t('subject')}</label>
-              <input {...register('subject')} className="input" />
+              <label htmlFor="contact-subject" className="label">
+                {t('subject')} <span aria-hidden="true">*</span>
+              </label>
+              <input
+                id="contact-subject"
+                {...register('subject')}
+                className="input"
+                required
+                aria-required="true"
+                aria-invalid={errors.subject ? 'true' : undefined}
+                aria-describedby={errors.subject ? 'contact-subject-error' : undefined}
+              />
+              {errors.subject && (
+                <p id="contact-subject-error" role="alert" className="mt-1 text-xs text-red-700">
+                  {errors.subject.message}
+                </p>
+              )}
             </div>
             <div>
-              <label className="label">{t('message')}</label>
-              <textarea {...register('message')} rows={5} className="input resize-none" />
+              <label htmlFor="contact-message" className="label">
+                {t('message')} <span aria-hidden="true">*</span>
+              </label>
+              <textarea
+                id="contact-message"
+                {...register('message')}
+                rows={5}
+                className="input resize-none"
+                required
+                aria-required="true"
+                aria-invalid={errors.message ? 'true' : undefined}
+                aria-describedby={errors.message ? 'contact-message-error' : undefined}
+              />
+              {errors.message && (
+                <p id="contact-message-error" role="alert" className="mt-1 text-xs text-red-700">
+                  {errors.message.message}
+                </p>
+              )}
             </div>
             <button type="submit" disabled={isSubmitting} className="btn-primary w-full">
               {isSubmitting ? '...' : t('submit')}

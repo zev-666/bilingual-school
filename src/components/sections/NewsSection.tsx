@@ -54,7 +54,7 @@ export default function NewsSection({ locale, announcements }: { locale: string;
               href={`/news/${featured.slug}` as any}
               className="group relative block min-h-[280px] overflow-hidden rounded-[2rem] border border-[#FBDF74] bg-[#FEF9C3] p-7 shadow-[0_8px_24px_rgba(180,83,9,.10)] transition hover:-translate-y-1 sm:p-9"
             >
-              <div className="flex items-center justify-between text-xs text-[#9E9187]">
+              <div className="flex items-center justify-between text-xs text-[#776C63]">
                 <span className="flex items-center gap-1.5 rounded-full bg-[#FDEEA0] px-3 py-1 text-[#B45309]">
                   {t('featured_badge')}
                   {featured.isPinned && <Pin size={12} aria-hidden="true" />}
@@ -81,14 +81,14 @@ export default function NewsSection({ locale, announcements }: { locale: string;
                     href={`/news/${item.slug}` as any}
                     className={`group block rounded-[2rem] border border-[#EFE9E1] ${style.bg} p-6 transition hover:-translate-y-1`}
                   >
-                    <div className="flex items-center justify-between text-xs text-[#9E9187]">
+                    <div className="flex items-center justify-between text-xs text-[#776C63]">
                       <span>{tc(item.category as any)}</span>
                       <Icon size={18} className="text-[#C34E24]" aria-hidden="true" />
                     </div>
                     <h3 className={`mt-5 text-xl font-bold leading-relaxed ${style.text}`}>
                       {locale === 'zh-TW' ? item.titleZh : item.titleEn}
                     </h3>
-                    <div className="mt-5 flex items-center justify-between text-xs font-medium text-[#9E9187]">
+                    <div className="mt-5 flex items-center justify-between text-xs font-medium text-[#776C63]">
                       <span>{formatDate(item.publishedAt || item.createdAt, locale)}</span>
                       <ArrowRight size={14} className="text-[#C34E24]" aria-hidden="true" />
                     </div>

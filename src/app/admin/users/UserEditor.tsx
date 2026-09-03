@@ -140,7 +140,7 @@ export default function UserEditor({ initialData, mode, currentUserRole }: UserE
             <label className="block text-sm font-medium text-gray-700 mb-1">
               密碼
               {mode === 'create' && <span className="text-red-500">*</span>}
-              {mode === 'edit'   && <span className="text-gray-400 text-xs ml-1">（留空則不變更）</span>}
+              {mode === 'edit'   && <span className="text-gray-500 text-xs ml-1">（留空則不變更）</span>}
             </label>
             <div className="relative">
               <input
@@ -153,7 +153,7 @@ export default function UserEditor({ initialData, mode, currentUserRole }: UserE
               <button
                 type="button"
                 onClick={() => setShowPassword((p) => !p)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-600"
                 aria-label={showPassword ? '隱藏密碼' : '顯示密碼'}
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -174,7 +174,7 @@ export default function UserEditor({ initialData, mode, currentUserRole }: UserE
             ) : (
               <p className="text-sm text-gray-500 bg-gray-50 rounded-xl px-4 py-2 w-fit">
                 {ROLE_LABELS[(initialData?.role as string) ?? 'AUTHOR']}
-                <span className="text-xs text-gray-400 ml-2">（需 ADMIN 以上權限才能變更）</span>
+                <span className="text-xs text-gray-500 ml-2">（需 ADMIN 以上權限才能變更）</span>
               </p>
             )}
           </div>

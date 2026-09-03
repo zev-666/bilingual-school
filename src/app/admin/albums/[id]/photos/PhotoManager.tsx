@@ -173,7 +173,7 @@ export default function PhotoManager({ albumId, initialPhotos }: PhotoManagerPro
             <p className="text-sm font-medium">上傳中，請稍候…</p>
           </div>
         ) : (
-          <div className="flex flex-col items-center gap-2 text-gray-400">
+          <div className="flex flex-col items-center gap-2 text-gray-500">
             <ImagePlus size={32} />
             <p className="text-sm font-medium text-gray-600">點擊或拖曳照片到此處上傳</p>
             <p className="text-xs">支援 JPG、PNG、WebP，可一次選取多張</p>
@@ -191,7 +191,7 @@ export default function PhotoManager({ albumId, initialPhotos }: PhotoManagerPro
       {photos.length === 0 ? (
         <div className="card py-16 text-center">
           <Upload size={40} className="text-gray-200 mx-auto mb-3" />
-          <p className="text-gray-400 text-sm">尚無照片，請上傳</p>
+          <p className="text-gray-500 text-sm">尚無照片，請上傳</p>
         </div>
       ) : (
         <>
@@ -200,7 +200,7 @@ export default function PhotoManager({ albumId, initialPhotos }: PhotoManagerPro
               共 {photos.length} 張照片，拖曳可調整順序
             </p>
             {reorderSaving && (
-              <span className="text-xs text-gray-400 flex items-center gap-1">
+              <span className="text-xs text-gray-500 flex items-center gap-1">
                 <Loader2 size={12} className="animate-spin" />
                 排序儲存中...
               </span>

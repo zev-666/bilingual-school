@@ -5,6 +5,7 @@ import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
 import { sendContactNotification } from '@/lib/email'
 import { z } from 'zod'
+import { rateLimit, clientIp } from '@/lib/rate-limit'
 
 const schema = z.object({
   name:    z.string().min(2).max(100),
@@ -16,6 +17,15 @@ const schema = z.object({
 
 // POST /api/contacts — public form submission
 export async function POST(req: NextRequest) {
+  // 公開表單：同一個 IP 1 小時內最多 5 封，避免被當成廣告灌水／寄信跳板
+  const rl = rateLimit(`contact:${clientIp(req)}`, 5, 60 * 60 * 1000)
+  if (!rl.allowed) {
+    const res = apiError('送出次數過多，請稍後再試 / Too many submissions, please try again later', 429)
+    const h = new Headers(res.headers)
+    h.set('Retry-After', String(rl.retryAfterSeconds))
+    return new Response(res.body, { status: 429, headers: h })
+  }
+
   const body = await req.json()
   const parsed = schema.safeParse(body)
   if (!parsed.success) return apiError(parsed.error.message, 422)

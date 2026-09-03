@@ -58,7 +58,7 @@ export default function VideoEditor({ mode = 'create', initialData }: VideoEdito
             placeholder="https://www.youtube.com/watch?v=..."
             required
           />
-          <p className="text-xs text-gray-400 mt-1">貼上完整的 YouTube 網址即可，系統會自動抓縮圖，不用另外上傳檔案。</p>
+          <p className="text-xs text-gray-500 mt-1">貼上完整的 YouTube 網址即可，系統會自動抓縮圖，不用另外上傳檔案。</p>
         </div>
       </div>
 

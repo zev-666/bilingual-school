@@ -42,7 +42,7 @@ export default function StatsSection({ locale, schoolsCount = 20, teachersCount 
               <p className="text-3xl font-bold text-[#C34E24]">
                 <Counter end={stat.value} />+
               </p>
-              <p className="mt-1 text-xs tracking-widest text-[#9E9187]">{stat.label}</p>
+              <p className="mt-1 text-xs tracking-widest text-[#776C63]">{stat.label}</p>
             </div>
           ))}
         </div>

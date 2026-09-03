@@ -98,7 +98,7 @@ export default async function AdminTeachersPage() {
                             )}
                             <div>
                               <p className="font-medium text-gray-900">{teacher.nameZh}</p>
-                              <p className="text-xs text-gray-400">{teacher.nameEn}</p>
+                              <p className="text-xs text-gray-500">{teacher.nameEn}</p>
                             </div>
                           </div>
                         </td>
@@ -108,13 +108,13 @@ export default async function AdminTeachersPage() {
                             {TYPE_LABELS[teacher.type]}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-gray-400 text-xs">{teacher.email ?? '—'}</td>
-                        <td className="px-4 py-3 text-gray-400">{teacher.sortOrder}</td>
+                        <td className="px-4 py-3 text-gray-500 text-xs">{teacher.email ?? '—'}</td>
+                        <td className="px-4 py-3 text-gray-500">{teacher.sortOrder}</td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-1">
                             <Link
                               href={`/admin/teachers/${teacher.id}`}
-                              className="p-1.5 rounded-lg text-gray-400 hover:text-primary-600 hover:bg-primary-50 transition-colors"
+                              className="p-1.5 rounded-lg text-gray-500 hover:text-primary-600 hover:bg-primary-50 transition-colors"
                               aria-label="編輯"
                             >
                               <Edit size={15} />

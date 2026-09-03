@@ -76,7 +76,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) 
 
           {/* 快速連結 */}
           <div>
-            <h3 className="text-sm font-bold text-[#0F2A4A]">快速連結</h3>
+            <h2 className="text-sm font-bold text-[#0F2A4A]">快速連結</h2>
             <ul className="mt-4 space-y-3 text-sm text-[#4A6B8A]">
               {[
                 { href: '/news', label: t('nav.news') },
@@ -94,7 +94,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) 
 
           {/* 本站資訊 */}
           <div>
-            <h3 className="text-sm font-bold text-[#0F2A4A]">本站資訊</h3>
+            <h2 className="text-sm font-bold text-[#0F2A4A]">本站資訊</h2>
             <ul className="mt-4 space-y-3 text-sm text-[#4A6B8A]">
               <li>
                 <Link href={'/privacy' as any} className="transition-colors hover:text-[#185FA5]">
@@ -106,7 +106,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) 
                   {t('legal.security_policy')}
                 </Link>
               </li>
-              <li className="pt-1 text-[#6B87A0]">
+              <li className="pt-1 text-[#55708A]">
                 {t('footer.last_updated')}：{formatDate(lastUpdated, locale)}
               </li>
             </ul>
@@ -114,7 +114,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) 
 
           {/* 聯絡資訊 */}
           <div>
-            <h3 className="text-sm font-bold text-[#0F2A4A]">聯絡資訊</h3>
+            <h2 className="text-sm font-bold text-[#0F2A4A]">聯絡資訊</h2>
             <ul className="mt-4 space-y-4 text-sm text-[#4A6B8A]">
               <li className="flex items-start gap-2">
                 <MapPin size={16} className="mt-0.5 flex-shrink-0 text-[#185FA5]" />
@@ -137,7 +137,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) 
         </div>
 
         <div className="mt-10 flex flex-col justify-between gap-4 border-t border-[#D7E3EF] pt-6 sm:flex-row sm:items-center">
-          <div className="text-center text-xs text-[#6B87A0] sm:text-left">
+          <div className="text-center text-xs text-[#55708A] sm:text-left">
             © {new Date().getFullYear()} 基隆市英語資源中心 {t('footer.rights')}
           </div>
           <a

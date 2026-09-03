@@ -35,16 +35,15 @@
     "lucide-react": "^0.383.0",
     "multer": "^1.4.5-lts.1",
     "next": "^14.2.0",
-    "next-auth": "^4.24.7",
     "next-intl": "^3.14.0",
-    "nodemailer": "^7.0.13",
+    "nodemailer": "^9.1.1",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.5",
     "react-intersection-observer": "^9.10.3",
     "react-markdown": "^9.0.1",
-    "sharp": "^0.33.4",
+    "sharp": "^0.35.4",
     "tailwind-merge": "^2.3.0",
     "zod": "^3.23.8"
   },
@@ -66,5 +65,12 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.23.5",
     "typescript": "^5.4.5"
+  },
+  "allowScripts": {
+    "@prisma/client@5.22.0": true,
+    "@prisma/engines@5.22.0": true,
+    "esbuild@0.28.1": true,
+    "prisma@5.22.0": true,
+    "unrs-resolver@1.12.2": true
   }
 }

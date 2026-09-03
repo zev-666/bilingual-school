@@ -1,67 +1,39 @@
-'use client'
-import { usePathname, useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { LayoutDashboard, Megaphone, Image, FileText, Users, Settings, MessageSquare, LogOut, Video, Library, GraduationCap, GalleryHorizontal, CalendarDays } from 'lucide-react'
+// src/app/admin/layout.tsx
+// ─────────────────────────────────────────────────────────────────────────────
+// ⚠️ 2026-08 資安修正：這一層是後台的「第二道防線」（defence in depth）。
+//
+// 原本後台的權限完全只靠 middleware 把關，而後台頁面本身（例如
+// /admin/contacts、/admin/users）都是 Server Component，直接用 prisma 撈資料
+// 渲染、自己不做任何檢查。只要 middleware 出現任何閃失（設定被改、matcher
+// 漏掉某條路徑、Edge 驗證出錯），未經授權的人就能直接讀到全部聯絡訊息與
+// 使用者清單。政府網站的個資風險太高，所以在 layout 這層再驗一次。
+//
+// 這個檔案是 Server Component，會在伺服器端驗證 JWT 簽章與角色，
+// 通過之後才把畫面交給純 UI 的 <AdminShell>（Client Component）。
+// ─────────────────────────────────────────────────────────────────────────────
+
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
+import { getAuthUser, hasPermission } from '@/lib/auth'
+import AdminShell from '@/components/admin/AdminShell'
 import '../globals.css'
 
-const navItems = [
-  { href: '/admin/dashboard', label: '儀表板', icon: LayoutDashboard },
-  { href: '/admin/announcements', label: '公告管理', icon: Megaphone },
-  { href: '/admin/banners', label: 'Banner 輪播', icon: GalleryHorizontal },
-  { href: '/admin/albums', label: '相簿管理', icon: Image },
-  { href: '/admin/videos', label: '影片管理', icon: Video },
-  { href: '/admin/teachers', label: '師資管理', icon: GraduationCap },
-  { href: '/admin/calendar', label: '行事曆管理', icon: CalendarDays },
-  { href: '/admin/documents', label: '文件管理', icon: FileText },
-  { href: '/admin/media', label: '媒體庫', icon: Library },
-  { href: '/admin/contacts', label: '聯絡訊息', icon: MessageSquare },
-  { href: '/admin/users', label: '使用者管理', icon: Users },
-  { href: '/admin/settings', label: '網站設定', icon: Settings },
-]
+export const dynamic = 'force-dynamic'
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname()
-  const router = useRouter()
-
-  if (pathname === '/admin/login') return <main id="main-content">{children}</main>
-
-  const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' })
-    router.push('/admin/login')
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  // middleware 會把目前路徑寫進 x-pathname，登入頁要跳過權限檢查
+  const pathname = headers().get('x-pathname') ?? ''
+  if (pathname === '/admin/login') {
+    return <main id="main-content">{children}</main>
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <aside className="w-60 bg-white border-r border-gray-100 flex flex-col fixed inset-y-0">
-        <div className="p-4 border-b border-gray-100">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">雙</span>
-            </div>
-            <span className="font-bold text-gray-900 text-sm">後台管理系統</span>
-          </div>
-        </div>
-        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-          {navItems.map(({ href, label, icon: Icon }) => (
-            <Link key={href} href={href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                pathname.startsWith(href)
-                  ? 'bg-primary-50 text-primary-700'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-              }`}>
-              <Icon size={16} />
-              {label}
-            </Link>
-          ))}
-        </nav>
-        <div className="p-3 border-t border-gray-100">
-          <button onClick={handleLogout}
-            className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors">
-            <LogOut size={16} /> 登出
-          </button>
-        </div>
-      </aside>
-      <main id="main-content" className="flex-1 ml-60 p-8">{children}</main>
-    </div>
-  )
+  const user = await getAuthUser()
+  if (!user) {
+    redirect(`/admin/login?from=${encodeURIComponent(pathname || '/admin/dashboard')}`)
+  }
+  if (!hasPermission(user.role, 'ADMIN')) {
+    redirect('/')
+  }
+
+  return <AdminShell>{children}</AdminShell>
 }

@@ -135,7 +135,7 @@ export default function SettingsForm({ initialSettings }: Props) {
                   <input {...register(key)} className="input" placeholder={placeholder} />
                 </div>
               ))}
-              <p className="text-xs text-gray-400">留空則不顯示該社群媒體連結</p>
+              <p className="text-xs text-gray-500">留空則不顯示該社群媒體連結</p>
             </div>
           )}
 
@@ -152,7 +152,7 @@ export default function SettingsForm({ initialSettings }: Props) {
                   rows={6}
                   placeholder='<iframe src="https://www.google.com/maps/embed?pb=..." width="600" height="450" ...></iframe>'
                 />
-                <p className="mt-1 text-xs text-gray-400">
+                <p className="mt-1 text-xs text-gray-500">
                   至 Google Maps 搜尋學校地址 → 分享 → 嵌入地圖 → 複製 HTML 貼於此
                 </p>
               </div>

@@ -43,7 +43,7 @@ export default async function AlbumDetailPage({
 
         <h1 className="text-3xl font-bold text-gray-900 mb-2">{title}</h1>
         {album.eventDate && (
-          <p className="text-sm text-gray-400 mb-2">{formatDate(album.eventDate, locale)}</p>
+          <p className="text-sm text-gray-500 mb-2">{formatDate(album.eventDate, locale)}</p>
         )}
         {desc && <p className="text-gray-600 mb-4 leading-relaxed">{desc}</p>}
         <p className="text-sm text-gray-500 mb-8">
@@ -51,7 +51,7 @@ export default async function AlbumDetailPage({
         </p>
 
         {album.photos.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+          <div className="flex flex-col items-center justify-center py-20 text-gray-500">
             <ImageIcon size={40} className="mb-3" />
             <p>{t('no_albums')}</p>
           </div>

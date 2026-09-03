@@ -83,15 +83,15 @@ export default function DocumentsClient({ locale, documents }: DocumentsClientPr
                   <FileText size={18} className="text-primary-600" />
                 </div>
                 <div>
-                  <h3 className="font-medium text-gray-900">
+                  <h2 className="font-medium text-gray-900">
                     {locale === 'zh-TW' ? doc.titleZh : doc.titleEn}
-                  </h3>
+                  </h2>
                   <div className="flex items-center gap-3 mt-1">
                     <span className="badge-blue">{tc(doc.category as any)}</span>
                     {doc.fileSize > 0 && (
-                      <span className="text-xs text-gray-400">{formatFileSize(doc.fileSize)}</span>
+                      <span className="text-xs text-gray-500">{formatFileSize(doc.fileSize)}</span>
                     )}
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-gray-500">
                       {doc.downloadCount} {t('downloads')}
                     </span>
                   </div>

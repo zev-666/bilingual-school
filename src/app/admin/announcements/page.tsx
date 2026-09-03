@@ -61,7 +61,7 @@ export default async function AnnouncementsPage() {
               </tr>
             ))}
             {announcements.length === 0 && (
-              <tr><td colSpan={5} className="px-6 py-12 text-center text-gray-400">尚無公告資料</td></tr>
+              <tr><td colSpan={5} className="px-6 py-12 text-center text-gray-500">尚無公告資料</td></tr>
             )}
           </tbody>
         </table>

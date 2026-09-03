@@ -42,7 +42,7 @@ export default function Breadcrumb() {
               <Home size={14} />
               <span>{t('home')}</span>
             </Link>
-            <ChevronRight size={14} className="text-gray-400" />
+            <ChevronRight size={14} className="text-gray-500" />
           </li>
           {crumbs.map((crumb, i) => (
             <li key={crumb.href} className="flex items-center gap-1.5">
@@ -53,7 +53,7 @@ export default function Breadcrumb() {
                   {crumb.label}
                 </Link>
               )}
-              {i < crumbs.length - 1 && <ChevronRight size={14} className="text-gray-400" />}
+              {i < crumbs.length - 1 && <ChevronRight size={14} className="text-gray-500" />}
             </li>
           ))}
         </ol>

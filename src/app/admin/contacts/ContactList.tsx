@@ -51,10 +51,10 @@ export default function ContactList({ initialContacts }: { initialContacts: Cont
               <span className={`badge ${STATUS_COLORS[contact.status]}`}>{STATUS_LABELS[contact.status]}</span>
             </div>
             <p className="text-sm text-gray-600 truncate">{contact.subject}</p>
-            <p className="text-xs text-gray-400 mt-1">{new Date(contact.createdAt).toLocaleString('zh-TW')}</p>
+            <p className="text-xs text-gray-500 mt-1">{new Date(contact.createdAt).toLocaleString('zh-TW')}</p>
           </button>
         ))}
-        {contacts.length === 0 && <div className="p-8 text-center text-gray-400 text-sm">尚無聯絡訊息</div>}
+        {contacts.length === 0 && <div className="p-8 text-center text-gray-500 text-sm">尚無聯絡訊息</div>}
       </div>
 
       <div className="lg:col-span-3 card p-6">
@@ -66,7 +66,7 @@ export default function ContactList({ initialContacts }: { initialContacts: Cont
                 <p className="text-sm text-gray-500 mt-1">
                   {selected.name} &lt;{selected.email}&gt;
                 </p>
-                <p className="text-xs text-gray-400 mt-1">{new Date(selected.createdAt).toLocaleString('zh-TW')}</p>
+                <p className="text-xs text-gray-500 mt-1">{new Date(selected.createdAt).toLocaleString('zh-TW')}</p>
               </div>
               <div className="flex gap-2">
                 <a href={`mailto:${selected.email}`} className="btn-ghost py-1.5 px-3 text-xs flex items-center gap-1">
@@ -90,7 +90,7 @@ export default function ContactList({ initialContacts }: { initialContacts: Cont
             </div>
           </div>
         ) : (
-          <div className="h-full flex items-center justify-center text-gray-400 text-sm py-20">
+          <div className="h-full flex items-center justify-center text-gray-500 text-sm py-20">
             選擇一則訊息以查看詳情
           </div>
         )}

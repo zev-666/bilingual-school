@@ -194,7 +194,7 @@ export default function BannerManager({ initialBanners }: { initialBanners: Bann
       )}
 
       {banners.length === 0 ? (
-        <div className="card flex flex-col items-center justify-center py-16 text-gray-400">
+        <div className="card flex flex-col items-center justify-center py-16 text-gray-500">
           <ImageIcon size={40} className="mb-3" />
           <p className="text-sm">目前沒有輪播圖，點右上角「新增輪播圖」開始建立</p>
         </div>
@@ -254,7 +254,7 @@ export default function BannerManager({ initialBanners }: { initialBanners: Bann
           <div onClick={(e) => e.stopPropagation()} className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl bg-white p-6 shadow-xl">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-lg font-bold text-gray-900">{editingId ? '編輯輪播圖' : '新增輪播圖'}</h2>
-              <button onClick={() => setModalOpen(false)} className="rounded-md p-1 text-gray-400 hover:bg-gray-100">
+              <button onClick={() => setModalOpen(false)} className="rounded-md p-1 text-gray-500 hover:bg-gray-100">
                 <X size={20} />
               </button>
             </div>
@@ -271,11 +271,11 @@ export default function BannerManager({ initialBanners }: { initialBanners: Bann
                 <div onClick={() => fileInputRef.current?.click()}
                   className="relative flex h-40 cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:border-primary-400">
                   {isUploading ? (
-                    <Loader2 size={24} className="animate-spin text-gray-400" />
+                    <Loader2 size={24} className="animate-spin text-gray-500" />
                   ) : form.imageUrl ? (
                     <Image src={form.imageUrl} alt="預覽" fill className="object-cover" />
                   ) : (
-                    <div className="flex flex-col items-center text-gray-400">
+                    <div className="flex flex-col items-center text-gray-500">
                       <Upload size={24} className="mb-1" />
                       <span className="text-sm">點擊上傳圖片（建議 1920x800）</span>
                     </div>

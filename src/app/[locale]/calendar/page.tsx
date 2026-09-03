@@ -138,7 +138,7 @@ export default async function CalendarPage({ params: { locale }, searchParams }:
                           </p>
                         )}
                         {event.endDate && (
-                          <p className="text-xs text-gray-400 mt-1">
+                          <p className="text-xs text-gray-500 mt-1">
                             {t('until')} {formatDay(event.endDate, locale)}
                           </p>
                         )}

@@ -94,7 +94,7 @@ export default async function AdminUsersPage() {
                               </span>
                             )}
                           </p>
-                          <p className="text-xs text-gray-400">{user.email}</p>
+                          <p className="text-xs text-gray-500">{user.email}</p>
                         </div>
                       </div>
                     </td>
@@ -106,12 +106,12 @@ export default async function AdminUsersPage() {
                     <td className="px-4 py-3">
                       <span className={cn(
                         'text-xs px-2 py-0.5 rounded-full font-medium',
-                        user.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'
+                        user.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
                       )}>
                         {user.isActive ? '啟用' : '停用'}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-gray-400 text-xs">
+                    <td className="px-4 py-3 text-gray-500 text-xs">
                       {formatDate(user.createdAt, 'zh-TW')}
                     </td>
                     <td className="px-4 py-3">

@@ -37,9 +37,9 @@ export default async function VideosPage({ params: { locale } }: { params: { loc
                 </div>
               </div>
               <div className="p-4">
-                <h3 className="font-semibold text-gray-900">
+                <h2 className="font-semibold text-gray-900">
                   {locale === 'zh-TW' ? v.titleZh : v.titleEn}
-                </h3>
+                </h2>
               </div>
             </div>
           ))}

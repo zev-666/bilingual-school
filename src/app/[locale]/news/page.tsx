@@ -43,7 +43,7 @@ export default async function NewsPage({ params: { locale } }: { params: { local
                 <h2 className="font-semibold text-gray-900 mb-1">
                   {locale === 'zh-TW' ? item.titleZh : item.titleEn}
                 </h2>
-                <p className="text-xs text-gray-400">{formatDate(item.publishedAt || item.createdAt, locale)}</p>
+                <p className="text-xs text-gray-500">{formatDate(item.publishedAt || item.createdAt, locale)}</p>
               </div>
             </Link>
           ))}
