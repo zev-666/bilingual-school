@@ -46,6 +46,31 @@ const config: Config = {
         earthText: '#3B3230',      // 內文（暖炭）
         earthTextMuted: '#6E5F5B',   // 次要文字（在最深的 earthMuted 底色上仍有 4.8:1）
         earthBorder: '#E3D6D0',
+
+        // ── 溫暖親切・淺色系（design-preview.html 全新設計系統）──────────────
+        // 來源：design-preview.html 的 :root CSS 變數，數值原封不動搬入，
+        // 讓正式網站與預覽稿視覺完全一致。其餘細節色票（#FFF1E0、#FFE8D6 等）
+        // 以 arbitrary value 寫在各元件的 className 中，不在這裡重複定義。
+        cream: '#FFFBF3',        // 主要淺底色（奶油白）
+        creamSoft: '#FFF6E9',    // 次要淺底色（淺杏）
+        paper: '#FFFFFF',        // 卡片表面色
+        sand: '#F5EBDD',         // 暖沙
+        coOrange: '#F2994A',       // 主強調色（杏橙）—— 為避免覆蓋 Tailwind 內建 orange 色票而改名
+        orangeDark: '#D9782B',   // 杏橙深一階
+        orangeDeep: '#B85C1F',   // 杏橙深（文字強調用，對比達標）
+        mint: '#7FC8A9',         // 點綴薄荷綠
+        mintDark: '#4E9E7D',     // 薄荷綠深（文字/按鈕）
+        coYellow: '#FFD97D',       // 奶油黃—— 為避免覆蓋 Tailwind 內建 yellow 色票而改名
+        coSky: '#8FC1E3',          // 點綴淺藍—— 為避免覆蓋 Tailwind 內建 sky 色票而改名
+        coral: '#F08A7A',        // 點綴珊瑚
+        ink: '#4A3B30',          // 內文（暖炭棕）
+        inkSoft: '#8A7A6D',      // 次要文字
+        inkFaint: '#B5A695',     // 輔助文字
+        line: '#EBDFCE',         // 分隔線／卡片邊框
+      },
+      boxShadow: {
+        card: '0 10px 26px rgba(178, 122, 66, 0.10)',
+        soft: '0 18px 40px rgba(178, 122, 66, 0.14)',
       },
       fontFamily: {
         sans: ['var(--font-noto)', 'system-ui', 'sans-serif'],

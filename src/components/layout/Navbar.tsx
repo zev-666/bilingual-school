@@ -78,26 +78,31 @@ export default function Navbar() {
   }, [pathname])
 
   return (
-    <nav ref={navRef} className="sticky top-0 z-50 border-b border-[#D7E3EF]/80 bg-white/95 backdrop-blur">
+    <nav ref={navRef} className="sticky top-0 z-50 border-b border-line/80 bg-cream/90 backdrop-blur">
       <div className="container-school">
-        <div className="flex h-[72px] items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#85B7EB]">
-            <Logo size={40} priority />
+        <div className="flex h-[76px] items-center justify-between">
+          <Link href="/" className="flex items-center gap-3 rounded-full focus:outline-none focus:ring-2 focus:ring-[#FBDCB3]">
+            <span className="flex h-[46px] w-[46px] flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-coYellow to-coOrange shadow-[0_6px_16px_rgba(242,153,74,0.4)]">
+              <Logo size={32} priority />
+            </span>
             <span className="hidden leading-tight sm:block">
-              <span className="block font-bold text-[#0F2A4A]">
-                {locale === 'zh-TW' ? '基隆市英語資源中心' : 'Keelung City English Resource Center'}
+              <span className="block font-heading text-[1.02rem] font-bold text-[#5A4232]">
+                {locale === 'zh-TW' ? '基隆市英語資源中心' : 'Keelung City English Education Resource Center'}
+              </span>
+              <span className="block text-[0.66rem] font-semibold tracking-[0.08em] text-inkFaint">
+                {locale === 'zh-TW' ? 'Keelung City English Education Resource Center' : '基隆市英語資源中心'}
               </span>
             </span>
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden lg:flex lg:items-center lg:gap-6">
+          <div className="hidden items-center gap-1 lg:flex">
             {navEntries.map((entry, i) =>
               entry.type === 'link' ? (
                 <Link
                   key={entry.href}
                   href={entry.href as any}
-                  className="py-3 text-sm font-medium text-[#33526D] transition hover:text-[#185FA5]"
+                  className="whitespace-nowrap rounded-full px-3.5 py-2 text-[0.9rem] font-semibold text-[#6B5747] transition-colors hover:bg-[#FFF1E0] hover:text-orangeDeep"
                 >
                   {entry.label}
                 </Link>
@@ -108,7 +113,7 @@ export default function Navbar() {
                     aria-haspopup="true"
                     aria-expanded={openGroup === i}
                     onClick={() => setOpenGroup(openGroup === i ? null : i)}
-                    className="flex items-center gap-1 py-3 text-sm font-medium text-[#33526D] transition hover:text-[#185FA5] focus:outline-none focus:ring-2 focus:ring-[#85B7EB] rounded"
+                    className="flex items-center gap-1 whitespace-nowrap rounded-full px-3.5 py-2 text-[0.9rem] font-semibold text-[#6B5747] transition-colors hover:bg-[#FFF1E0] hover:text-orangeDeep focus:outline-none focus:ring-2 focus:ring-[#FBDCB3]"
                   >
                     {entry.label}
                     <ChevronDown
@@ -119,7 +124,7 @@ export default function Navbar() {
                   {openGroup === i && (
                     <div
                       role="menu"
-                      className="absolute left-0 top-full mt-2 w-48 rounded-2xl border border-[#D7E3EF] bg-white py-1 shadow-[0_16px_35px_rgba(24,95,165,.13)] z-50"
+                      className="absolute left-0 top-full z-50 mt-2 w-48 rounded-2xl border border-line bg-white py-1 shadow-card"
                     >
                       {entry.items.map((item) => (
                         <Link
@@ -127,7 +132,7 @@ export default function Navbar() {
                           href={item.href as any}
                           role="menuitem"
                           onClick={() => setOpenGroup(null)}
-                          className="block px-4 py-2 text-sm text-[#33526D] transition-colors hover:bg-[#E6F1FB] hover:text-[#185FA5]"
+                          className="block px-4 py-2 text-sm text-[#6B5747] transition-colors hover:bg-[#FFF1E0] hover:text-orangeDeep"
                         >
                           {item.label}
                         </Link>
@@ -138,18 +143,18 @@ export default function Navbar() {
               )
             )}
 
-            <div className="flex items-center gap-2 border-l border-[#D7E3EF] pl-4">
+            <div className="ml-3 flex items-center gap-2 border-l border-line pl-3">
               <SearchBar locale={locale} />
               <FontSizeAdjuster />
               <button
                 onClick={toggleLocale}
-                className="rounded-full border border-[#B5D4F4] px-3 py-2 text-xs font-semibold tracking-widest text-[#185FA5] transition hover:bg-[#E6F1FB]"
+                className="rounded-full border border-line bg-white px-3 py-2 text-xs font-bold tracking-widest text-orangeDeep transition hover:border-[#FBDCB3] hover:bg-[#FFF1E0]"
               >
                 {locale === 'zh-TW' ? 'EN / 中' : '中 / EN'}
               </button>
               <Link
                 href="/contact"
-                className="rounded-full bg-[#185FA5] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0C447C]"
+                className="rounded-full bg-coOrange px-5 py-2.5 text-sm font-bold text-white shadow-[0_8px_20px_rgba(242,153,74,0.35)] transition hover:-translate-y-0.5 hover:bg-orangeDark"
               >
                 {locale === 'zh-TW' ? '找我們聊聊 →' : 'Get in touch →'}
               </Link>
@@ -157,16 +162,16 @@ export default function Navbar() {
           </div>
 
           {/* Mobile */}
-          <div className="lg:hidden flex items-center gap-2">
+          <div className="flex items-center gap-2 lg:hidden">
             <FontSizeAdjuster />
-            <button onClick={toggleLocale} className="p-2 text-[#33526D]">
+            <button onClick={toggleLocale} className="p-2 text-[#6B5747]">
               <Globe size={18} />
             </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
               aria-expanded={isOpen}
               aria-label={isOpen ? '關閉選單' : '開啟選單'}
-              className="rounded-xl border border-[#B5D4F4] bg-[#E6F1FB] p-2 text-[#185FA5]"
+              className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#FBDCB3] bg-[#FFF1E0] text-orangeDeep"
             >
               {isOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -174,14 +179,14 @@ export default function Navbar() {
         </div>
 
         {isOpen && (
-          <div className="lg:hidden border-t border-[#D7E3EF] bg-white py-3">
+          <div className="border-t border-line bg-[#FFFDF8] py-3 lg:hidden">
             {navEntries.map((entry, i) =>
               entry.type === 'link' ? (
                 <Link
                   key={entry.href}
                   href={entry.href as any}
                   onClick={() => setIsOpen(false)}
-                  className="block rounded-xl px-3 py-3 font-medium text-[#33526D] hover:bg-[#E6F1FB] hover:text-[#185FA5]"
+                  className="block rounded-xl px-3 py-3 text-[0.95rem] font-semibold text-[#6B5747] hover:bg-[#FFF1E0] hover:text-orangeDeep"
                 >
                   {entry.label}
                 </Link>
@@ -191,7 +196,7 @@ export default function Navbar() {
                     type="button"
                     aria-expanded={openMobileGroup === i}
                     onClick={() => setOpenMobileGroup(openMobileGroup === i ? null : i)}
-                    className="w-full flex items-center justify-between rounded-xl px-3 py-3 font-medium text-[#33526D] hover:bg-[#E6F1FB] hover:text-[#185FA5]"
+                    className="flex w-full items-center justify-between rounded-xl px-3 py-3 text-[0.95rem] font-semibold text-[#6B5747] hover:bg-[#FFF1E0] hover:text-orangeDeep"
                   >
                     {entry.label}
                     <ChevronDown
@@ -200,13 +205,13 @@ export default function Navbar() {
                     />
                   </button>
                   {openMobileGroup === i && (
-                    <div className="mx-2 rounded-xl bg-[#E6F1FB]/60">
+                    <div className="mx-2 rounded-xl bg-[#FFF1E0]/60">
                       {entry.items.map((item) => (
                         <Link
                           key={item.href}
                           href={item.href as any}
                           onClick={() => setIsOpen(false)}
-                          className="block px-6 py-2 text-sm text-[#33526D] hover:text-[#185FA5]"
+                          className="block px-6 py-2 text-sm text-[#6B5747] hover:text-orangeDeep"
                         >
                           {item.label}
                         </Link>
@@ -218,7 +223,7 @@ export default function Navbar() {
             )}
             <button
               onClick={toggleLocale}
-              className="mt-2 border-t border-[#D7E3EF] px-3 py-4 text-left text-sm font-semibold text-[#185FA5]"
+              className="mt-2 border-t border-line px-3 py-4 text-left text-sm font-bold text-orangeDeep"
             >
               中 / EN
             </button>

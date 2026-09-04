@@ -1,67 +1,106 @@
-import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/routing'
-import { ArrowRight, BookOpen, Globe, Heart } from 'lucide-react'
 import Reveal from '@/components/ui/Reveal'
 
-const FEATURE_STYLES = [
-  { bg: 'bg-[#FFF3EE]', icon: 'text-[#C34E24]' },
-  { bg: 'bg-[#E8F6EF]', icon: 'text-[#2E7A57]' },
-  { bg: 'bg-[#FEF9C3]', icon: 'text-[#B45309]' },
+interface AboutSectionProps {
+  locale: string
+}
+
+const TILE_STYLES = [
+  { bg: 'bg-[#FFF3DF] border-[#F6DDB2]' },
+  { bg: 'bg-[#E7F7EE] border-[#CDEBDD]' },
+  { bg: 'bg-[#FFF6CE] border-[#F0E3A8]' },
 ]
 
-export default function AboutSection({ locale }: { locale: string }) {
-  const t = useTranslations('home.about')
+const TILE_POS = [
+  'left-0 top-0 w-[200px] max-lg:w-[170px]',
+  'right-0 top-[90px] w-[230px] max-lg:w-[190px]',
+  'bottom-0 left-[60px] w-[200px] max-lg:w-[170px]',
+]
 
-  const features = [
-    { icon: BookOpen, text: locale === 'zh-TW' ? '教學資源共享' : 'Shared Teaching Resources' },
-    { icon: Globe, text: locale === 'zh-TW' ? '外師交流合作' : 'Foreign Teacher Collaboration' },
-    { icon: Heart, text: locale === 'zh-TW' ? '專業研習支持' : 'Professional Development Support' },
-  ]
+const TILES = [
+  { icon: '📚', titleZh: '教學資源共享', titleEn: 'Shared Resources', descZh: '全市共備教材、評量與課程模組', descEn: 'Co-planned materials citywide' },
+  { icon: '🌍', titleZh: '外師交流合作', titleEn: 'Foreign Teachers', descZh: 'TFETP、ELTA 外師協同教學計畫', descEn: 'TFETP & ELTA programs' },
+  { icon: '💡', titleZh: '專業研習支持', titleEn: 'Teacher Training', descZh: '工作坊、研習與專業成長支持', descEn: 'Workshops & training' },
+]
+
+const FEATURES = [
+  { icon: '🎓', titleZh: '教學資源共享', titleEn: 'Shared Teaching Resources', subZh: '共備教材 × 評量工具 × 課程模組', subEn: 'Materials · Assessment · Course modules', iconBg: 'bg-[#FFE8D6]' },
+  { icon: '🤝', titleZh: '外師交流合作', titleEn: 'Foreign Teacher Collaboration', subZh: 'TFETP、ELTA 外師協同教學計畫', subEn: 'TFETP & ELTA co-teaching programs', iconBg: 'bg-[#DDF2E7]' },
+  { icon: '❤️', titleZh: '專業研習支持', titleEn: 'Professional Development', subZh: '工作坊 × 研習 × 教師專業成長', subEn: 'Workshops · Training · Growth', iconBg: 'bg-[#FFF0B8]' },
+]
+
+export default function AboutSection({ locale }: AboutSectionProps) {
+  const isEn = locale === 'en'
 
   return (
-    <section className="bg-[#E8F6EF] px-5 py-20 sm:px-8 lg:py-28">
-      <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-          <Reveal>
-            <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#C34E24]">ABOUT US</p>
-              <h2 className="mb-4 text-3xl font-bold text-[#2D241E] sm:text-4xl">{t('title')}</h2>
-              <p className="mb-4 text-[#6E6259]">{t('subtitle')}</p>
-              <p className="mb-8 leading-relaxed text-[#6E6259]">{t('description')}</p>
-              <div className="mb-8 space-y-4">
-                {features.map(({ icon: Icon, text }, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-[#FFE1D3] bg-[#FFF3EE]">
-                      <Icon size={16} className="text-[#C34E24]" />
-                    </div>
-                    <span className="text-[#2D241E]">{text}</span>
-                  </div>
-                ))}
-              </div>
-              <Link
-                href="/about"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[#C34E24] hover:gap-3"
+    <section className="bg-cream py-[88px]">
+      <div className="container-school grid items-center gap-16 lg:grid-cols-2">
+        <Reveal>
+          <div className="relative h-[460px] max-lg:h-[400px]" aria-hidden="true">
+            {TILES.map((tile, i) => (
+              <div
+                key={i}
+                className={`absolute rounded-[32px] border bg-white p-[26px_28px] shadow-card max-lg:p-[20px_22px] ${TILE_POS[i]} ${TILE_STYLES[i].bg}`}
               >
-                {t('learn_more')} <ArrowRight size={16} />
-              </Link>
-            </div>
-          </Reveal>
-
-          <div className="grid gap-4 sm:grid-cols-3">
-            {features.map(({ icon: Icon }, i) => (
-              <Reveal key={i} delay={i * 0.1}>
-                <div
-                  className={`rounded-[1.5rem] border border-[#EFE9E1] ${FEATURE_STYLES[i % FEATURE_STYLES.length].bg} p-5 ${i === 0 ? 'sm:mt-8' : i === 2 ? 'sm:mt-16' : ''}`}
-                >
-                  <Icon size={32} strokeWidth={1.4} className={`mb-8 ${FEATURE_STYLES[i % FEATURE_STYLES.length].icon}`} />
-                  <h3 className="font-bold text-[#2D241E]">
-                    {i === 0 ? (locale === 'zh-TW' ? '教學共備' : 'Co-planning') : i === 1 ? (locale === 'zh-TW' ? '閱讀資源' : 'Reading') : (locale === 'zh-TW' ? '跨校連結' : 'Network')}
-                  </h3>
-                </div>
-              </Reveal>
+                <div className="mb-2.5 text-[1.9rem]">{tile.icon}</div>
+                <h3 className="text-[1.05rem] font-bold text-ink">{isEn ? tile.titleEn : tile.titleZh}</h3>
+                <p className="mt-1 text-[0.83rem] text-inkSoft">{isEn ? tile.descEn : tile.descZh}</p>
+              </div>
             ))}
           </div>
-        </div>
+        </Reveal>
+
+        <Reveal>
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#FBDCB3] bg-[#FFF1E0] px-4 py-1.5 text-[0.78rem] font-bold tracking-[0.14em] text-orangeDeep">
+              ABOUT US · 關於本中心
+            </span>
+            <h2 className="mt-3.5 text-[clamp(1.7rem,3vw,2.5rem)] font-extrabold leading-tight text-ink">
+              {isEn ? (
+                <>
+                  Turn the city into a classroom,
+                  <br />
+                  bring learning back to life.
+                </>
+              ) : (
+                <>
+                  把城市變成教室，
+                  <br />
+                  把學習帶回生活。
+                </>
+              )}
+            </h2>
+            <p className="mt-4 leading-[2] text-inkSoft">
+              {isEn
+                ? 'Established under the supervision of the Department of Education, Keelung City Government, the Center coordinates English and bilingual education across all municipal elementary and junior high schools—with foreign teaching consultants supporting TFETP and ELTA programs.'
+                : '本中心由基隆市政府教育處督導設置，統籌全市國民中小學英語與雙語教育推動事務，遴選召集人、副召集人與專業工作人員，並徵選外籍英語教學顧問，攜手全市 50 所國中小推展雙語教育。'}
+            </p>
+            <div className="mt-4 flex flex-col gap-3">
+              {FEATURES.map((f, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-[14px] rounded-[18px] border border-line bg-white p-[14px_18px] shadow-[0_4px_12px_rgba(178,122,66,0.06)] transition duration-200 hover:-translate-y-[3px] hover:shadow-card"
+                >
+                  <span className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-xl ${f.iconBg}`}>
+                    {f.icon}
+                  </span>
+                  <span>
+                    <strong className="block text-[0.98rem] text-ink">{isEn ? f.titleEn : f.titleZh}</strong>
+                    <span className="text-[0.8rem] text-inkSoft">{isEn ? f.subEn : f.subZh}</span>
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-3.5">
+              <Link
+                href="/about"
+                className="inline-flex items-center gap-2 text-[0.95rem] font-bold text-orangeDeep transition-all hover:gap-3"
+              >
+                {isEn ? 'Learn more' : '了解更多'} <span>→</span>
+              </Link>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   )

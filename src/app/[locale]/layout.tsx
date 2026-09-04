@@ -10,7 +10,7 @@ import HideOnHome from '@/components/layout/HideOnHome'
 import PageTransition from '@/components/ui/PageTransition'
 
 export const metadata: Metadata = {
-  title: { default: '基隆市英語資源中心', template: '%s | 基隆市英語資源中心' },
+  title: { default: '基隆市英語資源中心', template: '%s |基隆市英語資源中心' },
   description: '基隆市英語資源中心 — 提供教師與外師專業英語教學資源、研習與交流平台',
 }
 
@@ -29,17 +29,17 @@ export default async function LocaleLayout({
   const messages = await getMessages()
   return (
     <NextIntlClientProvider messages={messages}>
-      {/* 首頁是自帶頁首頁尾的整合門戶，因此在首頁隱藏全站 Navbar / Breadcrumb / Footer */}
+      {/* 全站 Navbar — 首頁也顯示（對應 design-preview 的頂部導覽列） */}
+      <Navbar />
+      {/* 麵包屑只顯示在內頁（首頁自帶 Hero，不需要麵包屑） */}
       <HideOnHome>
-        <Navbar />
         <Breadcrumb />
       </HideOnHome>
       <main id="main-content">
         <PageTransition>{children}</PageTransition>
       </main>
-      <HideOnHome>
-        <Footer locale={locale} />
-      </HideOnHome>
+      {/* 全站 Footer — 首頁也顯示（對應 design-preview 的頁尾） */}
+      <Footer locale={locale} />
     </NextIntlClientProvider>
   )
 }

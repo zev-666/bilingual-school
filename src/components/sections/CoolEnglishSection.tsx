@@ -1,4 +1,3 @@
-import { ExternalLink, BookOpen } from 'lucide-react'
 import Reveal from '@/components/ui/Reveal'
 
 interface CoolEnglishSectionProps {
@@ -10,33 +9,46 @@ export default function CoolEnglishSection({ locale, coolEnglishUrl }: CoolEngli
   if (!coolEnglishUrl || coolEnglishUrl.trim() === '') {
     return null
   }
+  const isEn = locale === 'en'
 
   return (
-    <section className="px-5 pb-20 sm:px-8">
-      <Reveal>
-        <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-[#B7E4CE] bg-[#E8F6EF]">
-          <div className="grid items-center gap-8 px-7 py-10 md:grid-cols-[auto_1fr_auto] md:px-12 md:py-12">
-            <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border border-[#B7E4CE] bg-white">
-              <BookOpen size={26} className="text-[#2E7A57]" />
+    <section className="bg-creamSoft pb-[88px]">
+      <div className="container-school">
+        <Reveal>
+          <div className="relative overflow-hidden rounded-[36px] border border-[#BBE4CE] bg-gradient-to-br from-[#DFF3E8] to-[#C4E9D6] p-[34px_40px] shadow-card">
+            <span
+              className="pointer-events-none absolute -bottom-[30px] -right-[10px] select-none text-[7rem] opacity-[0.12]"
+              aria-hidden="true"
+            >
+              📚
+            </span>
+            <div className="grid items-center gap-[26px] md:grid-cols-[auto_1fr_auto]">
+              <div className="flex h-[74px] w-[74px] flex-shrink-0 items-center justify-center rounded-[24px] bg-white text-[2.1rem] shadow-[0_8px_20px_rgba(78,158,125,0.22)]">
+                📖
+              </div>
+              <div>
+                <p className="mb-1 text-[0.78rem] font-bold tracking-[0.18em] text-mintDark">COOL ENGLISH</p>
+                <h3 className="text-[1.5rem] font-extrabold text-[#1E4A36]">
+                  {isEn ? 'Cool English Learning Platform' : 'Cool English 線上學習資源'}
+                </h3>
+                <span className="mt-1.5 block text-[0.9rem] leading-[1.8] text-[#3F6B57]">
+                  {isEn
+                    ? "The MOE's free English platform for listening, speaking, reading and writing practice"
+                    : '教育部建置的免費英語學習平台，提供聽力、口說、閱讀、寫作全方位練習資源'}
+                </span>
+              </div>
+              <a
+                href={coolEnglishUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex flex-shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-mintDark px-6 py-3 text-[0.92rem] font-bold text-white shadow-[0_8px_18px_rgba(78,158,125,0.3)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_24px_rgba(78,158,125,0.38)]"
+              >
+                {isEn ? 'Visit Site' : '前往學習'} <span>↗</span>
+              </a>
             </div>
-            <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#2E7A57]">COOL ENGLISH</p>
-              <h3 className="text-2xl font-bold text-[#2D241E]">
-                {locale === 'zh-TW' ? 'Cool English 線上學習資源' : 'Cool English Learning Platform'}
-              </h3>
-              <p className="mt-2 max-w-xl text-sm leading-7 text-[#6E6259]">
-                {locale === 'zh-TW'
-                  ? '教育部建置的免費英語學習平台，提供聽力、口說、閱讀、寫作全方位練習資源'
-                  : "The Ministry of Education's free English learning platform for listening, speaking, reading, and writing practice"}
-              </p>
-            </div>
-            <a href={coolEnglishUrl} target="_blank" rel="noopener noreferrer" className="inline-flex flex-shrink-0 items-center justify-center gap-2 rounded-full border border-[#52B788] bg-[#E8F6EF] px-6 py-3.5 text-sm font-semibold text-[#1F5C42] transition hover:bg-[#B7E4CE]">
-              {locale === 'zh-TW' ? '前往學習' : 'Visit Site'}
-              <ExternalLink size={16} />
-            </a>
           </div>
-        </div>
-      </Reveal>
+        </Reveal>
+      </div>
     </section>
   )
 }

@@ -79,6 +79,20 @@ body { font-family: system-ui, -apple-system, sans-serif; color: #1e293b; backgr
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* 溫暖親切・淺色系（design-preview.html）：
+   Hero 有機 blob 形狀的緩慢漂浮動畫（7s 來回），
+   搭配 motion-safe: 前綴使用，尊重「減少動態效果」系統設定。 */
+@keyframes floatBlob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-16px) rotate(2deg); }
+}
+
+/* Hero 浮動標籤 chip 的漂浮動畫（5s～6s 來回） */
+@keyframes floatChip {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
 /* 骨架屏（Skeleton）用的 shimmer 動畫：淺灰底色來回漸層掃過，
    代表「內容正在載入」。詳見 src/components/ui/Skeleton.tsx */
 @keyframes skeleton-shimmer {
