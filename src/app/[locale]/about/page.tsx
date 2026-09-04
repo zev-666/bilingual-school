@@ -100,7 +100,7 @@ export default async function AboutPage({ params: { locale } }: Props) {
               <div className="grid sm:grid-cols-2 gap-6 w-full">
                 {(['convener', 'deputyConvener'] as const).map((key) => (
                   <div key={key} className="card p-6 text-center border border-gray-100">
-                    <span className="inline-block text-xs font-bold text-primary-600 bg-primary-50 px-3 py-1 rounded-full mb-3">
+                    <span className="inline-block text-xs font-bold text-primary-700 bg-primary-50 px-3 py-1 rounded-full mb-3">
                       {t(`orgStructure.${key}.role`)}
                     </span>
                     <p className="font-bold text-gray-900">{t(`orgStructure.${key}.name`)}</p>
@@ -183,7 +183,7 @@ export default async function AboutPage({ params: { locale } }: Props) {
                 >
                   {/* Content */}
                   <div className={`flex-1 card p-5 ${i % 2 === 0 ? 'md:mr-10' : 'md:ml-10'}`}>
-                    <span className="text-xs font-bold text-primary-600 bg-primary-50 px-2.5 py-0.5 rounded-full">
+                    <span className="text-xs font-bold text-primary-700 bg-primary-50 px-2.5 py-0.5 rounded-full">
                       {event.year}
                     </span>
                     <h3 className="font-bold text-gray-900 mt-2 mb-1">{event.title}</h3>
