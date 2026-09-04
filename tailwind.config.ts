@@ -9,16 +9,16 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          50:  '#E6F1FB',
-          100: '#B5D4F4',
-          200: '#85B7EB',
-          300: '#5B9EE0',
-          400: '#378ADD',
-          500: '#2B6FC7',
-          600: '#185FA5',
-          700: '#0C447C',
-          800: '#0A3866',
-          900: '#042C53',
+          50:  '#FDF3E8',
+          100: '#FBD9B5',
+          200: '#F5BC8A',
+          300: '#EDA066',
+          400: '#E08445',
+          500: '#C96A20',
+          600: '#B25A0D',
+          700: '#9A4E0B',
+          800: '#7E3F09',
+          900: '#5C2E06',
         },
         accent: {
           50:  '#F6F8E3',
@@ -55,17 +55,17 @@ const config: Config = {
         creamSoft: '#FFF6E9',    // 次要淺底色（淺杏）
         paper: '#FFFFFF',        // 卡片表面色
         sand: '#F5EBDD',         // 暖沙
-        coOrange: '#F2994A',       // 主強調色（杏橙）—— 為避免覆蓋 Tailwind 內建 orange 色票而改名
+        coOrange: '#B25A0D',       // 主強調色（杏橙）—— 為避免覆蓋 Tailwind 內建 orange 色票而改名
         orangeDark: '#D9782B',   // 杏橙深一階
-        orangeDeep: '#B85C1F',   // 杏橙深（文字強調用，對比達標）
+        orangeDeep: '#A7541C',   // 杏橙深（文字強調用，對比達標）
         mint: '#7FC8A9',         // 點綴薄荷綠
-        mintDark: '#4E9E7D',     // 薄荷綠深（文字/按鈕）
+        mintDark: '#3E7E64',     // 薄荷綠深（文字/按鈕）
         coYellow: '#FFD97D',       // 奶油黃—— 為避免覆蓋 Tailwind 內建 yellow 色票而改名
         coSky: '#8FC1E3',          // 點綴淺藍—— 為避免覆蓋 Tailwind 內建 sky 色票而改名
         coral: '#F08A7A',        // 點綴珊瑚
         ink: '#4A3B30',          // 內文（暖炭棕）
-        inkSoft: '#8A7A6D',      // 次要文字
-        inkFaint: '#B5A695',     // 輔助文字
+        inkSoft: '#7C6D62',      // 次要文字
+        inkFaint: '#7F6D59',     // 輔助文字
         line: '#EBDFCE',         // 分隔線／卡片邊框
       },
       boxShadow: {

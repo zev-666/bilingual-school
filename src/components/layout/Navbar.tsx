@@ -144,17 +144,19 @@ export default function Navbar() {
             )}
 
             <div className="ml-3 flex items-center gap-2 border-l border-line pl-3">
-              <SearchBar locale={locale} />
+              <div className="min-w-0 max-w-[280px] w-full">
+                <SearchBar locale={locale} />
+              </div>
               <FontSizeAdjuster />
               <button
                 onClick={toggleLocale}
-                className="rounded-full border border-line bg-white px-3 py-2 text-xs font-bold tracking-widest text-orangeDeep transition hover:border-[#FBDCB3] hover:bg-[#FFF1E0]"
+                className="shrink-0 whitespace-nowrap rounded-full border border-line bg-white px-3 py-2 text-xs font-bold tracking-widest text-orangeDeep transition hover:border-[#FBDCB3] hover:bg-[#FFF1E0]"
               >
                 {locale === 'zh-TW' ? 'EN / 中' : '中 / EN'}
               </button>
               <Link
                 href="/contact"
-                className="rounded-full bg-coOrange px-5 py-2.5 text-sm font-bold text-white shadow-[0_8px_20px_rgba(242,153,74,0.35)] transition hover:-translate-y-0.5 hover:bg-orangeDark"
+                className="shrink-0 whitespace-nowrap rounded-full bg-coOrange px-5 py-2.5 text-sm font-bold text-white shadow-[0_8px_20px_rgba(242,153,74,0.35)] transition hover:-translate-y-0.5 hover:bg-orangeDark"
               >
                 {locale === 'zh-TW' ? '找我們聊聊 →' : 'Get in touch →'}
               </Link>

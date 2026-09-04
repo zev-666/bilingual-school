@@ -11,7 +11,7 @@ export default function FontSizeAdjuster() {
 
   return (
     <div
-      className="flex items-center overflow-hidden rounded-full border border-[#FBDCB3] bg-[#FFF1E0]"
+      className="flex shrink-0 items-center overflow-hidden rounded-full border border-[#FBDCB3] bg-[#FFF1E0]"
       role="group"
       aria-label="字體大小調整 / Adjust font size"
     >
@@ -21,7 +21,7 @@ export default function FontSizeAdjuster() {
         disabled={atMin}
         aria-label="縮小字體"
         title="縮小字體 Decrease font size"
-        className="px-2.5 py-1.5 text-[0.82rem] font-bold text-orangeDeep transition-colors hover:bg-[#FFE8D6] disabled:opacity-40 disabled:cursor-not-allowed"
+        className="shrink-0 px-2.5 py-1.5 text-[0.82rem] font-bold text-orangeDeep transition-colors hover:bg-[#FFE8D6] disabled:opacity-40 disabled:cursor-not-allowed"
       >
         A-
       </button>
@@ -32,7 +32,7 @@ export default function FontSizeAdjuster() {
         disabled={atMax}
         aria-label="放大字體"
         title="放大字體 Increase font size"
-        className="px-2.5 py-1.5 text-[0.82rem] font-bold text-orangeDeep transition-colors hover:bg-[#FFE8D6] disabled:opacity-40 disabled:cursor-not-allowed"
+        className="shrink-0 px-2.5 py-1.5 text-[0.82rem] font-bold text-orangeDeep transition-colors hover:bg-[#FFE8D6] disabled:opacity-40 disabled:cursor-not-allowed"
       >
         A+
       </button>
