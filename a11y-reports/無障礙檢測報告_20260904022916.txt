@@ -1,0 +1,260 @@
+==================================================================
+  基隆市英語教育資源中心 — 無障礙自動化檢測報告
+==================================================================
+  檢測時間：2026/9/4 上午10:27:34
+  檢測對象：https://bilingual-school.vercel.app
+  檢測工具：axe-core（@axe-core/playwright）
+  檢測依據：WCAG 2.0 / 2.1 / 2.2 之 A 與 AA 全部規則
+==================================================================
+
+【桌機 1280x800】
+  [NG] 首頁　1 項違規 / 4 個節點
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（4 處）
+         .left-\[40px\]
+         -> Element has insufficient color contrast of 4.21 (foreground color: #a5711d, background color: #ffffff, font size: 9.4pt (12.48px), font weight: bold). Expected contrast ratio of 4.5:1
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         …另有 1 處
+  [NG] 關於本中心　1 項違規 / 5 個節點
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（5 處）
+         div:nth-child(1) > .text-white\/80.text-sm
+         -> Element has insufficient color contrast of 3.68 (foreground color: #f0decf, background color: #b25a0d, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1
+         div:nth-child(2) > .text-white\/80.text-sm
+         -> Element has insufficient color contrast of 3.68 (foreground color: #f0decf, background color: #b25a0d, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         …另有 2 處
+  [NG] 最新消息　1 項違規 / 3 個節點
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 文件下載　1 項違規 / 3 個節點
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 師資介紹　1 項違規 / 3 個節點
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 活動相簿　1 項違規 / 3 個節點
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 活動影音　1 項違規 / 3 個節點
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 行事曆　1 項違規 / 3 個節點
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 聯絡我們　1 項違規 / 3 個節點
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 隱私權政策　1 項違規 / 3 個節點
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 資訊安全政策　1 項違規 / 3 個節點
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 首頁英文版　1 項違規 / 4 個節點
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（4 處）
+         .left-\[40px\]
+         -> Element has insufficient color contrast of 4.21 (foreground color: #a5711d, background color: #ffffff, font size: 9.4pt (12.48px), font weight: bold). Expected contrast ratio of 4.5:1
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         …另有 1 處
+  [OK] 後台登入　0 項違規
+
+【手機 390x844】
+  [NG] 首頁　2 項違規 / 5 個節點
+     · [critical] button-name：Buttons must have discernible text（1 處）
+         .p-2
+         -> Element does not have inner text that is visible to screen readers
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（4 處）
+         .left-\[40px\]
+         -> Element has insufficient color contrast of 4.21 (foreground color: #a5711d, background color: #ffffff, font size: 9.4pt (12.48px), font weight: bold). Expected contrast ratio of 4.5:1
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         …另有 1 處
+  [NG] 關於本中心　2 項違規 / 6 個節點
+     · [critical] button-name：Buttons must have discernible text（1 處）
+         .p-2
+         -> Element does not have inner text that is visible to screen readers
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（5 處）
+         div:nth-child(1) > .text-white\/80.text-sm
+         -> Element has insufficient color contrast of 3.68 (foreground color: #f0decf, background color: #b25a0d, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1
+         div:nth-child(2) > .text-white\/80.text-sm
+         -> Element has insufficient color contrast of 3.68 (foreground color: #f0decf, background color: #b25a0d, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         …另有 2 處
+  [NG] 最新消息　2 項違規 / 4 個節點
+     · [critical] button-name：Buttons must have discernible text（1 處）
+         .p-2
+         -> Element does not have inner text that is visible to screen readers
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 文件下載　2 項違規 / 4 個節點
+     · [critical] button-name：Buttons must have discernible text（1 處）
+         .p-2
+         -> Element does not have inner text that is visible to screen readers
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 師資介紹　2 項違規 / 4 個節點
+     · [critical] button-name：Buttons must have discernible text（1 處）
+         .p-2
+         -> Element does not have inner text that is visible to screen readers
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 活動相簿　2 項違規 / 4 個節點
+     · [critical] button-name：Buttons must have discernible text（1 處）
+         .p-2
+         -> Element does not have inner text that is visible to screen readers
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 活動影音　2 項違規 / 4 個節點
+     · [critical] button-name：Buttons must have discernible text（1 處）
+         .p-2
+         -> Element does not have inner text that is visible to screen readers
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 行事曆　2 項違規 / 4 個節點
+     · [critical] button-name：Buttons must have discernible text（1 處）
+         .p-2
+         -> Element does not have inner text that is visible to screen readers
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 聯絡我們　2 項違規 / 4 個節點
+     · [critical] button-name：Buttons must have discernible text（1 處）
+         .p-2
+         -> Element does not have inner text that is visible to screen readers
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 隱私權政策　2 項違規 / 4 個節點
+     · [critical] button-name：Buttons must have discernible text（1 處）
+         .p-2
+         -> Element does not have inner text that is visible to screen readers
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 資訊安全政策　2 項違規 / 4 個節點
+     · [critical] button-name：Buttons must have discernible text（1 處）
+         .p-2
+         -> Element does not have inner text that is visible to screen readers
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（3 處）
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > .inline-flex.bg-white\/10.border-white\/15
+         -> Element has insufficient color contrast of 2.65 (foreground color: #a8927f, background color: #604e41, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+  [NG] 首頁英文版　2 項違規 / 5 個節點
+     · [critical] button-name：Buttons must have discernible text（1 處）
+         .p-2
+         -> Element does not have inner text that is visible to screen readers
+     · [serious] color-contrast：Elements must meet minimum color contrast ratio thresholds（4 處）
+         .left-\[40px\]
+         -> Element has insufficient color contrast of 4.21 (foreground color: #a5711d, background color: #ffffff, font size: 9.4pt (12.48px), font weight: bold). Expected contrast ratio of 4.5:1
+         .space-y-3 > .text-\[\#A8927F\]
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 10.6pt (14.08px), font weight: normal). Expected contrast ratio of 4.5:1
+         .mt-14 > span:nth-child(1)
+         -> Element has insufficient color contrast of 3.6 (foreground color: #a8927f, background color: #4e3a2c, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1
+         …另有 1 處
+  [OK] 後台登入　0 項違規
+
+==================================================================
+  完成檢測 26 個頁面（13 頁 × 2 種尺寸）
+  違規規則數：36　違規節點數：92
+  ❌ 請依上方逐項改善後重新檢測。
+==================================================================
+
+  ⚠️ 對外提出本報告時請一併敘明：
+     axe-core 屬自動化檢測，業界公認約可涵蓋 WCAG 三至四成準則，
+     「0 violations」不等於通過無障礙標章，仍須以 Freego 官方單機版
+     檢測並經人工檢測程序。影音字幕與文字稿、alt 文字是否適切等，
+     機器無法代為判斷。

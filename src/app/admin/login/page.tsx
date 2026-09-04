@@ -22,7 +22,10 @@ function LoginForm() {
         body: JSON.stringify({ email, password }),
       })
       const data = await res.json()
-      if (res.ok) router.push(redirectTo)
+      if (res.ok) {
+        router.replace(redirectTo)
+        router.refresh()
+      }
       else setError(data.error || '登入失敗')
     } catch { setError('網路錯誤，請稍後再試') }
     finally { setLoading(false) }
