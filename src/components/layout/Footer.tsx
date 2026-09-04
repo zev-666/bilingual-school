@@ -112,7 +112,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) 
                   {t('legal.security_policy')}
                 </Link>
               </li>
-              <li className="text-[#A8927F]">
+              <li className="text-[#D4C9BF]">
                 {t('footer.last_updated')}：{formatDate(lastUpdated, locale)}
               </li>
             </ul>
@@ -150,7 +150,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) 
           </div>
         </div>
 
-        <div className="relative z-10 mt-14 flex flex-col items-center justify-between gap-3 border-t border-white/15 py-5 text-[0.8rem] text-[#A8927F] sm:flex-row">
+        <div className="relative z-10 mt-14 flex flex-col items-center justify-between gap-3 border-t border-white/15 py-5 text-[0.8rem] text-[#D4C9BF] sm:flex-row">
           <span>
             © {new Date().getFullYear()} 基隆市英語資源中心 {t('footer.rights')}
           </span>

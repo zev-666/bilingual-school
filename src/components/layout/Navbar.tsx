@@ -166,8 +166,8 @@ export default function Navbar() {
           {/* Mobile */}
           <div className="flex items-center gap-2 lg:hidden">
             <FontSizeAdjuster />
-            <button onClick={toggleLocale} className="p-2 text-[#6B5747]">
-              <Globe size={18} />
+            <button onClick={toggleLocale} aria-label={locale === 'zh-TW' ? '切換為英文 Switch to English' : '切換為中文 Switch to Chinese'} className="p-2 text-[#6B5747]">
+              <Globe size={18} aria-hidden="true" />
             </button>
             <button
               onClick={() => setIsOpen(!isOpen)}

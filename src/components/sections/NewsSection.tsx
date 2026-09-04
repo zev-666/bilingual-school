@@ -66,7 +66,7 @@ export default function NewsSection({ locale, announcements }: { locale: string;
               href={`/news/${featured.slug}` as any}
               className="group relative block overflow-hidden rounded-[34px] border border-[#F5D9A0] bg-gradient-to-br from-[#FFF0C9] to-[#FFE3B6] p-[40px] shadow-card transition hover:-translate-y-[5px] hover:shadow-soft"
             >
-              <span className="absolute left-[40px] top-[40px] inline-flex items-center gap-1.5 rounded-full border border-[#F3D79C] bg-white px-3.5 py-1 text-[0.78rem] font-bold text-[#A5711D]">
+              <span className="absolute left-[40px] top-[40px] inline-flex items-center gap-1.5 rounded-full border border-[#F3D79C] bg-white px-3.5 py-1 text-[0.78rem] font-bold text-[#98681B]">
                 {t('featured_badge')}
                 {featured.isPinned && <Pin size={12} aria-hidden="true" />}
               </span>

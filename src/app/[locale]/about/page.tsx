@@ -138,7 +138,7 @@ export default async function AboutPage({ params: { locale } }: Props) {
             ].map(({ value, label }) => (
               <div key={label}>
                 <p className="text-4xl font-bold mb-1">{value}</p>
-                <p className="text-white/80 text-sm">{label}</p>
+                <p className="text-white text-sm">{label}</p>
               </div>
             ))}
           </div>
