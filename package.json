@@ -26,6 +26,7 @@
     "@vercel/blob": "^2.6.1",
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.5.1",
+    "cheerio": "^1.2.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
@@ -45,6 +46,7 @@
     "react-markdown": "^9.0.1",
     "sharp": "^0.35.4",
     "tailwind-merge": "^2.3.0",
+    "turndown": "^7.2.4",
     "zod": "^3.23.8"
   },
   "devDependencies": {

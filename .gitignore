@@ -10,3 +10,7 @@ public/uploads
 .env*
 
 friendly-hero-navbar.patch
+
+a11y-reports/
+
+migration-source/
