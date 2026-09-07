@@ -18,7 +18,9 @@ export async function GET(req: NextRequest) {
   }
   const [data, total] = await Promise.all([
     prisma.document.findMany({
-      where, orderBy: { createdAt: 'desc' },
+      where,
+      // 優先用 publishedAt 排序，null 退回 createdAt
+      orderBy: [{ publishedAt: { sort: 'desc', nulls: 'last' } }, { createdAt: 'desc' }],
       skip: (page - 1) * perPage, take: perPage,
       include: { author: { select: { name: true } } },
     }),
@@ -35,6 +37,15 @@ const createSchema = z.object({
   fileUrl: z.string().url(), fileName: z.string().min(1),
   fileSize: z.number().positive(), fileType: z.string(),
   isPublished: z.boolean().default(true),
+  publishedAt: z
+    .union([z.string(), z.null()])
+    .optional()
+    .transform((v) => {
+      if (v === undefined) return undefined
+      if (v === null || v === '') return null
+      const d = new Date(v)
+      return isNaN(d.getTime()) ? null : d
+    }),
 })
 
 export async function POST(req: NextRequest) {

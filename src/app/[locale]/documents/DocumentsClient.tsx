@@ -4,7 +4,7 @@
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { Download, FileText } from 'lucide-react'
-import { formatFileSize } from '@/lib/utils'
+import { formatFileSize, formatDate } from '@/lib/utils'
 
 type DocumentItem = {
   id: string
@@ -15,6 +15,8 @@ type DocumentItem = {
   fileUrl: string
   fileSize: number
   downloadCount: number
+  publishedAt: string | null
+  createdAt: string
 }
 
 interface DocumentsClientProps {
@@ -91,6 +93,9 @@ export default function DocumentsClient({ locale, documents }: DocumentsClientPr
                     {doc.fileSize > 0 && (
                       <span className="text-xs text-gray-500">{formatFileSize(doc.fileSize)}</span>
                     )}
+                    <span className="text-xs text-gray-500">
+                      {formatDate(doc.publishedAt || doc.createdAt, locale)}
+                    </span>
                     <span className="text-xs text-gray-500">
                       {doc.downloadCount} {t('downloads')}
                     </span>

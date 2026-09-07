@@ -9,7 +9,8 @@ async function getDocuments() {
   try {
     return await prisma.document.findMany({
       where: { isPublished: true },
-      orderBy: { createdAt: 'desc' },
+      // 優先用 publishedAt 排序，null 退回 createdAt
+      orderBy: [{ publishedAt: { sort: 'desc', nulls: 'last' } }, { createdAt: 'desc' }],
     })
   } catch {
     return [

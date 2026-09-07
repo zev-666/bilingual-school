@@ -17,6 +17,15 @@ const updateSchema = z.object({
   fileSize:    z.number().positive().optional(),
   fileType:    z.string().optional(),
   isPublished: z.boolean().optional(),
+  publishedAt: z
+    .union([z.string(), z.null()])
+    .optional()
+    .transform((v) => {
+      if (v === undefined) return undefined
+      if (v === null || v === '') return null
+      const d = new Date(v)
+      return isNaN(d.getTime()) ? null : d
+    }),
 })
 
 interface Ctx { params: { id: string } }

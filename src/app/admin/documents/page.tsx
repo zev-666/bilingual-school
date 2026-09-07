@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { Plus, FileText, Download, Pencil, Trash2 } from 'lucide-react'
+import { formatDate } from '@/lib/utils'
 import DeleteDocumentButton from './DeleteDocumentButton'
 
 const CATEGORY_LABELS: Record<string, { zh: string; en: string; color: string }> = {
@@ -25,7 +26,8 @@ function formatFileSize(bytes: number): string {
 async function getDocuments() {
   try {
     return await prisma.document.findMany({
-      orderBy: { createdAt: 'desc' },
+      // 優先用 publishedAt 排序，null 退回 createdAt
+      orderBy: [{ publishedAt: { sort: 'desc', nulls: 'last' } }, { createdAt: 'desc' }],
     })
   } catch {
     return []
@@ -109,6 +111,7 @@ export default async function AdminDocumentsPage() {
                     <p className="truncate text-sm text-gray-500">{doc.titleEn}</p>
                     <div className="mt-1 flex items-center gap-3 text-xs text-gray-500">
                       <span>{formatFileSize(doc.fileSize ?? 0)}</span>
+                      <span>{formatDate(doc.publishedAt ?? doc.createdAt)}</span>
                       <span className="flex items-center gap-1">
                         <Download className="h-3 w-3" />
                         {doc.downloadCount ?? 0} 次下載

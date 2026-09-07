@@ -26,6 +26,7 @@ const schema = z.object({
   category: z.enum(['FORM', 'REGULATION', 'BROCHURE', 'REPORT', 'OTHER']),
   formType: z.enum(['TEACHING', 'ADMINISTRATIVE']),
   isPublished: z.boolean(),
+  publishedAt: z.string().nullable().optional(),
   fileUrl: z.string().min(1, '請上傳文件'),
   fileName: z.string().min(1, '請上傳文件'),
   fileSize: z.number().min(0),
@@ -41,6 +42,7 @@ interface DocumentData {
   category?: string
   formType?: string
   isPublished?: boolean
+  publishedAt?: string | null
   fileUrl?: string
   fileName?: string
   fileSize?: number
@@ -56,6 +58,16 @@ function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
+
+function toDateInputValue(value?: string | null): string {
+  if (!value) return ''
+  const d = new Date(value)
+  if (isNaN(d.getTime())) return ''
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
 }
 
 export default function DocumentEditor({ initialData, mode }: Props) {
@@ -78,6 +90,7 @@ export default function DocumentEditor({ initialData, mode }: Props) {
       category: (initialData?.category as FormData['category']) ?? 'FORM',
       formType: (initialData?.formType as FormData['formType']) ?? 'ADMINISTRATIVE',
       isPublished: initialData?.isPublished ?? true,
+      publishedAt: toDateInputValue(initialData?.publishedAt),
       fileUrl: initialData?.fileUrl ?? '',
       fileName: initialData?.fileName ?? '',
       fileSize: initialData?.fileSize ?? 0,
@@ -120,10 +133,12 @@ export default function DocumentEditor({ initialData, mode }: Props) {
       const url = mode === 'create' ? '/api/documents' : `/api/documents/${initialData?.id}`
       const method = mode === 'create' ? 'POST' : 'PATCH'
 
+      const payload = { ...data, publishedAt: data.publishedAt || null }
+
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       })
 
       if (!res.ok) {
@@ -179,6 +194,13 @@ export default function DocumentEditor({ initialData, mode }: Props) {
             </p>
           </div>
         )}
+        <div className="mt-4">
+          <label className="mb-1.5 block text-sm font-medium text-gray-700">發布日期</label>
+          <input type="date" {...register('publishedAt')} className="input" />
+          <p className="mt-1 text-xs text-gray-500">
+            選填；前台排序優先使用此日期，未填則以建立時間顯示
+          </p>
+        </div>
       </div>
 
       {/* Bilingual Titles */}

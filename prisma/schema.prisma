@@ -241,6 +241,7 @@ model Document {
   fileType     String            // MIME type
   downloadCount Int              @default(0)
   isPublished  Boolean           @default(true)
+  publishedAt  DateTime?         // 發布日期（搬遷資料用真實/推測日期，本機上傳可選填）
   authorId     String
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
