@@ -7,12 +7,14 @@ node_modules
 .DS_Store
 
 # 後台日常上傳的檔案目錄（走 Vercel Blob，不入 repo）一律忽略
-# 但搬遷資料 documents/ 與 announcements/ 例外納入 git（ISO 離線部署需自帶檔案）
+# 但搬遷資料 documents/、announcements/、photos/ 例外納入 git（ISO 離線部署需自帶檔案）
 public/uploads/*
 !public/uploads/documents/
 !public/uploads/documents/**
 !public/uploads/announcements/
 !public/uploads/announcements/**
+!public/uploads/photos/
+!public/uploads/photos/**
 
 .vercel
 .env*
