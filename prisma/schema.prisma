@@ -113,20 +113,30 @@ model AnnouncementTag {
 
 // ─── Photo Albums ────────────────────────────────────────────────────────────
 
+enum AlbumCategory {
+  WORKSHOP      // 教師研習活動
+  MEETING       // 會議
+  VISIT         // 外師訪視
+  ACTIVITY      // 活動照片
+  OTHER         // 其他
+}
+
 model Album {
-  id          String   @id @default(cuid())
-  slug        String   @unique
+  id          String        @id @default(cuid())
+  slug        String        @unique
   titleZh     String
   titleEn     String
   descZh      String?
   descEn      String?
   coverImage  String?
+  category    AlbumCategory @default(OTHER)
   eventDate   DateTime?
-  isPublished Boolean  @default(false)
-  sortOrder   Int      @default(0)
+  isPublished Boolean       @default(false)
+  publishedAt DateTime?
+  sortOrder   Int           @default(0)
   authorId    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 
   author         User    @relation(fields: [authorId], references: [id])
   photos         Photo[]
@@ -141,6 +151,8 @@ model Photo {
   thumbnail String?
   captionZh String?
   captionEn String?
+  fileSize  Int?
+  isCover   Boolean  @default(false)
   sortOrder Int      @default(0)
   createdAt DateTime @default(now())
 
