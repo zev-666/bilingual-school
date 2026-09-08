@@ -8,7 +8,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Search, Pin, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Link as IntlLink } from '@/i18n/routing'
-import { cn, formatDate, CATEGORY_COLORS } from '@/lib/utils'
+import { cn, formatDate, CATEGORY_COLORS, displayTitle } from '@/lib/utils'
 
 const CATEGORIES = ['all', 'ANNOUNCEMENT', 'ACTIVITY', 'ADMISSION', 'COMPETITION', 'NEWS', 'WORKSHOP'] as const
 
@@ -125,7 +125,7 @@ export default function NewsClient({
             'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
           )}>
             {initialAnnouncements.map((item, i) => {
-              const title = isZh ? item.titleZh : item.titleEn
+              const title = displayTitle(item.titleZh, item.titleEn, locale)
               const summary = isZh ? item.summaryZh : item.summaryEn
               const catColor = CATEGORY_COLORS[item.category] ?? 'bg-gray-100 text-gray-700'
 

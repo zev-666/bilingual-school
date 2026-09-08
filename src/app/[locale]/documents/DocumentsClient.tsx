@@ -4,7 +4,7 @@
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { Download, FileText } from 'lucide-react'
-import { formatFileSize, formatDate } from '@/lib/utils'
+import { displayTitle, formatFileSize, formatDate } from '@/lib/utils'
 
 type DocumentItem = {
   id: string
@@ -86,7 +86,7 @@ export default function DocumentsClient({ locale, documents }: DocumentsClientPr
                 </div>
                 <div>
                   <h2 className="font-medium text-gray-900">
-                    {locale === 'zh-TW' ? doc.titleZh : doc.titleEn}
+                    {displayTitle(doc.titleZh, doc.titleEn, locale)}
                   </h2>
                   <div className="flex items-center gap-3 mt-1">
                     <span className="badge-blue">{tc(doc.category as any)}</span>

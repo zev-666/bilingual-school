@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/routing'
 import { prisma } from '@/lib/prisma'
-import { formatDate } from '@/lib/utils'
+import { formatDate, displayTitle } from '@/lib/utils'
 import { ArrowLeft } from 'lucide-react'
 
 async function getAnnouncement(slug: string) {
@@ -24,7 +24,7 @@ export default async function NewsDetailPage({ params: { locale, slug } }: { par
         </Link>
         <span className="badge-blue mb-4 inline-block">{item.category}</span>
         <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          {locale === 'zh-TW' ? item.titleZh : item.titleEn}
+          {displayTitle(item.titleZh, item.titleEn, locale)}
         </h1>
         <p className="text-sm text-gray-500 mb-8">
           {t('published')}: {formatDate(item.publishedAt || item.createdAt, locale)}

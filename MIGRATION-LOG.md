@@ -41,3 +41,13 @@
 - [ ] Phase 3：相簿 (Album + Photo) — 開始前先核對 photo/file 資料夾數 vs photo/*.html 數
 - [ ] Phase 4：影音 (Video) — 開始前先核對 video/file 資料夾數 vs video/*.html 數
 - [ ] （暫緩）線上教材 (Books) — 目前 Prisma 無對應模型，需先建模再搬
+
+## 技術債：影音內容依賴外部網路（2026-09-08 記錄）
+- Phase 4 搬遷的 26 筆影音全部是 YouTube embed（縮圖 `img.youtube.com` + 播放 `youtube.com/embed`），
+  舊站源頭就沒有影片檔案，只有嵌入連結
+- 若最終部署環境是**無對外網路的政府 ISO 封包**，26 支影片會「縮圖破圖且無法播放」
+  （內容本體在 YouTube，本地沒有備份）
+- 待 VM/ISO 部署方向確定後再決定因應方式（例如：下載影片改本地託管、
+  或接受此限制只保留有網路時可看）；**現在先不改動架構**
+- 同性質注意事項：相簿/公告/文件的圖片與附件已是本地檔案（public/uploads/**），
+  不受離線部署影響

@@ -1,6 +1,8 @@
 import { getTranslations } from 'next-intl/server'
 import { prisma } from '@/lib/prisma'
 import { Play } from 'lucide-react'
+import { Link } from '@/i18n/routing'
+import { displayTitle } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -8,7 +10,7 @@ async function getVideos() {
   try {
     return await prisma.video.findMany({ where: { isPublished: true }, orderBy: { publishedAt: 'desc' } })
   } catch {
-    return [{ id: '1', titleZh: '範例影片', titleEn: 'Sample Video', embedId: 'dQw4w9WgXcQ', source: 'YOUTUBE', thumbnail: null }]
+    return [{ id: '1', slug: 'sample', titleZh: '範例影片', titleEn: 'Sample Video', embedId: 'dQw4w9WgXcQ', source: 'YOUTUBE', thumbnail: null }]
   }
 }
 
@@ -25,10 +27,10 @@ export default async function VideosPage({ params: { locale } }: { params: { loc
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {videos.map((v: any) => (
-            <div key={v.id} className="card overflow-hidden">
+            <Link key={v.id} href={`/videos/${v.slug}`} className="card overflow-hidden group block">
               <div className="relative h-48 bg-gray-900">
                 {v.source === 'YOUTUBE' && v.embedId
-                  ? <img src={`https://img.youtube.com/vi/${v.embedId}/hqdefault.jpg`} alt="" className="w-full h-full object-cover opacity-80" />
+                  ? <img src={`https://img.youtube.com/vi/${v.embedId}/hqdefault.jpg`} alt={displayTitle(v.titleZh, v.titleEn, locale)} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                   : <div className="w-full h-full flex items-center justify-center"><Play size={40} className="text-white" /></div>}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
@@ -37,11 +39,11 @@ export default async function VideosPage({ params: { locale } }: { params: { loc
                 </div>
               </div>
               <div className="p-4">
-                <h2 className="font-semibold text-gray-900">
-                  {locale === 'zh-TW' ? v.titleZh : v.titleEn}
+                <h2 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                  {displayTitle(v.titleZh, v.titleEn, locale)}
                 </h2>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

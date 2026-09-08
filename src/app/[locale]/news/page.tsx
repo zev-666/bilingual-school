@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/routing'
 import { prisma } from '@/lib/prisma'
-import { formatDate } from '@/lib/utils'
+import { formatDate, displayTitle } from '@/lib/utils'
 import { Pin } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
@@ -41,7 +41,7 @@ export default async function NewsPage({ params: { locale } }: { params: { local
                   {item.isPinned && <Pin size={12} className="text-primary-500" />}
                 </div>
                 <h2 className="font-semibold text-gray-900 mb-1">
-                  {locale === 'zh-TW' ? item.titleZh : item.titleEn}
+                  {displayTitle(item.titleZh, item.titleEn, locale)}
                 </h2>
                 <p className="text-xs text-gray-500">{formatDate(item.publishedAt || item.createdAt, locale)}</p>
               </div>

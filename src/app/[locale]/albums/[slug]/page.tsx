@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/routing'
 import { prisma } from '@/lib/prisma'
-import { formatDate } from '@/lib/utils'
+import { formatDate, displayTitle } from '@/lib/utils'
 import { ArrowLeft, Image as ImageIcon } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
@@ -31,7 +31,7 @@ export default async function AlbumDetailPage({
   const album = await getAlbum(slug)
   if (!album) notFound()
 
-  const title = locale === 'zh-TW' ? album.titleZh : album.titleEn
+  const title = displayTitle(album.titleZh, album.titleEn, locale)
   const desc = locale === 'zh-TW' ? album.descZh : album.descEn
 
   return (

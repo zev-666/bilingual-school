@@ -74,7 +74,8 @@
   "videos": {
     "title": "Videos",
     "subtitle": "Video highlights",
-    "no_videos": "No videos available"
+    "no_videos": "No videos available",
+    "back": "Back to Videos"
   },
   "documents": {
     "title": "Document Downloads",

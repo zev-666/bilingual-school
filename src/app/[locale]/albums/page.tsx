@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import { prisma } from '@/lib/prisma'
 import { Image } from 'lucide-react'
+import { displayTitle } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -39,7 +40,7 @@ export default async function AlbumsPage({ params: { locale } }: { params: { loc
               </div>
               <div className="p-4">
                 <h2 className="font-semibold text-gray-900 mb-1">
-                  {locale === 'zh-TW' ? album.titleZh : album.titleEn}
+                  {displayTitle(album.titleZh, album.titleEn, locale)}
                 </h2>
                 <p className="text-sm text-gray-500">{album._count.photos} {t('photos')}</p>
               </div>

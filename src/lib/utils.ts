@@ -23,6 +23,14 @@ export function formatDate(date: Date | string, locale = 'zh-TW') {
     })
   }
 }
+/**
+ * 雙語標題 fallback：搬遷內容 titleEn 多為空字串，
+ * 英文版顯示時缺漏則退回中文標題，避免整排空白。
+ */
+export function displayTitle(titleZh: string, titleEn: string | null | undefined, locale: string): string {
+  if (locale === 'zh-TW') return titleZh || titleEn || ''
+  return titleEn || titleZh || ''
+}
 
 export function generateSlug(text: string): string {
   return text

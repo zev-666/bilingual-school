@@ -74,7 +74,8 @@
   "videos": {
     "title": "活動影音",
     "subtitle": "精彩影片回顧",
-    "no_videos": "目前沒有影片"
+    "no_videos": "目前沒有影片",
+    "back": "返回影音列表"
   },
   "documents": {
     "title": "文件下載",

@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Image as ImageIcon, Calendar, ArrowRight } from 'lucide-react'
 import { Link as IntlLink } from '@/i18n/routing'
-import { formatDate } from '@/lib/utils'
+import { formatDate, displayTitle } from '@/lib/utils'
 
 interface Album {
   id: string; slug: string; titleZh: string; titleEn: string
@@ -33,7 +33,7 @@ export default function AlbumsClient({ locale, albums }: AlbumsClientProps) {
       <div className="container-school py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {albums.map((album, i) => {
-            const title = isZh ? album.titleZh : album.titleEn
+            const title = displayTitle(album.titleZh, album.titleEn, locale)
             const desc  = isZh ? album.descZh  : album.descEn
 
             return (
