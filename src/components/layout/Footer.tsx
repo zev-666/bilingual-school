@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/routing'
-import { Mail, Phone, Printer, MapPin, Landmark, ExternalLink, ShieldCheck } from 'lucide-react'
+import { Mail, Phone, MapPin, Landmark, ExternalLink, ShieldCheck } from 'lucide-react'
 import Logo from './Logo'
 import { prisma } from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
@@ -133,12 +133,6 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) 
                   <Phone size={14} className="text-coYellow" />
                 </span>
                 {settings.contact_phone}
-              </li>
-              <li className="flex items-center gap-2.5">
-                <span className="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-[10px] bg-coYellow/15">
-                  <Printer size={14} className="text-coYellow" />
-                </span>
-                02-2XXX-XXXX（請填入傳真）
               </li>
               <li className="flex items-center gap-2.5">
                 <span className="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-[10px] bg-coYellow/15">
