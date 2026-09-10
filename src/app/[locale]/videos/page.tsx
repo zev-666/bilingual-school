@@ -30,7 +30,7 @@ export default async function VideosPage({ params: { locale } }: { params: { loc
             <Link key={v.id} href={`/videos/${v.slug}`} className="card overflow-hidden group block">
               <div className="relative h-48 bg-gray-900">
                 {v.source === 'YOUTUBE' && v.embedId
-                  ? <img src={`https://img.youtube.com/vi/${v.embedId}/hqdefault.jpg`} alt={displayTitle(v.titleZh, v.titleEn, locale)} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                  ? <img src={v.thumbnail || `https://i.ytimg.com/vi/${v.embedId}/hqdefault.jpg`} alt={displayTitle(v.titleZh, v.titleEn, locale)} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                   : <div className="w-full h-full flex items-center justify-center"><Play size={40} className="text-white" /></div>}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">

@@ -30,7 +30,7 @@ export default function QuickLinksSection({ locale }: { locale: string }) {
       num: '03',
       icon: '🧑‍🏫',
       iconBg: 'bg-[#FFF0B8]',
-      title: isEn ? 'Our Team' : '師資介紹',
+      title: isEn ? 'Our Team' : '團隊介紹',
       zhSub: '召集人、行政與外師顧問',
       enSub: 'Conveners & consultants',
     },

@@ -51,3 +51,8 @@
   或接受此限制只保留有網路時可看）；**現在先不改動架構**
 - 同性質注意事項：相簿/公告/文件的圖片與附件已是本地檔案（public/uploads/**），
   不受離線部署影響
+## 技術債：AlbumsClient.tsx 為未被引用的死代碼（2026-09-10 記錄）
+- `src/app/[locale]/albums/AlbumsClient.tsx` 目前**沒有被任何地方 import**（死代碼）
+- 功能比 `page.tsx` 完整（含分頁/排序/篩選）但配色是舊版 indigo 漸層 header
+- 前台相簿列表改用 `page.tsx`（Server Component，卡片已可點擊）
+- 日後需決定：啟用 AlbumsClient.tsx（需含配色調整對齊新設計系統）或刪除

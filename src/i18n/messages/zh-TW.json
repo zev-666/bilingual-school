@@ -5,7 +5,7 @@
     "albums": "活動相簿",
     "videos": "活動影音",
     "documents": "文件下載",
-    "teachers": "師資介紹",
+    "teachers": "團隊介紹",
     "about": "關於學校",
     "contact": "聯絡我們",
     "groups": {
@@ -98,14 +98,17 @@
     "no_documents_in_tab": "此分類目前尚無文件"
   },
   "teachers": {
-    "title": "師資介紹",
-    "subtitle": "專業優質的教學團隊",
+    "title": "團隊介紹",
+    "subtitle": "英語資源中心工作團隊",
     "subjects": "教授科目",
-    "no_teachers": "目前沒有師資資料",
+    "no_teachers": "目前沒有團隊資料",
     "types": {
+      "CONVENER": "召集人",
+      "FOREIGN": "外籍顧問教師",
+      "LOCAL_ADVISOR": "中籍顧問教師",
+      "STAFF": "行政團隊",
       "FULL_TIME": "專任教師",
-      "PART_TIME": "兼任教師",
-      "STAFF": "行政人員"
+      "PART_TIME": "兼任教師"
     }
   },
   "contact": {

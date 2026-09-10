@@ -91,8 +91,8 @@ function withSecurityHeaders(res: NextResponse, req: NextRequest): NextResponse 
     // Tailwind 與 Google Fonts 需要 inline style
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com data:",
-    // 圖片來源：自己、Vercel Blob、data/blob URL
-    "img-src 'self' data: blob: https://*.public.blob.vercel-storage.com https://*.s3.amazonaws.com",
+    // 圖片來源：自己、Vercel Blob、data/blob URL、YouTube 縮圖網域
+    "img-src 'self' data: blob: https://*.public.blob.vercel-storage.com https://*.s3.amazonaws.com https://img.youtube.com https://i.ytimg.com",
     "media-src 'self' https:",
     // Google Maps 內嵌與 YouTube 影片
     "frame-src 'self' https://www.google.com https://maps.google.com https://www.youtube.com https://www.youtube-nocookie.com",

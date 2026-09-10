@@ -143,7 +143,7 @@ function typeLabel(type: SearchResultItem['type'], locale: string) {
     announcement: { zh: '最新消息', en: 'News' },
     document: { zh: '文件下載', en: 'Document' },
     album: { zh: '活動相簿', en: 'Album' },
-    teacher: { zh: '師資介紹', en: 'Teacher' },
+    teacher: { zh: '團隊介紹', en: 'Team' },
   };
   return locale === 'en' ? map[type].en : map[type].zh;
 }

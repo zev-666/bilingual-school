@@ -5,7 +5,7 @@
     "albums": "Albums",
     "videos": "Videos",
     "documents": "Documents",
-    "teachers": "Teachers",
+    "teachers": "Our Team",
     "about": "About",
     "contact": "Contact",
     "groups": {
@@ -98,14 +98,17 @@
     "no_documents_in_tab": "No documents in this category yet"
   },
   "teachers": {
-    "title": "Our Teachers",
-    "subtitle": "Professional and dedicated teaching team",
+    "title": "Our Team",
+    "subtitle": "Keelung City English Education Resource Center Team",
     "subjects": "Subjects",
-    "no_teachers": "No teachers found",
+    "no_teachers": "No team members found",
     "types": {
-      "FULL_TIME": "Full-time Teacher",
-      "PART_TIME": "Part-time Teacher",
-      "STAFF": "Administrative Staff"
+      "CONVENER": "Conveners",
+      "FOREIGN": "Foreign Consultant Teachers",
+      "LOCAL_ADVISOR": "Local Consultant Teachers",
+      "STAFF": "Administrative Team",
+      "FULL_TIME": "Full-time Teachers",
+      "PART_TIME": "Part-time Teachers"
     }
   },
   "contact": {
