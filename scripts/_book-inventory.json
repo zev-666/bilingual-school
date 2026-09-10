@@ -1,0 +1,321 @@
+[
+ {
+  "id": 18,
+  "api": {
+   "id": 18,
+   "title": "本市自編漫畫繪本",
+   "cate": "閱讀策略教材",
+   "unit": "東信國小",
+   "poster": "王佩蘭校長",
+   "yearly": "2021",
+   "mktime": "2021-09-07"
+  },
+  "titleZh": "本市自編漫畫繪本",
+  "publishedAt": "2021-09-07 15:36:32",
+  "contentHtml": "<p>漫畫繪本Adventures in Life</p>\n<p>漫畫繪本-Adventures in Life-全文</p>\n<p>漫畫繪本-Adventures in Life-純圖</p>\n<p>漫畫繪本-Adventures in Life-圖、對話框、無文字<br></p>\n<p><br></p>\t\t\t\t\t\t<script crossorigin=\"anonymous\" integrity=\"sha384-UvDGwZx8jn4w7kO+oVBfNs8pN+biAxkWPbnZyv2G5/cRsJ8NbdVlqys14ugpB4Ci\" src=\"../../api.kl.edu.tw/tinySort/tinysort.min.js\"></script>\n\n\n\n<script src=\"../js/filelist.js\"></script>",
+  "contentText": "漫畫繪本Adventures in Life 漫畫繪本-Adventures in Life-全文 漫畫繪本-Adventures in Life-純圖 漫畫繪本-Adventures in Life-圖、對話框、無文字",
+  "files": [
+   {
+    "name": "1030418-東光國小-漫畫繪本-AdventuresinLife-圖、對話框、無文字.pdf",
+    "url": "https://englishcenter.kl.edu.tw/books/file/18/1030418-%E6%9D%B1%E5%85%89%E5%9C%8B%E5%B0%8F-%E6%BC%AB%E7%95%AB%E7%B9%AA%E6%9C%AC-AdventuresinLife-%E5%9C%96%E3%80%81%E5%B0%8D%E8%A9%B1%E6%A1%86%E3%80%81%E7%84%A1%E6%96%87%E5%AD%97.pdf",
+    "bytes": 10620388,
+    "dest": "public/uploads/books/18/1030418-%E6%9D%B1%E5%85%89%E5%9C%8B%E5%B0%8F-%E6%BC%AB%E7%95%AB%E7%B9%AA%E6%9C%AC-AdventuresinLife-%E5%9C%96%E3%80%81%E5%B0%8D%E8%A9%B1%E6%A1%86%E3%80%81%E7%84%A1%E6%96%87%E5%AD%97.pdf"
+   },
+   {
+    "name": "1030418-東光國小-漫畫繪本-AdventuresinLife-純圖.pdf",
+    "url": "https://englishcenter.kl.edu.tw/books/file/18/1030418-%E6%9D%B1%E5%85%89%E5%9C%8B%E5%B0%8F-%E6%BC%AB%E7%95%AB%E7%B9%AA%E6%9C%AC-AdventuresinLife-%E7%B4%94%E5%9C%96.pdf",
+    "bytes": 8539782,
+    "dest": "public/uploads/books/18/1030418-%E6%9D%B1%E5%85%89%E5%9C%8B%E5%B0%8F-%E6%BC%AB%E7%95%AB%E7%B9%AA%E6%9C%AC-AdventuresinLife-%E7%B4%94%E5%9C%96.pdf"
+   },
+   {
+    "name": "1030218-東光國小-漫畫繪本-AdventuresinLife-全文.pdf",
+    "url": "https://englishcenter.kl.edu.tw/books/file/18/1030218-%E6%9D%B1%E5%85%89%E5%9C%8B%E5%B0%8F-%E6%BC%AB%E7%95%AB%E7%B9%AA%E6%9C%AC-AdventuresinLife-%E5%85%A8%E6%96%87.pdf",
+    "bytes": 10656456,
+    "dest": "public/uploads/books/18/1030218-%E6%9D%B1%E5%85%89%E5%9C%8B%E5%B0%8F-%E6%BC%AB%E7%95%AB%E7%B9%AA%E6%9C%AC-AdventuresinLife-%E5%85%A8%E6%96%87.pdf"
+   }
+  ],
+  "resources": {
+   "oldSite": [],
+   "external": [],
+   "relative": []
+  }
+ },
+ {
+  "id": 17,
+  "api": {
+   "id": 17,
+   "title": "海洋繪本國中版",
+   "cate": "閱讀策略教材",
+   "unit": "東光國小",
+   "poster": "王佩蘭教師",
+   "yearly": "2013",
+   "mktime": "2013-01-22"
+  },
+  "titleZh": "海洋繪本國中版",
+  "publishedAt": "2013-01-22 07:32:48",
+  "contentHtml": "<script crossorigin=\"anonymous\" integrity=\"sha384-UvDGwZx8jn4w7kO+oVBfNs8pN+biAxkWPbnZyv2G5/cRsJ8NbdVlqys14ugpB4Ci\" src=\"../../api.kl.edu.tw/tinySort/tinysort.min.js\"></script>\n\n\n\n<script src=\"../js/filelist.js\"></script>",
+  "contentText": "",
+  "files": [
+   {
+    "name": "海洋英語故事書-國小雙面.pdf",
+    "url": "https://englishcenter.kl.edu.tw/books/file/17/%E6%B5%B7%E6%B4%8B%E8%8B%B1%E8%AA%9E%E6%95%85%E4%BA%8B%E6%9B%B8-%E5%9C%8B%E5%B0%8F%E9%9B%99%E9%9D%A2.pdf",
+    "bytes": 9121226,
+    "dest": "public/uploads/books/17/%E6%B5%B7%E6%B4%8B%E8%8B%B1%E8%AA%9E%E6%95%85%E4%BA%8B%E6%9B%B8-%E5%9C%8B%E5%B0%8F%E9%9B%99%E9%9D%A2.pdf"
+   },
+   {
+    "name": "1011228-東光國小-海洋議題英語故事書-國中版-跨頁.pdf",
+    "url": "https://englishcenter.kl.edu.tw/books/file/17/1011228-%E6%9D%B1%E5%85%89%E5%9C%8B%E5%B0%8F-%E6%B5%B7%E6%B4%8B%E8%AD%B0%E9%A1%8C%E8%8B%B1%E8%AA%9E%E6%95%85%E4%BA%8B%E6%9B%B8-%E5%9C%8B%E4%B8%AD%E7%89%88-%E8%B7%A8%E9%A0%81.pdf",
+    "bytes": 6732728,
+    "dest": "public/uploads/books/17/1011228-%E6%9D%B1%E5%85%89%E5%9C%8B%E5%B0%8F-%E6%B5%B7%E6%B4%8B%E8%AD%B0%E9%A1%8C%E8%8B%B1%E8%AA%9E%E6%95%85%E4%BA%8B%E6%9B%B8-%E5%9C%8B%E4%B8%AD%E7%89%88-%E8%B7%A8%E9%A0%81.pdf"
+   }
+  ],
+  "resources": {
+   "oldSite": [],
+   "external": [],
+   "relative": []
+  }
+ },
+ {
+  "id": 16,
+  "api": {
+   "id": 16,
+   "title": "Lego Program 發表(高程度學生)",
+   "cate": "聽說策略教材",
+   "unit": "東光國小",
+   "poster": "王佩蘭教師",
+   "yearly": "2011",
+   "mktime": "2011-03-22"
+  },
+  "titleZh": "Lego Program 發表(高程度學生)",
+  "publishedAt": "2011-03-22 17:54:19",
+  "contentHtml": "<p>指導者: 東光國小 外籍教師 Rky&nbsp; 100.01</p>\n<p>task based oral presentation project</p>\n<p><a href=\n\"http://ktv.kl.edu.tw/video/5cc65b186de20d0242eb668c42e39b06\"\ntarget=\n\"_blank\">http://ktv.kl.edu.tw/video/5cc65b186de20d0242eb668c42e39b06<span style=\"display: none\">&nbsp;</span></a></p>\n<p><span style=\"display: none\">&nbsp;<span style=\n\"display: none\">&nbsp;</span></span></p>",
+  "contentText": "指導者: 東光國小 外籍教師 Rky 100.01 task based oral presentation project http://ktv.kl.edu.tw/video/5cc65b186de20d0242eb668c42e39b06",
+  "files": [],
+  "resources": {
+   "oldSite": [],
+   "external": [
+    {
+     "tag": "a",
+     "url": "http://ktv.kl.edu.tw/video/5cc65b186de20d0242eb668c42e39b06",
+     "type": "external",
+     "note": "外部平台依賴"
+    }
+   ],
+   "relative": []
+  }
+ },
+ {
+  "id": 15,
+  "api": {
+   "id": 15,
+   "title": "Lego Program 發表(Our Fire Station)",
+   "cate": "聽說策略教材",
+   "unit": "東光國小",
+   "poster": "王佩蘭教師",
+   "yearly": "2011",
+   "mktime": "2011-03-22"
+  },
+  "titleZh": "Lego Program 發表(Our Fire Station)",
+  "publishedAt": "2011-03-22 17:53:40",
+  "contentHtml": "<p>指導者: 東光國小 外籍教師 Rky&nbsp; 100.01</p>\n<p>task based oral presentation project<span style=\n\"display: none\">&nbsp;</span></p>\n<p><a href=\n\"http://ktv.kl.edu.tw/video/72940c79d437f0532b1bb3607f8ad94e\"\ntarget=\n\"_blank\">http://ktv.kl.edu.tw/video/72940c79d437f0532b1bb3607f8ad94e<span style=\"display: none\">&nbsp;</span></a></p>",
+  "contentText": "指導者: 東光國小 外籍教師 Rky 100.01 task based oral presentation project http://ktv.kl.edu.tw/video/72940c79d437f0532b1bb3607f8ad94e",
+  "files": [],
+  "resources": {
+   "oldSite": [],
+   "external": [
+    {
+     "tag": "a",
+     "url": "http://ktv.kl.edu.tw/video/72940c79d437f0532b1bb3607f8ad94e",
+     "type": "external",
+     "note": "外部平台依賴"
+    }
+   ],
+   "relative": []
+  }
+ },
+ {
+  "id": 14,
+  "api": {
+   "id": 14,
+   "title": "Lego Program 發表(My neighberhood)",
+   "cate": "聽說策略教材",
+   "unit": "東光國小",
+   "poster": "王佩蘭教師",
+   "yearly": "2011",
+   "mktime": "2011-03-22"
+  },
+  "titleZh": "Lego Program 發表(My neighberhood)",
+  "publishedAt": "2011-03-22 17:52:51",
+  "contentHtml": "<p>指導者: 東光國小 外籍教師 Rky&nbsp; 100.01</p>\n<p>task based oral presentation project</p>\n<p><a href=\n\"http://ktv.kl.edu.tw/video/084348b59de1a05653765a64cbddf62f\"\ntarget=\n\"_blank\">http://ktv.kl.edu.tw/video/084348b59de1a05653765a64cbddf62f</a><span style=\"display: none\">&nbsp;</span>&nbsp;&nbsp;<span style=\"display: none\">&nbsp;<span style=\"display: none\">&nbsp;</span></span></p>",
+  "contentText": "指導者: 東光國小 外籍教師 Rky 100.01 task based oral presentation project http://ktv.kl.edu.tw/video/084348b59de1a05653765a64cbddf62f",
+  "files": [],
+  "resources": {
+   "oldSite": [],
+   "external": [
+    {
+     "tag": "a",
+     "url": "http://ktv.kl.edu.tw/video/084348b59de1a05653765a64cbddf62f",
+     "type": "external",
+     "note": "外部平台依賴"
+    }
+   ],
+   "relative": []
+  }
+ },
+ {
+  "id": 13,
+  "api": {
+   "id": 13,
+   "title": "Lego Program 發表(In the City)",
+   "cate": "聽說策略教材",
+   "unit": "東光國小",
+   "poster": "王佩蘭教師",
+   "yearly": "2011",
+   "mktime": "2011-03-22"
+  },
+  "titleZh": "Lego Program 發表(In the City)",
+  "publishedAt": "2011-03-22 17:52:17",
+  "contentHtml": "<p>指導者: 東光國小 外籍教師 Rky&nbsp; 100.01</p>\n<p>task based oral presentation project&nbsp;&nbsp;<span style=\n\"display: none\">&nbsp;</span></p>\n<p><a href=\n\"http://ktv.kl.edu.tw/video/6f25903b82efdb916a8fd23a66184d96\"\ntarget=\"_top\"><span style=\"display: none\">&nbsp;</span><span style=\n\"display: none\">&nbsp;</span><span style=\n\"display: none\">&nbsp;</span></a><span style=\n\"display: none\"><a href=\n\"http://ktv.kl.edu.tw/video/6f25903b82efdb916a8fd23a66184d96\"\ntarget=\n\"_blank\">http://ktv.kl.edu.tw/video/6f25903b82efdb916a8fd23a66184d96</a></span><a href=\"http://ktv.kl.edu.tw/video/6f25903b82efdb916a8fd23a66184d96\"\ntarget=\"_top\"><span style=\"display: none\">&nbsp;</span><span style=\n\"display: none\">&nbsp;</span></a><u><font color=\"#810081\"><a href=\n\"http://ktv.kl.edu.tw/video/6f25903b82efdb916a8fd23a66184d96\"\ntarget=\n\"_blank\">http://ktv.kl.edu.tw/video/6f25903b82efdb916a8fd23a66184d96</a><span style=\"display: none\">&nbsp;</span></font></u></p>",
+  "contentText": "指導者: 東光國小 外籍教師 Rky 100.01 task based oral presentation project http://ktv.kl.edu.tw/video/6f25903b82efdb916a8fd23a66184d96 http://ktv.kl.edu.tw/video/6f25903b82efdb916a8fd23a66184d96",
+  "files": [],
+  "resources": {
+   "oldSite": [],
+   "external": [
+    {
+     "tag": "a",
+     "url": "http://ktv.kl.edu.tw/video/6f25903b82efdb916a8fd23a66184d96",
+     "type": "external",
+     "note": "外部平台依賴"
+    },
+    {
+     "tag": "a",
+     "url": "http://ktv.kl.edu.tw/video/6f25903b82efdb916a8fd23a66184d96",
+     "type": "external",
+     "note": "外部平台依賴"
+    },
+    {
+     "tag": "a",
+     "url": "http://ktv.kl.edu.tw/video/6f25903b82efdb916a8fd23a66184d96",
+     "type": "external",
+     "note": "外部平台依賴"
+    },
+    {
+     "tag": "a",
+     "url": "http://ktv.kl.edu.tw/video/6f25903b82efdb916a8fd23a66184d96",
+     "type": "external",
+     "note": "外部平台依賴"
+    }
+   ],
+   "relative": []
+  }
+ },
+ {
+  "id": 12,
+  "api": {
+   "id": 12,
+   "title": "Lego Program 發表(at the airport)",
+   "cate": "聽說策略教材",
+   "unit": "東光國小",
+   "poster": "王佩蘭教師",
+   "yearly": "2011",
+   "mktime": "2011-03-22"
+  },
+  "titleZh": "Lego Program 發表(at the airport)",
+  "publishedAt": "2011-03-22 17:51:40",
+  "contentHtml": "<p>指導者: 東光國小 外籍教師 Rky&nbsp; 100.01</p>\n<p>task based oral presentation project&nbsp;&nbsp;</p>\n<p><a href=\n\"http://ktv.kl.edu.tw/video/09f7530fea8c6294d770a784c782a06b\"\ntarget=\n\"_blank\">http://ktv.kl.edu.tw/video/09f7530fea8c6294d770a784c782a06b<span style=\"display: none\">&nbsp;</span></a></p>",
+  "contentText": "指導者: 東光國小 外籍教師 Rky 100.01 task based oral presentation project http://ktv.kl.edu.tw/video/09f7530fea8c6294d770a784c782a06b",
+  "files": [],
+  "resources": {
+   "oldSite": [],
+   "external": [
+    {
+     "tag": "a",
+     "url": "http://ktv.kl.edu.tw/video/09f7530fea8c6294d770a784c782a06b",
+     "type": "external",
+     "note": "外部平台依賴"
+    }
+   ],
+   "relative": []
+  }
+ },
+ {
+  "id": 10,
+  "api": {
+   "id": 10,
+   "title": "96年度朗讀範例一",
+   "cate": "聽說策略教材",
+   "unit": "東光國小",
+   "poster": "王佩蘭教師",
+   "yearly": "2011",
+   "mktime": "2011-03-08"
+  },
+  "titleZh": "96年度朗讀範例一",
+  "publishedAt": "2011-03-08 05:02:30",
+  "contentHtml": "",
+  "contentText": "",
+  "files": [],
+  "resources": {
+   "oldSite": [],
+   "external": [],
+   "relative": []
+  }
+ },
+ {
+  "id": 4,
+  "api": {
+   "id": 4,
+   "title": "Lego Program 句型設計",
+   "cate": "聽說策略教材",
+   "unit": "東光國小",
+   "poster": "王佩蘭教師",
+   "yearly": "2011",
+   "mktime": "2011-03-07"
+  },
+  "titleZh": "Lego Program 句型設計",
+  "publishedAt": "2011-03-07 21:08:35",
+  "contentHtml": "<p>每一個樂高遊戲學生需學習的句子</p>\t\t\t\t\t\t<script crossorigin=\"anonymous\" integrity=\"sha384-UvDGwZx8jn4w7kO+oVBfNs8pN+biAxkWPbnZyv2G5/cRsJ8NbdVlqys14ugpB4Ci\" src=\"//api.kl.edu.tw/tinySort/tinysort.min.js\"></script>\n\n\n\n<script src=\"/js/filelist.js\"></script>",
+  "contentText": "每一個樂高遊戲學生需學習的句子",
+  "files": [
+   {
+    "name": "003 Lego Sentences.pdf",
+    "url": "https://englishcenter.kl.edu.tw/books/file/4/003%20Lego%20Sentences.pdf",
+    "bytes": 7499,
+    "dest": "public/uploads/books/4/003%20Lego%20Sentences.pdf"
+   }
+  ],
+  "resources": {
+   "oldSite": [],
+   "external": [],
+   "relative": []
+  }
+ },
+ {
+  "id": 3,
+  "api": {
+   "id": 3,
+   "title": "Lego Program PPT",
+   "cate": "聽說策略教材,教學策略",
+   "unit": "東光國小",
+   "poster": "王佩蘭教師",
+   "yearly": "2011",
+   "mktime": "2011-03-07"
+  },
+  "titleZh": "Lego Program PPT",
+  "publishedAt": "2011-03-07 21:04:05",
+  "contentHtml": "<p>Task base Lego Program PPT</p>\t\t\t\t\t\t<script crossorigin=\"anonymous\" integrity=\"sha384-UvDGwZx8jn4w7kO+oVBfNs8pN+biAxkWPbnZyv2G5/cRsJ8NbdVlqys14ugpB4Ci\" src=\"//api.kl.edu.tw/tinySort/tinysort.min.js\"></script>\n\n\n\n<script src=\"/js/filelist.js\"></script>",
+  "contentText": "Task base Lego Program PPT",
+  "files": [
+   {
+    "name": "002DGES Presentation1.pdf",
+    "url": "https://englishcenter.kl.edu.tw/books/file/3/002DGES%20Presentation1.pdf",
+    "bytes": 928716,
+    "dest": "public/uploads/books/3/002DGES%20Presentation1.pdf"
+   }
+  ],
+  "resources": {
+   "oldSite": [],
+   "external": [],
+   "relative": []
+  }
+ }
+]

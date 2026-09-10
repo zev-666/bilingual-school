@@ -1,0 +1,52 @@
+{
+ "total": 7,
+ "downloaded": 2,
+ "copied": 5,
+ "skipped": 0,
+ "failedCount": 0,
+ "totalBytes": 46606795,
+ "details": [
+  {
+   "id": 3,
+   "name": "002DGES Presentation1.pdf",
+   "bytes": 928716,
+   "path": "public/uploads/books/3/002DGES%20Presentation1.pdf"
+  },
+  {
+   "id": 4,
+   "name": "003 Lego Sentences.pdf",
+   "bytes": 7499,
+   "path": "public/uploads/books/4/003%20Lego%20Sentences.pdf"
+  },
+  {
+   "id": 17,
+   "name": "海洋英語故事書-國小雙面.pdf",
+   "bytes": 9121226,
+   "path": "public/uploads/books/17/%E6%B5%B7%E6%B4%8B%E8%8B%B1%E8%AA%9E%E6%95%85%E4%BA%8B%E6%9B%B8-%E5%9C%8B%E5%B0%8F%E9%9B%99%E9%9D%A2.pdf"
+  },
+  {
+   "id": 17,
+   "name": "1011228-東光國小-海洋議題英語故事書-國中版-跨頁.pdf",
+   "bytes": 6732728,
+   "path": "public/uploads/books/17/1011228-%E6%9D%B1%E5%85%89%E5%9C%8B%E5%B0%8F-%E6%B5%B7%E6%B4%8B%E8%AD%B0%E9%A1%8C%E8%8B%B1%E8%AA%9E%E6%95%85%E4%BA%8B%E6%9B%B8-%E5%9C%8B%E4%B8%AD%E7%89%88-%E8%B7%A8%E9%A0%81.pdf"
+  },
+  {
+   "id": 18,
+   "name": "1030418-東光國小-漫畫繪本-AdventuresinLife-圖、對話框、無文字.pdf",
+   "bytes": 10620388,
+   "path": "public/uploads/books/18/1030418-%E6%9D%B1%E5%85%89%E5%9C%8B%E5%B0%8F-%E6%BC%AB%E7%95%AB%E7%B9%AA%E6%9C%AC-AdventuresinLife-%E5%9C%96%E3%80%81%E5%B0%8D%E8%A9%B1%E6%A1%86%E3%80%81%E7%84%A1%E6%96%87%E5%AD%97.pdf"
+  },
+  {
+   "id": 18,
+   "name": "1030418-東光國小-漫畫繪本-AdventuresinLife-純圖.pdf",
+   "bytes": 8539782,
+   "path": "public/uploads/books/18/1030418-%E6%9D%B1%E5%85%89%E5%9C%8B%E5%B0%8F-%E6%BC%AB%E7%95%AB%E7%B9%AA%E6%9C%AC-AdventuresinLife-%E7%B4%94%E5%9C%96.pdf"
+  },
+  {
+   "id": 18,
+   "name": "1030218-東光國小-漫畫繪本-AdventuresinLife-全文.pdf",
+   "bytes": 10656456,
+   "path": "public/uploads/books/18/1030218-%E6%9D%B1%E5%85%89%E5%9C%8B%E5%B0%8F-%E6%BC%AB%E7%95%AB%E7%B9%AA%E6%9C%AC-AdventuresinLife-%E5%85%A8%E6%96%87.pdf"
+  }
+ ]
+}
