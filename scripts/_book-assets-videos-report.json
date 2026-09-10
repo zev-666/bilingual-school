@@ -1,0 +1,76 @@
+{
+  "fetchedAt": "2026-09-10T01:53:32.135Z",
+  "source": "https://ktv.kl.edu.tw",
+  "results": [
+    {
+      "bookId": 12,
+      "originalUrl": "http://ktv.kl.edu.tw/video/09f7530fea8c6294d770a784c782a06b",
+      "originalCode32": "09f7530fea8c6294d770a784c782a06b",
+      "currentCode": "09f753",
+      "playUrl": "https://ktv.kl.edu.tw/video/09f753",
+      "platformTitle": "A組At the airport.MPG",
+      "platformPoster": "基隆市東光國小",
+      "fileUrl": "https://ktv.kl.edu.tw/v/09f753.mp4",
+      "localPath": "public/uploads/books/12/09f753.mp4",
+      "bytes": 3498013,
+      "status": "skip（已存在且大小一致）",
+      "note": "原始 32 碼連結在 2026-09 查證時已失效（平台回 \"The search did not find any video\"），係以 32 碼前 6 碼比對現行 ID 系統（/json/video.json）後尋回；平台 port 80 已關閉，一律走 https。"
+    },
+    {
+      "bookId": 13,
+      "originalUrl": "http://ktv.kl.edu.tw/video/6f25903b82efdb916a8fd23a66184d96",
+      "originalCode32": "6f25903b82efdb916a8fd23a66184d96",
+      "currentCode": "6f2590",
+      "playUrl": "https://ktv.kl.edu.tw/video/6f2590",
+      "platformTitle": "B組In the city.MPG",
+      "platformPoster": "基隆市東光國小",
+      "fileUrl": "https://ktv.kl.edu.tw/v/6f2590.mp4",
+      "localPath": "public/uploads/books/13/6f2590.mp4",
+      "bytes": 4188093,
+      "status": "skip（已存在且大小一致）",
+      "note": "原始 32 碼連結在 2026-09 查證時已失效（平台回 \"The search did not find any video\"），係以 32 碼前 6 碼比對現行 ID 系統（/json/video.json）後尋回；平台 port 80 已關閉，一律走 https。"
+    },
+    {
+      "bookId": 14,
+      "originalUrl": "http://ktv.kl.edu.tw/video/084348b59de1a05653765a64cbddf62f",
+      "originalCode32": "084348b59de1a05653765a64cbddf62f",
+      "currentCode": "084348",
+      "playUrl": "https://ktv.kl.edu.tw/video/084348",
+      "platformTitle": "C組My neighberhood.MPG",
+      "platformPoster": "基隆市東光國小",
+      "fileUrl": "https://ktv.kl.edu.tw/v/084348.mp4",
+      "localPath": "public/uploads/books/14/084348.mp4",
+      "bytes": 2608889,
+      "status": "skip（已存在且大小一致）",
+      "note": "原始 32 碼連結在 2026-09 查證時已失效（平台回 \"The search did not find any video\"），係以 32 碼前 6 碼比對現行 ID 系統（/json/video.json）後尋回；平台 port 80 已關閉，一律走 https。"
+    },
+    {
+      "bookId": 15,
+      "originalUrl": "http://ktv.kl.edu.tw/video/72940c79d437f0532b1bb3607f8ad94e",
+      "originalCode32": "72940c79d437f0532b1bb3607f8ad94e",
+      "currentCode": "72940c",
+      "playUrl": "https://ktv.kl.edu.tw/video/72940c",
+      "platformTitle": "D組Our fire station.MPG",
+      "platformPoster": "基隆市東光國小",
+      "fileUrl": "https://ktv.kl.edu.tw/v/72940c.mp4",
+      "localPath": "public/uploads/books/15/72940c.mp4",
+      "bytes": 2488785,
+      "status": "skip（已存在且大小一致）",
+      "note": "原始 32 碼連結在 2026-09 查證時已失效（平台回 \"The search did not find any video\"），係以 32 碼前 6 碼比對現行 ID 系統（/json/video.json）後尋回；平台 port 80 已關閉，一律走 https。"
+    },
+    {
+      "bookId": 16,
+      "originalUrl": "http://ktv.kl.edu.tw/video/5cc65b186de20d0242eb668c42e39b06",
+      "originalCode32": "5cc65b186de20d0242eb668c42e39b06",
+      "currentCode": "5cc65b",
+      "playUrl": "https://ktv.kl.edu.tw/video/5cc65b",
+      "platformTitle": "高程度學生發表.mpg",
+      "platformPoster": "基隆市東光國小",
+      "fileUrl": "https://ktv.kl.edu.tw/v/5cc65b.mp4",
+      "localPath": "public/uploads/books/16/5cc65b.mp4",
+      "bytes": 4413380,
+      "status": "skip（已存在且大小一致）",
+      "note": "原始 32 碼連結在 2026-09 查證時已失效（平台回 \"The search did not find any video\"），係以 32 碼前 6 碼比對現行 ID 系統（/json/video.json）後尋回；平台 port 80 已關閉，一律走 https。"
+    }
+  ]
+}
