@@ -9,17 +9,37 @@ import DeleteTeacherButton from './DeleteTeacherButton'
 
 export const metadata: Metadata = { title: '師資管理' }
 
+// 顯示順序與前台 /teachers 的 TYPE_ORDER 一致
+const TYPE_ORDER = [
+  'CONVENER',
+  'FOREIGN',
+  'FOREIGN_COUNSELLOR',
+  'LOCAL_ADVISOR',
+  'LOCAL_COUNSELLOR',
+  'STAFF',
+  'FULL_TIME',
+  'PART_TIME',
+] as const
+
 const TYPE_LABELS: Record<string, string> = {
-  FULL_TIME: '專任',
-  PART_TIME: '兼任',
-  STAFF:     '行政',
-  FOREIGN:   '外師',
+  CONVENER:           '召集人',
+  FOREIGN:            '外籍顧問',
+  FOREIGN_COUNSELLOR: '外籍輔導員',
+  LOCAL_ADVISOR:      '中籍顧問',
+  LOCAL_COUNSELLOR:   '中籍輔導員',
+  STAFF:              '行政',
+  FULL_TIME:          '專任',
+  PART_TIME:          '兼任',
 }
 const TYPE_COLORS: Record<string, string> = {
-  FULL_TIME: 'bg-blue-100 text-blue-700',
-  PART_TIME: 'bg-purple-100 text-purple-700',
-  STAFF:     'bg-amber-100 text-amber-700',
-  FOREIGN:   'bg-teal-100 text-teal-700',
+  CONVENER:           'bg-rose-100 text-rose-700',
+  FOREIGN:            'bg-teal-100 text-teal-700',
+  FOREIGN_COUNSELLOR: 'bg-cyan-100 text-cyan-700',
+  LOCAL_ADVISOR:      'bg-emerald-100 text-emerald-700',
+  LOCAL_COUNSELLOR:   'bg-lime-100 text-lime-700',
+  STAFF:              'bg-amber-100 text-amber-700',
+  FULL_TIME:          'bg-blue-100 text-blue-700',
+  PART_TIME:          'bg-purple-100 text-purple-700',
 }
 
 async function getTeachers() {
@@ -35,12 +55,13 @@ async function getTeachers() {
 export default async function AdminTeachersPage() {
   const teachers = await getTeachers()
 
-  const grouped = {
-    FULL_TIME: teachers.filter((t) => t.type === 'FULL_TIME'),
-    PART_TIME: teachers.filter((t) => t.type === 'PART_TIME'),
-    FOREIGN:   teachers.filter((t) => t.type === 'FOREIGN'),
-    STAFF:     teachers.filter((t) => t.type === 'STAFF'),
-  }
+  // 依 TYPE_ORDER 建立分組，只保留有成員的類型
+  // （原本寫死 4 種，漏掉 CONVENER／LOCAL_ADVISOR，導致召集人與中籍顧問在後台不顯示）
+  const grouped = Object.fromEntries(
+    TYPE_ORDER
+      .map((type) => [type, teachers.filter((t: { type: string }) => t.type === type)] as const)
+      .filter(([, list]) => list.length > 0),
+  ) as Record<string, typeof teachers>
 
   return (
     <div className="space-y-6 max-w-5xl">

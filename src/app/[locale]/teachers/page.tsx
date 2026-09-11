@@ -6,7 +6,16 @@ import { displayTitle } from '@/lib/utils'
 export const dynamic = 'force-dynamic'
 
 // 分組顯示順序（明確陣列，不靠字母序）
-const TYPE_ORDER = ['CONVENER', 'FOREIGN', 'LOCAL_ADVISOR', 'STAFF', 'FULL_TIME', 'PART_TIME']
+const TYPE_ORDER = [
+  'CONVENER',
+  'FOREIGN',
+  'FOREIGN_COUNSELLOR',
+  'LOCAL_ADVISOR',
+  'LOCAL_COUNSELLOR',
+  'STAFF',
+  'FULL_TIME',
+  'PART_TIME',
+]
 
 async function getTeachers() {
   try {

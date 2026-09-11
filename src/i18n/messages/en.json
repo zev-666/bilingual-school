@@ -6,7 +6,7 @@
     "videos": "Videos",
     "documents": "Documents",
     "teachers": "Our Team",
-    "about": "About",
+    "about": "About EERC",
     "contact": "Contact",
     "groups": {
       "about": "About Us",
@@ -104,8 +104,10 @@
     "no_teachers": "No team members found",
     "types": {
       "CONVENER": "Conveners",
-      "FOREIGN": "Foreign Consultant Teachers",
-      "LOCAL_ADVISOR": "Local Consultant Teachers",
+      "FOREIGN": "Foreign English Teaching Advisers",
+      "FOREIGN_COUNSELLOR": "Foreign English Teaching Counsellors",
+      "LOCAL_ADVISOR": "Local English Teaching Advisers",
+      "LOCAL_COUNSELLOR": "Local English Teaching Counsellors",
       "STAFF": "Administrative Team",
       "FULL_TIME": "Full-time Teachers",
       "PART_TIME": "Part-time Teachers"
@@ -186,31 +188,35 @@
       ]
     },
     "facilities": {
-      "title": "Facilities",
+      "title": "Vision & Mission",
+      "visionLabel": "Vision",
+      "missionLabel": "Mission",
+      "vision": [
+        {
+          "name": "A Harbour City with a Global Heart",
+          "desc": "Building on Keelung’s maritime education heritage to nurture a generation with global perspective and bilingual communication skills."
+        },
+        {
+          "name": "Quality Bilingual Education, Shared Success",
+          "desc": "Building a supportive bilingual teaching ecosystem where resources are shared, teachers grow together, and every student thrives."
+        }
+      ],
       "items": [
         {
-          "name": "Library",
-          "desc": "A well-stocked bilingual library offering a comfortable space for reading and self-study."
+          "name": "Integrating and Translating Resources",
+          "desc": "Integrating central and municipal resources, translating the 108 Curriculum Guidelines into literacy-oriented teaching and multi-modal assessment."
         },
         {
-          "name": "Science Labs",
-          "desc": "Fully equipped physics, chemistry, and biology labs that foster scientific inquiry."
+          "name": "Professional Support and Companionship",
+          "desc": "Deepening advisory group and teacher community practice through hands-on bilingual and English capacity-building workshops."
         },
         {
-          "name": "Gymnasium",
-          "desc": "A multi-purpose indoor gymnasium for ball sports, gymnastics, and large assemblies."
+          "name": "Foreign Teacher Management and Impact",
+          "desc": "Strengthening FET/ELTA recruitment and management, promoting local-foreign co-teaching to raise bilingual teaching outcomes across schools."
         },
         {
-          "name": "Art Studios",
-          "desc": "Dedicated art and music classrooms where students can develop their creative talents."
-        },
-        {
-          "name": "Computer Lab",
-          "desc": "Equipped with the latest computers for programming and information technology courses."
-        },
-        {
-          "name": "Outdoor Sports Field",
-          "desc": "A spacious outdoor field for sports activities and extracurricular events."
+          "name": "Digital Sharing and Connection",
+          "desc": "Building a digital English resource platform and community channels that connect teachers, parents, and the wider community."
         }
       ]
     },
@@ -233,8 +239,8 @@
           "desc": "Handle day-to-day operations, event planning, and cross-school coordination"
         },
         "consultants": {
-          "title": "Foreign English Teaching Consultants",
-          "desc": "Support co-teaching in classrooms under TFETP, ELTA and related programs"
+          "title": "Local & Foreign English Teaching Advisers and Counsellors",
+          "desc": "Co-teach English in schools, support the TFETP and ELTA programs, and provide instructional coaching."
         }
       }
     }

@@ -266,12 +266,14 @@ model Document {
 // ─── Teachers / Staff ────────────────────────────────────────────────────────
 
 enum TeacherType {
-  CONVENER       // 召集人
-  FOREIGN        // 外籍顧問教師
-  LOCAL_ADVISOR  // 中籍顧問教師
-  STAFF          // 行政團隊
-  FULL_TIME      // 專任（保留，既有資料相容用）
-  PART_TIME      // 兼任（保留，既有資料相容用）
+  CONVENER            // 召集人
+  FOREIGN             // 外籍英語教學顧問
+  FOREIGN_COUNSELLOR  // 外籍英語教學輔導員
+  LOCAL_ADVISOR       // 中籍英語教學顧問
+  LOCAL_COUNSELLOR    // 中籍英語教學輔導員
+  STAFF               // 行政團隊
+  FULL_TIME           // 專任（保留，既有資料相容用）
+  PART_TIME           // 兼任（保留，既有資料相容用）
 }
 
 model Teacher {

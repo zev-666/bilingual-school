@@ -1,8 +1,7 @@
 // src/app/[locale]/about/page.tsx
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
-import Image from 'next/image'
-import { Globe, BookOpen, Lightbulb, Heart, CheckCircle, Users, Landmark } from 'lucide-react'
+import { Globe, BookOpen, Lightbulb, Heart, Compass, Users, Landmark } from 'lucide-react'
 
 interface Props { params: { locale: string } }
 
@@ -25,20 +24,12 @@ const VALUE_BG = {
   character:  'bg-[#FFF3E0] border-[#F5DBA8]',
 }
 
-const FACILITY_IMAGES = [
-  'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80',
-  'https://images.unsplash.com/photo-1532094349884-543559c17a05?w=600&q=80',
-  'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&q=80',
-  'https://images.unsplash.com/photo-1562774053-701939374585?w=600&q=80',
-  'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&q=80',
-  'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=600&q=80',
-]
-
 export default async function AboutPage({ params: { locale } }: Props) {
   const t = await getTranslations({ locale, namespace: 'about' })
 
   const historyEvents = t.raw('history.events') as { year: string; title: string; desc: string }[]
-  const facilities    = t.raw('facilities.items') as { name: string; desc: string }[]
+  const visionItems   = t.raw('facilities.vision') as { name: string; desc: string }[]
+  const missionItems  = t.raw('facilities.items') as { name: string; desc: string }[]
   const values        = ['bilingual', 'culture', 'innovation', 'character'] as const
 
   return (
@@ -204,29 +195,43 @@ export default async function AboutPage({ params: { locale } }: Props) {
         </div>
       </section>
 
-      {/* Facilities */}
+      {/* Vision & Mission */}
       <section className="container-school py-20">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-3">{t('facilities.title')}</h2>
           <div className="w-12 h-1 bg-primary-600 mx-auto rounded-full" />
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {facilities.map((item, i) => (
-            <div key={item.name} className="card overflow-hidden group">
-              <div className="relative h-44 bg-gray-100 overflow-hidden">
-                <Image
-                  src={FACILITY_IMAGES[i % FACILITY_IMAGES.length]}
-                  alt={item.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="font-bold text-gray-900 mb-1.5 flex items-center gap-2">
-                  <CheckCircle size={16} className="text-primary-600 shrink-0" />
-                  {item.name}
-                </h3>
+
+        {/* 願景 */}
+        <h3 className="flex items-center gap-2 text-xl font-bold text-gray-900 mb-6">
+          <Compass size={20} className="text-primary-600 shrink-0" aria-hidden="true" />
+          {t('facilities.visionLabel')}
+        </h3>
+        <div className="grid md:grid-cols-2 gap-6 mb-16">
+          {visionItems.map((item) => (
+            <div key={item.name} className="card border-l-4 border-primary-600 p-6">
+              <h4 className="text-lg font-bold text-primary-700 mb-2">{item.name}</h4>
+              <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* 使命 */}
+        <h3 className="flex items-center gap-2 text-xl font-bold text-gray-900 mb-6">
+          <Globe size={20} className="text-primary-600 shrink-0" aria-hidden="true" />
+          {t('facilities.missionLabel')}
+        </h3>
+        <div className="grid sm:grid-cols-2 gap-6">
+          {missionItems.map((item, i) => (
+            <div key={item.name} className="card p-6 flex gap-4">
+              <span
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-50 font-bold text-primary-700"
+                aria-hidden="true"
+              >
+                {i + 1}
+              </span>
+              <div>
+                <h4 className="font-bold text-gray-900 mb-1.5">{item.name}</h4>
                 <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
               </div>
             </div>
