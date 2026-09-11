@@ -26,3 +26,6 @@ friendly-hero-navbar.patch
 a11y-reports/
 
 migration-source/
+# 英文標題匯出工作檔（export-titles.mjs 產生，不進版控）
+titles-export.csv
+titles-export.json
