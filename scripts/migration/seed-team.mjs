@@ -9,7 +9,7 @@
 //   - 新增 Ryk（外籍顧問）、Amy（中籍顧問）
 //   - Alice 由行政團隊改列中籍顧問
 //   - Danqi、Justin 由中籍顧問改列外籍輔導員
-//   - Jimmy 由行政人員改列中籍輔導員
+//   - Jimmy 維持行政團隊，職稱由「行政人員」改為「輔導員」（行政職務，與英語教學無關）
 //   - Lynn／Sophia／Sam 行政團隊內職稱各自細分
 import { PrismaClient } from '@prisma/client'
 
@@ -35,12 +35,14 @@ const TEAM = [
   { nameZh: 'Alice', nameEn: 'Alice', titleZh: '中籍英語教學顧問', titleEn: 'Local English Teaching Adviser', type: 'LOCAL_ADVISOR', sortOrder: 2 },
 
   // ── 中籍英語教學輔導員 ──
-  { nameZh: 'Jimmy', nameEn: 'Jimmy', titleZh: '中籍英語教學輔導員', titleEn: 'Local English Teaching Counsellor', type: 'LOCAL_COUNSELLOR', sortOrder: 1 },
+  // （目前無成員。enum 值 LOCAL_COUNSELLOR 保留備用，前台對空分組會自動不顯示。
+  //   注意：Jimmy 的「輔導員」屬行政職務，與英語教學無關，故列於行政團隊，不在此組。）
 
   // ── 行政團隊 ──
-  { nameZh: 'Lynn',   nameEn: 'Lynn',   titleZh: '專案助理', titleEn: 'Project Assistant',  type: 'STAFF', sortOrder: 1 },
-  { nameZh: 'Sophia', nameEn: 'Sophia', titleZh: '商借教師', titleEn: 'Seconded Teacher',   type: 'STAFF', sortOrder: 2 },
-  { nameZh: 'Sam',    nameEn: 'Sam',    titleZh: '專職人力', titleEn: 'Full-Time Staff',    type: 'STAFF', sortOrder: 3 },
+  { nameZh: 'Jimmy',  nameEn: 'Jimmy',  titleZh: '輔導員',   titleEn: 'Counsellor',        type: 'STAFF', sortOrder: 1 },
+  { nameZh: 'Lynn',   nameEn: 'Lynn',   titleZh: '專案助理', titleEn: 'Project Assistant', type: 'STAFF', sortOrder: 2 },
+  { nameZh: 'Sophia', nameEn: 'Sophia', titleZh: '商借教師', titleEn: 'Seconded Teacher',  type: 'STAFF', sortOrder: 3 },
+  { nameZh: 'Sam',    nameEn: 'Sam',    titleZh: '專職人力', titleEn: 'Full-Time Staff',   type: 'STAFF', sortOrder: 4 },
 ]
 
 const before = await prisma.teacher.count()
