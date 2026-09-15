@@ -57,7 +57,7 @@ export default async function Footer({ locale = 'zh-TW' }: { locale?: string }) 
           <div>
             <Link href="/" className="flex items-center gap-3">
               <span className="flex h-[42px] w-[42px] flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-coYellow to-coOrange">
-                <Logo size={28} />
+                <Logo size={56} variant="full" />
               </span>
               <span className="font-heading text-[1.02rem] font-bold text-[#FFEBD2]">
                 {locale === 'zh-TW' ? '基隆市英語資源中心' : 'Keelung City English Education Resource Center'}

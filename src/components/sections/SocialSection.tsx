@@ -1,4 +1,7 @@
+import { Facebook, Instagram, Youtube, MessageCircle, Share2 } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import Reveal from '@/components/ui/Reveal'
+import SectionHeading from '@/components/ui/SectionHeading'
 
 interface SocialSectionProps {
   locale: string
@@ -8,11 +11,13 @@ interface SocialSectionProps {
   lineUrl?: string
 }
 
-const ITEMS = [
-  { key: 'facebook', labelZh: 'Facebook 粉絲專頁', labelEn: 'Facebook Page', mark: 'f', color: 'bg-[#1877F2]' },
-  { key: 'instagram', labelZh: 'Instagram', labelEn: 'Instagram', mark: '◎', color: 'bg-gradient-to-br from-[#f09433] via-[#dc2743] to-[#bc1888]' },
-  { key: 'youtube', labelZh: 'YouTube 頻道', labelEn: 'YouTube Channel', mark: '▶', color: 'bg-[#FF0000]' },
-  { key: 'line', labelZh: 'LINE 官方帳號', labelEn: 'LINE Official Account', mark: '✆', color: 'bg-[#06C755]' },
+// 原本用文字符號（f / ◎ / ▶ / ✆）當品牌標記，辨識度低且不像官方連結，
+// 改用 Lucide 的實際品牌圖示；LINE 無對應品牌圖示，以對話框圖示代替。
+const ITEMS: { key: string; labelZh: string; labelEn: string; Icon: LucideIcon; color: string }[] = [
+  { key: 'facebook', labelZh: 'Facebook 粉絲專頁', labelEn: 'Facebook Page', Icon: Facebook, color: 'bg-[#1877F2]' },
+  { key: 'instagram', labelZh: 'Instagram', labelEn: 'Instagram', Icon: Instagram, color: 'bg-gradient-to-br from-[#f09433] via-[#dc2743] to-[#bc1888]' },
+  { key: 'youtube', labelZh: 'YouTube 頻道', labelEn: 'YouTube Channel', Icon: Youtube, color: 'bg-[#C4302B]' },
+  { key: 'line', labelZh: 'LINE 官方帳號', labelEn: 'LINE Official Account', Icon: MessageCircle, color: 'bg-[#05A64B]' },
 ]
 
 export default function SocialSection({ locale, facebookUrl, instagramUrl, youtubeUrl, lineUrl }: SocialSectionProps) {
@@ -30,33 +35,34 @@ export default function SocialSection({ locale, facebookUrl, instagramUrl, youtu
   return (
     <section className="bg-white py-[88px]">
       <div className="container-school">
-        <div className="mx-auto mb-[52px] max-w-[720px] text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-[#FBDCB3] bg-[#FFF1E0] px-4 py-1.5 text-[0.78rem] font-bold tracking-[0.14em] text-orangeDeep">
-            📲 FOLLOW US
-          </span>
-          <h2 className="mt-3.5 text-[clamp(1.7rem,3vw,2.5rem)] font-extrabold text-ink">
-            {isEn ? 'Follow Us' : '追蹤我們'}
-          </h2>
-          <p className="mx-auto mt-2 max-w-[640px] text-inkSoft">
-            {isEn ? 'Stay in the loop and learn English together' : '活動消息不漏接，加入我們一起學英語'}
-          </p>
+        <div className="mb-[52px]">
+          <SectionHeading
+            eyebrow="FOLLOW US"
+            icon={Share2}
+            align="center"
+            title={isEn ? 'Follow Us' : '追蹤我們'}
+            subtitle={isEn ? 'Stay in the loop and learn English together' : '活動消息不漏接，加入我們一起學英語'}
+          />
         </div>
         <div className="flex flex-wrap justify-center gap-4">
-          {items.map((item) => (
-            <Reveal key={item.key}>
-              <a
-                href={urls[item.key]}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-3 rounded-full border border-line bg-creamSoft py-[10px] pl-[10px] pr-[22px] text-[0.9rem] font-bold text-ink transition hover:-translate-y-1 hover:shadow-card"
-              >
-                <span className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-[1.05rem] text-white transition-transform group-hover:scale-110 ${item.color}`}>
-                  {item.mark}
-                </span>
-                {isEn ? item.labelEn : item.labelZh}
-              </a>
-            </Reveal>
-          ))}
+          {items.map((item) => {
+            const Icon = item.Icon
+            return (
+              <Reveal key={item.key}>
+                <a
+                  href={urls[item.key]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-3 rounded-full border border-line bg-creamSoft py-[10px] pl-[10px] pr-[22px] text-[0.9rem] font-bold text-ink transition hover:-translate-y-1 hover:shadow-card focus:outline-none focus-visible:ring-4 focus-visible:ring-coYellow"
+                >
+                  <span className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-white transition-transform group-hover:scale-110 ${item.color}`}>
+                    <Icon size={19} strokeWidth={2} aria-hidden="true" />
+                  </span>
+                  {isEn ? item.labelEn : item.labelZh}
+                </a>
+              </Reveal>
+            )
+          })}
         </div>
       </div>
     </section>

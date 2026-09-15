@@ -2,7 +2,16 @@
 import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/routing'
-import { Sparkles as SparklesIcon, ArrowDown } from 'lucide-react'
+import {
+  Sparkles as SparklesIcon,
+  ArrowRight,
+  School,
+  Globe2,
+  BookOpen,
+  HeartHandshake,
+  GraduationCap,
+  MessageCircle,
+} from 'lucide-react'
 
 interface Banner { titleZh: string; titleEn: string; subtitleZh?: string | null; subtitleEn?: string | null; imageUrl: string; linkUrl?: string | null }
 
@@ -13,6 +22,8 @@ const HERO_BG = {
     'radial-gradient(720px 420px at -8% 30%, rgba(200, 240, 220, 0.6), transparent 60%),' +
     'linear-gradient(180deg, #FFF8EC 0%, #FFF3E2 100%)',
 }
+
+// 浮動標籤原本是 emoji（🌍📖💛），改為 Lucide 線條圖示，與全站圖示語言一致。
 
 export default function HeroSection({ locale, banners }: { locale: string; banners: Banner[] }) {
   const t = useTranslations('home.hero')
@@ -65,20 +76,21 @@ export default function HeroSection({ locale, banners }: { locale: string; banne
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link
               href="/about"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-[0.95rem] font-bold text-orangeDeep shadow-[0_10px_24px_rgba(160,100,40,0.22)] transition hover:-translate-y-0.5"
+              className="group inline-flex items-center gap-2 rounded-full bg-coOrange px-6 py-3 text-[0.95rem] font-bold text-white shadow-[0_10px_24px_rgba(160,100,40,0.28)] transition hover:-translate-y-0.5 hover:bg-orangeDeep focus:outline-none focus-visible:ring-4 focus-visible:ring-coYellow"
             >
               {t('cta_primary')}
-              <ArrowDown size={16} aria-hidden="true" />
+              <ArrowRight size={16} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5" />
             </Link>
             <Link
               href="/documents"
-              className="inline-flex items-center gap-2 rounded-full border-2 border-[#FBDCB3] bg-white px-6 py-3 text-[0.9rem] font-bold text-orangeDeep transition hover:-translate-y-0.5 hover:bg-[#FFF1E0]"
+              className="inline-flex items-center gap-2 rounded-full border-2 border-[#FBDCB3] bg-white px-6 py-3 text-[0.9rem] font-bold text-orangeDeep transition hover:-translate-y-0.5 hover:bg-[#FFF1E0] focus:outline-none focus-visible:ring-4 focus-visible:ring-coYellow"
             >
               {locale === 'zh-TW' ? '外師協同教學申請' : 'Apply for Co-teaching'}
             </Link>
           </div>
           <p className="mt-7 flex items-center gap-2 text-[0.84rem] text-inkSoft">
-            🏫 {locale === 'zh-TW' ? '服務全基隆市 50 所國民中小學' : 'Serving all 50 schools in Keelung'}
+            <School size={15} aria-hidden="true" className="text-mintDark" />
+            {locale === 'zh-TW' ? '服務全基隆市 50 所國民中小學' : 'Serving all 50 schools in Keelung'}
           </p>
         </div>
 
@@ -89,23 +101,33 @@ export default function HeroSection({ locale, banners }: { locale: string; banne
             className="absolute bottom-0 right-[10px] h-[220px] w-[220px] rounded-[60%_40%_55%_45%/50%_55%_45%_50%] bg-[linear-gradient(150deg,#DDF3E7,#B7E3CE)] motion-safe:animate-[floatBlob_7s_ease-in-out_infinite]"
             style={{ animationDelay: '1.5s' }}
           />
+
           <div className="absolute right-[40px] top-[34px] flex items-center gap-2 rounded-[20px] border border-[#F4E3C6] bg-white px-4 py-3 text-[0.8rem] font-bold text-[#6B5747] shadow-card motion-safe:animate-[floatChip_5s_ease-in-out_infinite]">
-            🌍 Learn in Keelung
+            <Globe2 size={16} className="text-mintDark" />
+            Learn in Keelung
           </div>
           <div
             className="absolute bottom-[70px] left-0 flex items-center gap-2 rounded-[20px] border border-[#F4E3C6] bg-white px-4 py-3 text-[0.8rem] font-bold text-[#6B5747] shadow-card motion-safe:animate-[floatChip_6s_ease-in-out_infinite]"
             style={{ animationDelay: '0.8s' }}
           >
-            📖 Bilingual Everywhere
+            <BookOpen size={16} className="text-orangeDeep" />
+            Bilingual Everywhere
           </div>
           <div
             className="absolute bottom-[6px] right-[60px] flex items-center gap-2 rounded-[20px] border border-[#F4E3C6] bg-white px-4 py-3 text-[0.8rem] font-bold text-[#6B5747] shadow-card motion-safe:animate-[floatChip_5.5s_ease-in-out_infinite]"
             style={{ animationDelay: '1.6s' }}
           >
-            💛 Grow with Confidence
+            <HeartHandshake size={16} className="text-coral" />
+            Grow with Confidence
           </div>
-          <div className="absolute -left-[6px] top-[120px] flex h-[70px] w-[70px] items-center justify-center rounded-full bg-white text-2xl shadow-card">🦉</div>
-          <div className="absolute right-0 top-[240px] flex h-[58px] w-[58px] items-center justify-center rounded-full bg-white text-xl shadow-card">🎈</div>
+
+          {/* 原本是 🦉 / 🎈 兩個 emoji 圓形，改為線條圖示徽章 */}
+          <div className="absolute -left-[6px] top-[120px] flex h-[70px] w-[70px] items-center justify-center rounded-full bg-white text-orangeDeep shadow-card">
+            <GraduationCap size={30} strokeWidth={1.8} />
+          </div>
+          <div className="absolute right-0 top-[240px] flex h-[58px] w-[58px] items-center justify-center rounded-full bg-white text-mintDark shadow-card">
+            <MessageCircle size={24} strokeWidth={1.8} />
+          </div>
         </div>
       </div>
 
@@ -117,17 +139,19 @@ export default function HeroSection({ locale, banners }: { locale: string; banne
           style={{ animationDelay: '1.5s' }}
         />
         <div className="absolute right-[10px] top-[10px] flex items-center gap-2 rounded-[20px] border border-[#F4E3C6] bg-white px-4 py-3 text-[0.8rem] font-bold text-[#6B5747] shadow-card motion-safe:animate-[floatChip_5s_ease-in-out_infinite]">
-          🌍 Learn in Keelung
+          <Globe2 size={16} className="text-mintDark" />
+          Learn in Keelung
         </div>
         <div className="absolute bottom-[40px] left-0 flex items-center gap-2 rounded-[20px] border border-[#F4E3C6] bg-white px-4 py-3 text-[0.8rem] font-bold text-[#6B5747] shadow-card motion-safe:animate-[floatChip_6s_ease-in-out_infinite]">
-          📖 Bilingual Everywhere
+          <BookOpen size={16} className="text-orangeDeep" />
+          Bilingual Everywhere
         </div>
       </div>
 
       {/* 底部波浪分隔線 */}
       <div className="absolute -bottom-px left-0 z-[1] w-full leading-none">
         <svg viewBox="0 0 1440 90" preserveAspectRatio="none" className="block h-[90px] w-full">
-          <path fill="#ffffff" d="M0,50 C240,90 480,10 720,40 C960,70 1200,20 1440,55 L1440,90 L0,90 Z" />
+          <path fill="#FFFBF3" d="M0,50 C240,90 480,10 720,40 C960,70 1200,20 1440,55 L1440,90 L0,90 Z" />
         </svg>
       </div>
 
