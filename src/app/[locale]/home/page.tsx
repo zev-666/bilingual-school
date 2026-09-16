@@ -1,0 +1,101 @@
+// src/app/[locale]/home/page.tsx
+// 中文內頁（入口頁三張卡的第一張與第三張都指向這裡）。
+// 內容即原本的長條式首頁：關於 → 最新消息 → 快速連結 → 團隊 → 追蹤我們。
+// Cool English 已升格為入口大卡，故此頁不再渲染 CoolEnglishSection，避免同一連結重複。
+// 資料一律從資料庫取，失敗時回傳安全預設值（沿用專案既有慣例）。
+
+import { prisma } from '@/lib/prisma'
+import AboutSection from '@/components/sections/AboutSection'
+import NewsSection from '@/components/sections/NewsSection'
+import QuickLinksSection from '@/components/sections/QuickLinksSection'
+import TeamSection from '@/components/sections/TeamSection'
+import SocialSection from '@/components/sections/SocialSection'
+
+export const revalidate = 300
+
+interface AnnouncementRow {
+  id: string
+  slug: string
+  titleZh: string
+  titleEn: string
+  category: string
+  isPinned: boolean
+  publishedAt: Date | null
+  createdAt: Date
+}
+
+async function getHomeData() {
+  try {
+    const settingsKeys = [
+      'facebook_url',
+      'instagram_url',
+      'youtube_url',
+      'line_url',
+      'cool_english_url',
+    ] as const
+
+    const [announcements, settingsRows] = await Promise.all([
+      prisma.announcement.findMany({
+        where: { isPublished: true },
+        orderBy: [{ isPinned: 'desc' }, { publishedAt: 'desc' }],
+        take: 6,
+        select: {
+          id: true,
+          slug: true,
+          titleZh: true,
+          titleEn: true,
+          category: true,
+          isPinned: true,
+          publishedAt: true,
+          createdAt: true,
+        },
+      }),
+      prisma.siteSetting.findMany({
+        where: { key: { in: Array.from(settingsKeys) } },
+      }),
+    ])
+
+    const settings: Record<string, string> = {}
+    for (const row of settingsRows) {
+      if (row.value) settings[row.key] = row.value
+    }
+
+    return {
+      announcements: announcements as AnnouncementRow[],
+      facebookUrl: settings.facebook_url ?? '',
+      instagramUrl: settings.instagram_url ?? '',
+      youtubeUrl: settings.youtube_url ?? '',
+      lineUrl: settings.line_url ?? '',
+      coolEnglishUrl: settings.cool_english_url ?? '',
+    }
+  } catch {
+    return {
+      announcements: [],
+      facebookUrl: '',
+      instagramUrl: '',
+      youtubeUrl: '',
+      lineUrl: '',
+      coolEnglishUrl: '',
+    }
+  }
+}
+
+export default async function HomeContentPage({ params: { locale } }: { params: { locale: string } }) {
+  const { announcements, facebookUrl, instagramUrl, youtubeUrl, lineUrl } = await getHomeData()
+
+  return (
+    <>
+      <AboutSection locale={locale} />
+      <NewsSection locale={locale} announcements={announcements} />
+      <QuickLinksSection locale={locale} />
+      <TeamSection locale={locale} />
+      <SocialSection
+        locale={locale}
+        facebookUrl={facebookUrl}
+        instagramUrl={instagramUrl}
+        youtubeUrl={youtubeUrl}
+        lineUrl={lineUrl}
+      />
+    </>
+  )
+}

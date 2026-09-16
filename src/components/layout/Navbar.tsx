@@ -82,9 +82,9 @@ export default function Navbar() {
       <div className="container-school">
         <div className="flex h-[76px] items-center justify-between">
           <Link href="/" className="flex items-center gap-3 rounded-full focus:outline-none focus:ring-2 focus:ring-[#FBDCB3]">
-            <span className="flex h-[46px] w-[46px] flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-coYellow to-coOrange shadow-[0_6px_16px_rgba(242,153,74,0.4)]">
-              <Logo size={32} priority />
-            </span>
+            {/* 完整圓形徽章自帶米色底與藍環，不需要再套漸層圓框。
+                shrink-0 是必要的：外層是 flex，沒有它圖會被橫向壓扁成橢圓。 */}
+            <Logo size={48} variant="full" priority className="shrink-0" />
             <span className="hidden leading-tight sm:block">
               <span className="block font-heading text-[1.02rem] font-bold text-[#5A4232]">
                 {locale === 'zh-TW' ? '基隆市英語資源中心' : 'Keelung City English Education Resource Center'}

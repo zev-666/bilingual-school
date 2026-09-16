@@ -1,3 +1,4 @@
+import { BookOpen, GraduationCap, ExternalLink } from 'lucide-react'
 import Reveal from '@/components/ui/Reveal'
 
 interface CoolEnglishSectionProps {
@@ -16,15 +17,15 @@ export default function CoolEnglishSection({ locale, coolEnglishUrl }: CoolEngli
       <div className="container-school">
         <Reveal>
           <div className="relative overflow-hidden rounded-[36px] border border-[#BBE4CE] bg-gradient-to-br from-[#DFF3E8] to-[#C4E9D6] p-[34px_40px] shadow-card">
-            <span
-              className="pointer-events-none absolute -bottom-[30px] -right-[10px] select-none text-[7rem] opacity-[0.12]"
+            {/* 原本是 7rem 的 📚 emoji 浮水印，改為線條圖示浮水印 */}
+            <GraduationCap
               aria-hidden="true"
-            >
-              📚
-            </span>
-            <div className="grid items-center gap-[26px] md:grid-cols-[auto_1fr_auto]">
-              <div className="flex h-[74px] w-[74px] flex-shrink-0 items-center justify-center rounded-[24px] bg-white text-[2.1rem] shadow-[0_8px_20px_rgba(78,158,125,0.22)]">
-                📖
+              strokeWidth={1.1}
+              className="pointer-events-none absolute -bottom-8 -right-4 h-[170px] w-[170px] text-[#2F6B51] opacity-[0.12]"
+            />
+            <div className="relative grid items-center gap-[26px] md:grid-cols-[auto_1fr_auto]">
+              <div className="flex h-[74px] w-[74px] flex-shrink-0 items-center justify-center rounded-[24px] bg-white text-mintDark shadow-[0_8px_20px_rgba(78,158,125,0.22)]">
+                <BookOpen size={32} strokeWidth={1.8} aria-hidden="true" />
               </div>
               <div>
                 <p className="mb-1 text-[0.78rem] font-bold tracking-[0.18em] text-mintDark">COOL ENGLISH</p>
@@ -41,9 +42,10 @@ export default function CoolEnglishSection({ locale, coolEnglishUrl }: CoolEngli
                 href={coolEnglishUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex flex-shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-mintDark px-6 py-3 text-[0.92rem] font-bold text-white shadow-[0_8px_18px_rgba(78,158,125,0.3)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_24px_rgba(78,158,125,0.38)]"
+                className="inline-flex flex-shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-mintDark px-6 py-3 text-[0.92rem] font-bold text-white shadow-[0_8px_18px_rgba(78,158,125,0.3)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_24px_rgba(78,158,125,0.38)] focus:outline-none focus-visible:ring-4 focus-visible:ring-mint"
               >
-                {isEn ? 'Visit Site' : '前往學習'} <span>↗</span>
+                {isEn ? 'Visit Site' : '前往學習'}
+                <ExternalLink size={16} aria-hidden="true" />
               </a>
             </div>
           </div>
