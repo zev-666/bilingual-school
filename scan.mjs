@@ -3,12 +3,17 @@ import { AxeBuilder } from '@axe-core/playwright'
 import { writeFileSync, mkdirSync } from 'node:fs'
 
 const BASE = process.env.BASE_URL || 'http://localhost:3000'
+// ⚠️ 首頁於 2026/09/16 改為三張大卡入口頁後，原本的長條內容（關於／最新消息／
+//    快速連結／團隊／追蹤我們）整段移到 /home。掃 '/' 已經不等於掃到那些區塊，
+//    因此 /home 與 /en/home 必須各自列為獨立檢測頁，否則覆蓋率會靜默下降。
+//    往後只要新增或搬動路由，這個清單要同步更新。
 const PAGES = [
-  ['首頁', '/zh-TW'], ['關於本中心', '/zh-TW/about'], ['最新消息', '/zh-TW/news'],
-  ['文件下載', '/zh-TW/documents'], ['師資介紹', '/zh-TW/teachers'], ['活動相簿', '/zh-TW/albums'],
+  ['首頁（入口頁）', '/zh-TW'], ['內頁', '/zh-TW/home'],
+  ['關於本中心', '/zh-TW/about'], ['最新消息', '/zh-TW/news'],
+  ['文件下載', '/zh-TW/documents'], ['團隊介紹', '/zh-TW/teachers'], ['活動相簿', '/zh-TW/albums'],
   ['活動影音', '/zh-TW/videos'], ['行事曆', '/zh-TW/calendar'], ['聯絡我們', '/zh-TW/contact'],
   ['隱私權政策', '/zh-TW/privacy'], ['資訊安全政策', '/zh-TW/security-policy'],
-  ['首頁英文版', '/en'], ['後台登入', '/admin/login'],
+  ['首頁英文版', '/en'], ['內頁英文版', '/en/home'], ['後台登入', '/admin/login'],
 ]
 const VIEWS = [['桌機 1280x800', 1280, 800], ['手機 390x844', 390, 844]]
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
