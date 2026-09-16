@@ -36,7 +36,7 @@ export default function Logo({
       width={size}
       height={size}
       priority={priority}
-      className={className}
+      className={`shrink-0 object-contain ${className}`.trim()}
       style={{ width: size, height: size }}
     />
   )
