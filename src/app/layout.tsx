@@ -32,11 +32,11 @@ export default async function RootLayout({ children }: Props) {
   return (
     <html lang={locale}>
       <head>
-        {/* 首頁整合門戶用字：Noto Sans TC（內文）／Baloo 2（標題） */}
+        {/* 用字（1b Warm Modern Education）：Noto Sans TC（中文）／Hanken Grotesk（英數標題）／IBM Plex Mono（資料層） */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
           rel="stylesheet"
         />
       </head>

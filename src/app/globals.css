@@ -137,7 +137,26 @@ html {
 
 :root {
   --font-noto: 'Noto Sans TC', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Baloo 2', 'Noto Sans TC', system-ui, sans-serif;
+  /* 1b Warm Modern Education：標題字族由 Baloo 2（圓潤、偏活潑）改為 Hanken Grotesk（中性、收斂），
+     中文仍由 Noto Sans TC 承擔，英數走 Hanken Grotesk。 */
+  --font-heading: 'Hanken Grotesk', 'Noto Sans TC', system-ui, sans-serif;
+  /* 資料層（日期、編號、檔案大小）用等寬字，讓數字對齊 */
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+}
+
+/* ── 1b 導覽列排版規則 ────────────────────────────────────────────────
+   中文沒有空格分詞，容器寬度不夠時瀏覽器會從任意兩字之間斷行，
+   造成「關於本中心」斷成「關於本中／心」、每個項目高度不一。
+   統一禁止導覽項目換行，寬度不夠時改調間距，不讓文字斷。 */
+.nav-item {
+  white-space: nowrap;
+}
+
+/* ── 1b 資料層：日期、編號、檔案大小 ───────────────────────────────── */
+.data-text {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
 }
 
 /* Chart.js 容器：固定高度，避免 canvas 在 flex/grid 中無限拉長 */

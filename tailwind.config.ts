@@ -67,14 +67,32 @@ const config: Config = {
         inkSoft: '#7C6D62',      // 次要文字
         inkFaint: '#7F6D59',     // 輔助文字
         line: '#EBDFCE',         // 分隔線／卡片邊框
+        // ── 1b Warm Modern Education 新增 ──────────────────────────────
+        navy: '#2C3D63',         // 徽章深藍：冷色支點（語言切換、外師相關）
+        navyLine: '#C9D4E6',     // 深藍系邊框
+        navySoft: '#EAF1FA',     // 深藍系淺底
+        orangeInk: '#9D4814',    // 小字強調專用（比 orangeDeep 深一階，小字仍達 AA）
+      },
+      borderRadius: {
+        // 1b 的圓角階：只有這五階，不再使用 rounded-[任意值]
+        frame: '28px',   // 大型外框（Hero 圖框、整頁級容器）
+        card: '24px',    // 卡片、橫幅
+        panel: '16px',   // 面板、次級卡片
+        chip: '8px',     // 小方塊、圖示底
+        tag: '6px',      // 標籤、focus 外框
       },
       boxShadow: {
+        // 1b 的陰影階：只有這三階，不再使用 shadow-[任意值]
+        subtle: '0 6px 18px rgba(178, 122, 66, 0.07)',
         card: '0 10px 26px rgba(178, 122, 66, 0.10)',
         soft: '0 18px 40px rgba(178, 122, 66, 0.14)',
+        // 主行動按鈕專用（唯一允許的彩色陰影）
+        action: '0 10px 24px rgba(157, 72, 20, 0.22)',
       },
       fontFamily: {
         sans: ['var(--font-noto)', 'system-ui', 'sans-serif'],
         heading: ['var(--font-heading)', 'var(--font-noto)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
       },
     },
   },
