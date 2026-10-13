@@ -22,7 +22,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   // middleware 會把目前路徑寫進 x-pathname，登入頁要跳過權限檢查
-  const pathname = headers().get('x-pathname') ?? ''
+  const pathname = (await headers()).get('x-pathname') ?? ''
   if (pathname === '/admin/login') {
     return <main id="main-content">{children}</main>
   }

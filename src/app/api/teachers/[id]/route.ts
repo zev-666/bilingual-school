@@ -20,15 +20,17 @@ const updateSchema = z.object({
   isActive:  z.boolean().optional(),
 })
 
-interface Ctx { params: { id: string } }
+interface Ctx { params: Promise<{ id: string }> }
 
-export async function GET(_req: NextRequest, { params }: Ctx) {
+export async function GET(_req: NextRequest, props: Ctx) {
+  const params = await props.params;
   const teacher = await prisma.teacher.findUnique({ where: { id: params.id } })
   if (!teacher) return apiError('Not found', 404)
   return apiSuccess(teacher)
 }
 
-export async function PATCH(req: NextRequest, { params }: Ctx) {
+export async function PATCH(req: NextRequest, props: Ctx) {
+  const params = await props.params;
   const authUser = getAuthUserFromRequest(req)
   if (!authUser) return apiError('Unauthorized', 401)
   if (!hasPermission(authUser.role, 'ADMIN')) return apiError('Forbidden', 403)
@@ -47,7 +49,8 @@ export async function PATCH(req: NextRequest, { params }: Ctx) {
   return apiSuccess(teacher)
 }
 
-export async function DELETE(req: NextRequest, { params }: Ctx) {
+export async function DELETE(req: NextRequest, props: Ctx) {
+  const params = await props.params;
   const authUser = getAuthUserFromRequest(req)
   if (!authUser) return apiError('Unauthorized', 401)
   if (!hasPermission(authUser.role, 'ADMIN')) return apiError('Forbidden', 403)

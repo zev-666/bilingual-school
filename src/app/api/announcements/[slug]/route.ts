@@ -5,10 +5,11 @@ import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
 import { z } from 'zod'
 
-interface Ctx { params: { slug: string } }
+interface Ctx { params: Promise<{ slug: string }> }
 
 // GET /api/announcements/:slug
-export async function GET(_req: NextRequest, { params }: Ctx) {
+export async function GET(_req: NextRequest, props: Ctx) {
+  const params = await props.params;
   const item = await prisma.announcement.findUnique({
     where: { slug: params.slug },
     include: { author: { select: { name: true } }, tags: { include: { tag: true } } },
@@ -31,7 +32,8 @@ const updateSchema = z.object({
 })
 
 // PATCH /api/announcements/:slug
-export async function PATCH(req: NextRequest, { params }: Ctx) {
+export async function PATCH(req: NextRequest, props: Ctx) {
+  const params = await props.params;
   const authUser = getAuthUserFromRequest(req)
   if (!authUser) return apiError('Unauthorized', 401)
   if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)
@@ -58,7 +60,8 @@ export async function PATCH(req: NextRequest, { params }: Ctx) {
 }
 
 // DELETE /api/announcements/:slug
-export async function DELETE(_req: NextRequest, { params }: Ctx) {
+export async function DELETE(_req: NextRequest, props: Ctx) {
+  const params = await props.params;
   const authUser = getAuthUserFromRequest(_req)
   if (!authUser) return apiError('Unauthorized', 401)
   if (!hasPermission(authUser.role, 'ADMIN')) return apiError('Forbidden', 403)

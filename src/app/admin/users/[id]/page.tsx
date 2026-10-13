@@ -8,7 +8,7 @@ import UserEditor from '../UserEditor'
 
 export const metadata: Metadata = { title: '編輯使用者' }
 
-interface Props { params: { id: string } }
+interface Props { params: Promise<{ id: string }> }
 
 async function getUser(id: string) {
   try {
@@ -21,9 +21,9 @@ async function getUser(id: string) {
   }
 }
 
-function getCurrentUserRole() {
+async function getCurrentUserRole() {
   try {
-    const token = cookies().get(SESSION_COOKIE)?.value
+    const token = (await cookies()).get(SESSION_COOKIE)?.value
     if (!token) return undefined
     const payload = verifyToken(token)
     return payload?.role ?? undefined
@@ -32,7 +32,8 @@ function getCurrentUserRole() {
   }
 }
 
-export default async function EditUserPage({ params }: Props) {
+export default async function EditUserPage(props: Props) {
+  const params = await props.params;
   const [user, currentUserRole] = await Promise.all([getUser(params.id), getCurrentUserRole()])
   if (!user) notFound()
 

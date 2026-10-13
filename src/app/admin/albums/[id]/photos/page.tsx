@@ -8,7 +8,7 @@ import PhotoManager from './PhotoManager'
 
 export const metadata: Metadata = { title: '管理照片' }
 
-interface Props { params: { id: string } }
+interface Props { params: Promise<{ id: string }> }
 
 async function getAlbumWithPhotos(id: string) {
   try {
@@ -21,7 +21,8 @@ async function getAlbumWithPhotos(id: string) {
   }
 }
 
-export default async function AlbumPhotosPage({ params }: Props) {
+export default async function AlbumPhotosPage(props: Props) {
+  const params = await props.params;
   const album = await getAlbumWithPhotos(params.id)
   if (!album) notFound()
 

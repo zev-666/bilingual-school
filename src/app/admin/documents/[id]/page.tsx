@@ -5,7 +5,7 @@ import { ChevronLeft } from 'lucide-react'
 import DocumentEditor from '../DocumentEditor'
 
 interface Props {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 async function getDocument(id: string) {
@@ -18,7 +18,8 @@ async function getDocument(id: string) {
   }
 }
 
-export default async function EditDocumentPage({ params }: Props) {
+export default async function EditDocumentPage(props: Props) {
+  const params = await props.params;
   const doc = await getDocument(params.id)
   if (!doc) notFound()
 

@@ -13,9 +13,10 @@ const updateSchema = z.object({
   isActive: z.boolean().optional(),
 })
 
-interface Ctx { params: { id: string } }
+interface Ctx { params: Promise<{ id: string }> }
 
-export async function GET(req: NextRequest, { params }: Ctx) {
+export async function GET(req: NextRequest, props: Ctx) {
+  const params = await props.params;
   const authUser = getAuthUserFromRequest(req)
   if (!authUser) return apiError('Unauthorized', 401)
   if (authUser.userId !== params.id && !hasPermission(authUser.role, 'ADMIN')) {
@@ -29,7 +30,8 @@ export async function GET(req: NextRequest, { params }: Ctx) {
   return apiSuccess(user)
 }
 
-export async function PATCH(req: NextRequest, { params }: Ctx) {
+export async function PATCH(req: NextRequest, props: Ctx) {
+  const params = await props.params;
   const authUser = getAuthUserFromRequest(req)
   if (!authUser) return apiError('Unauthorized', 401)
   // Users can edit themselves; ADMIN+ can edit others
@@ -66,7 +68,8 @@ export async function PATCH(req: NextRequest, { params }: Ctx) {
   return apiSuccess(user)
 }
 
-export async function DELETE(req: NextRequest, { params }: Ctx) {
+export async function DELETE(req: NextRequest, props: Ctx) {
+  const params = await props.params;
   const authUser = getAuthUserFromRequest(req)
   if (!authUser) return apiError('Unauthorized', 401)
   if (!hasPermission(authUser.role, 'ADMIN')) return apiError('Forbidden', 403)

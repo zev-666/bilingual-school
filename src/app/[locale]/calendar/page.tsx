@@ -8,11 +8,17 @@ import { CalendarDays } from 'lucide-react'
 export const dynamic = 'force-dynamic'
 
 interface Props {
-  params: { locale: string }
-  searchParams: { type?: string }
+  params: Promise<{ locale: string }>
+  searchParams: Promise<{ type?: string }>
 }
 
-export async function generateMetadata({ params: { locale } }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   const t = await getTranslations({ locale, namespace: 'calendar' })
   return { title: t('title') }
 }
@@ -52,7 +58,14 @@ function monthLabel(key: string, locale: string) {
   return dt.toLocaleDateString(locale === 'zh-TW' ? 'zh-TW' : 'en-US', { year: 'numeric', month: 'long' })
 }
 
-export default async function CalendarPage({ params: { locale }, searchParams }: Props) {
+export default async function CalendarPage(props: Props) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   const t = await getTranslations({ locale, namespace: 'calendar' })
   const tt = await getTranslations({ locale, namespace: 'calendar.types' })
   const activeType = searchParams.type ?? 'all'

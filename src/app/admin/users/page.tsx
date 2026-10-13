@@ -31,9 +31,9 @@ async function getUsers() {
   }
 }
 
-function getCurrentUserId() {
+async function getCurrentUserId() {
   try {
-    const token = cookies().get(SESSION_COOKIE)?.value
+    const token = (await cookies()).get(SESSION_COOKIE)?.value
     if (!token) return null
     const payload = verifyToken(token)
     return payload?.userId ?? null

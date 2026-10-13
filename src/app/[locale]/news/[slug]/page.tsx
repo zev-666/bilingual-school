@@ -12,7 +12,14 @@ async function getAnnouncement(slug: string) {
   } catch { return null }
 }
 
-export default async function NewsDetailPage({ params: { locale, slug } }: { params: { locale: string; slug: string } }) {
+export default async function NewsDetailPage(props: { params: Promise<{ locale: string; slug: string }> }) {
+  const params = await props.params;
+
+  const {
+    locale,
+    slug
+  } = params;
+
   const t = await getTranslations('news')
   const item = await getAnnouncement(slug)
   if (!item) notFound()

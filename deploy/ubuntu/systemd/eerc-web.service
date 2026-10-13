@@ -1,0 +1,47 @@
+# /etc/systemd/system/eerc-web.service — 網站程式常駐服務
+#   sudo cp deploy/ubuntu/systemd/eerc-web.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now eerc-web
+#   狀態：sudo systemctl status eerc-web    紀錄：sudo journalctl -u eerc-web -f
+
+[Unit]
+Description=Keelung EERC website (Next.js)
+After=network-online.target postgresql.service
+Wants=network-online.target
+# 連續失敗 5 次（5 分鐘內）就停止重啟，避免無限重啟洗紀錄
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=eerc
+Group=eerc
+# /srv/eerc/current 是指向目前版本的捷徑（由 deploy.sh 切換）
+WorkingDirectory=/srv/eerc/current
+EnvironmentFile=/srv/eerc/shared/.env
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=HOSTNAME=127.0.0.1
+# 只聽 127.0.0.1，外部一律經過 Nginx
+ExecStart=/usr/bin/node /srv/eerc/current/node_modules/next/dist/bin/next start -H 127.0.0.1 -p 3000
+Restart=on-failure
+RestartSec=5
+
+# ── 沙箱化：程式只能寫入上傳目錄與 Next 快取 ──
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/eerc/uploads /srv/eerc/current/.next
+# ↑ .next 必須可寫：圖片最佳化快取與每 5 分鐘重新產生的頁面（ISR）都寫在這裡
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictRealtime=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=
+MemoryMax=2G
+
+[Install]
+WantedBy=multi-user.target

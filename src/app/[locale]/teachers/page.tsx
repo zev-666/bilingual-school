@@ -25,7 +25,13 @@ async function getTeachers() {
   }
 }
 
-export default async function TeachersPage({ params: { locale } }: { params: { locale: string } }) {
+export default async function TeachersPage(props: { params: Promise<{ locale: string }> }) {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   const t = await getTranslations('teachers')
   const tt = await getTranslations('teachers.types')
   const teachers = await getTeachers()

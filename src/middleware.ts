@@ -66,6 +66,8 @@ function nextWithPathname(req: NextRequest, pathname: string): NextResponse {
 function withSecurityHeaders(res: NextResponse, req: NextRequest): NextResponse {
   const isProd = process.env.NODE_ENV === 'production'
 
+  fixRedirectOrigin(res, req)
+
   res.headers.set('X-Content-Type-Options', 'nosniff')
   res.headers.set('X-Frame-Options', 'SAMEORIGIN')
   res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
@@ -108,6 +110,25 @@ function withSecurityHeaders(res: NextResponse, req: NextRequest): NextResponse 
 
   res.headers.set('Content-Security-Policy', csp)
   return res
+}
+
+/**
+ * 自架主機（Nginx → next start）時，Next.js 產生的轉址網址會是內部位址
+ * （例如 https://localhost:3000/zh-TW），使用者會被導到打不開的網址。
+ * 有設定 PUBLIC_ORIGIN（例如 https://englishcenter.kl.edu.tw）時，把轉址的主機改回正式網域。
+ * Vercel 上不設 PUBLIC_ORIGIN，這個函式什麼都不做。
+ */
+function fixRedirectOrigin(res: NextResponse, req: NextRequest) {
+  const publicOrigin = process.env.PUBLIC_ORIGIN
+  const location = res.headers.get('location')
+  if (!publicOrigin || !location) return
+  try {
+    const target = new URL(location, req.url)
+    if (target.origin !== req.nextUrl.origin) return // 外部網址不動
+    res.headers.set('location', `${publicOrigin.replace(/\/$/, '')}${target.pathname}${target.search}${target.hash}`)
+  } catch {
+    // 無法解析就維持原樣
+  }
 }
 
 export const config = {

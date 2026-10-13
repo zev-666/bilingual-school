@@ -6,7 +6,7 @@ import CalendarEventEditor from '../CalendarEventEditor'
 
 export const metadata: Metadata = { title: '編輯行程' }
 
-interface Props { params: { id: string } }
+interface Props { params: Promise<{ id: string }> }
 
 async function getEvent(id: string) {
   try {
@@ -21,7 +21,8 @@ function toDateInputValue(d: Date | null | undefined) {
   return new Date(d).toISOString().slice(0, 10)
 }
 
-export default async function EditCalendarEventPage({ params }: Props) {
+export default async function EditCalendarEventPage(props: Props) {
+  const params = await props.params;
   const event = await getEvent(params.id)
   if (!event) notFound()
 

@@ -6,7 +6,7 @@ import AlbumEditor from '../AlbumEditor'
 
 export const metadata: Metadata = { title: '編輯相簿' }
 
-interface Props { params: { id: string } }
+interface Props { params: Promise<{ id: string }> }
 
 async function getAlbum(id: string) {
   try {
@@ -16,7 +16,8 @@ async function getAlbum(id: string) {
   }
 }
 
-export default async function EditAlbumPage({ params }: Props) {
+export default async function EditAlbumPage(props: Props) {
+  const params = await props.params;
   const album = await getAlbum(params.id)
   if (!album) notFound()
 

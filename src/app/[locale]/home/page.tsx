@@ -80,7 +80,13 @@ async function getHomeData() {
   }
 }
 
-export default async function HomeContentPage({ params: { locale } }: { params: { locale: string } }) {
+export default async function HomeContentPage(props: { params: Promise<{ locale: string }> }) {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   const { announcements, facebookUrl, instagramUrl, youtubeUrl, lineUrl } = await getHomeData()
 
   return (

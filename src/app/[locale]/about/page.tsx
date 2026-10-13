@@ -3,9 +3,15 @@ import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { Globe, BookOpen, Lightbulb, Heart, Compass, Users, Landmark } from 'lucide-react'
 
-interface Props { params: { locale: string } }
+interface Props { params: Promise<{ locale: string }> }
 
-export async function generateMetadata({ params: { locale } }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   const t = await getTranslations({ locale, namespace: 'about' })
   return { title: t('title') }
 }
@@ -24,7 +30,13 @@ const VALUE_BG = {
   character:  'bg-[#FFF3E0] border-[#F5DBA8]',
 }
 
-export default async function AboutPage({ params: { locale } }: Props) {
+export default async function AboutPage(props: Props) {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   const t = await getTranslations({ locale, namespace: 'about' })
 
   const historyEvents = t.raw('history.events') as { year: string; title: string; desc: string }[]

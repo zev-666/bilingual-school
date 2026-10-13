@@ -5,7 +5,7 @@ import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
 import { z } from 'zod'
 
-interface Ctx { params: { id: string; photoId: string } }
+interface Ctx { params: Promise<{ id: string; photoId: string }> }
 
 const updateSchema = z.object({
   captionZh: z.string().optional(),
@@ -13,7 +13,8 @@ const updateSchema = z.object({
   sortOrder: z.number().optional(),
 })
 
-export async function PATCH(req: NextRequest, { params }: Ctx) {
+export async function PATCH(req: NextRequest, props: Ctx) {
+  const params = await props.params;
   const authUser = getAuthUserFromRequest(req)
   if (!authUser) return apiError('Unauthorized', 401)
   if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)
@@ -29,7 +30,8 @@ export async function PATCH(req: NextRequest, { params }: Ctx) {
   return apiSuccess(photo)
 }
 
-export async function DELETE(req: NextRequest, { params }: Ctx) {
+export async function DELETE(req: NextRequest, props: Ctx) {
+  const params = await props.params;
   const authUser = getAuthUserFromRequest(req)
   if (!authUser) return apiError('Unauthorized', 401)
   if (!hasPermission(authUser.role, 'EDITOR')) return apiError('Forbidden', 403)

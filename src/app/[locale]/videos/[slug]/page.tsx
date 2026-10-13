@@ -15,11 +15,18 @@ async function getVideo(slug: string) {
   }
 }
 
-export default async function VideoDetailPage({
-  params: { locale, slug },
-}: {
-  params: { locale: string; slug: string }
-}) {
+export default async function VideoDetailPage(
+  props: {
+    params: Promise<{ locale: string; slug: string }>
+  }
+) {
+  const params = await props.params;
+
+  const {
+    locale,
+    slug
+  } = params;
+
   const t = await getTranslations('videos')
   const video = await getVideo(slug)
   if (!video) notFound()

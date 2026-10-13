@@ -5,7 +5,7 @@ import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
 import { prisma } from '@/lib/prisma'
 import { writeFile, mkdir } from 'fs/promises'
-import { join, extname } from 'path'
+import { join } from 'path'
 import { randomUUID } from 'crypto'
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
@@ -20,6 +20,34 @@ const ALLOWED_DOC_TYPES = [
   'application/zip',
 ]
 const MAX_SIZE_MB = 10
+
+// 副檔名一律由「已通過白名單的 MIME 類型」決定，不採用使用者上傳的檔名。
+// 否則有人可以把 evil.html 宣稱成 image/png 上傳，存成 .html 後由 Nginx 以網頁形式提供，
+// 變成儲存型 XSS（主機改為自管 Ubuntu／Nginx 直接提供 /uploads 後，這個風險才會真正浮現）。
+const EXT_BY_TYPE: Record<string, string> = {
+  'image/jpeg': '.jpg',
+  'image/png': '.png',
+  'image/webp': '.webp',
+  'image/gif': '.gif',
+  'application/pdf': '.pdf',
+  'application/msword': '.doc',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': '.docx',
+  'application/vnd.ms-excel': '.xls',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': '.xlsx',
+  'application/vnd.ms-powerpoint': '.ppt',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation': '.pptx',
+  'application/zip': '.zip',
+}
+
+/**
+ * 本機磁碟的上傳目錄。
+ * - Ubuntu 正式主機：設 UPLOAD_DIR=/srv/eerc/uploads（放在發佈目錄以外），由 Nginx 直接提供 /uploads/。
+ *   這樣每次部署新版本都不會讓後台上傳過的檔案「消失」。
+ * - 本機開發：不設，沿用 public/uploads，`npm run dev` 會自動提供。
+ */
+function getUploadDir() {
+  return process.env.UPLOAD_DIR || join(process.cwd(), 'public', 'uploads')
+}
 
 export async function POST(req: NextRequest) {
   const authUser = getAuthUserFromRequest(req)
@@ -39,7 +67,7 @@ export async function POST(req: NextRequest) {
   const bytes = await file.arrayBuffer()
   const buffer = Buffer.from(bytes)
   const filename = file.name
-  const uniqueName = `${randomUUID()}${extname(file.name)}`
+  const uniqueName = `${randomUUID()}${EXT_BY_TYPE[file.type] ?? ''}`
 
   let url: string
 
@@ -76,10 +104,9 @@ export async function POST(req: NextRequest) {
     }))
     url = `https://${process.env.AWS_S3_BUCKET}.s3.amazonaws.com/${key}`
   } else {
-    // 僅供本機開發、且未設定任何雲端儲存 token 時的最後手段。
-    // ⚠️ 這個分支在 Vercel 正式環境永遠不會被走到（BLOB_READ_WRITE_TOKEN 一定存在），
-    // 保留只是避免本機完全沒設定任何 token 時整個功能掛掉。
-    const uploadDir = join(process.cwd(), 'public', 'uploads')
+    // 本機磁碟：Ubuntu 正式主機（不設 Blob／S3 變數）與本機開發都走這裡。
+    // Vercel 上一定有 BLOB_READ_WRITE_TOKEN，不會走到這個分支（Vercel 檔案系統是唯讀的）。
+    const uploadDir = getUploadDir()
     await mkdir(uploadDir, { recursive: true })
     await writeFile(join(uploadDir, uniqueName), buffer)
     url = `/uploads/${uniqueName}`

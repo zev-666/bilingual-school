@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import AnnouncementEditor from '../AnnouncementEditor'
 
-interface Props { params: { id: string } }
+interface Props { params: Promise<{ id: string }> }
 
 export const metadata: Metadata = { title: '編輯公告' }
 
@@ -16,7 +16,8 @@ async function getAnnouncement(id: string) {
   }
 }
 
-export default async function EditAnnouncementPage({ params }: Props) {
+export default async function EditAnnouncementPage(props: Props) {
+  const params = await props.params;
   const item = await getAnnouncement(params.id)
   if (!item) notFound()
 

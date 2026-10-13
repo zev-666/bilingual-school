@@ -9,10 +9,16 @@ import QuickLinksSection from '@/components/sections/QuickLinksSection'
 import { prisma } from '@/lib/prisma'
 
 interface HomePageProps {
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }
 
-export async function generateMetadata({ params: { locale } }: HomePageProps): Promise<Metadata> {
+export async function generateMetadata(props: HomePageProps): Promise<Metadata> {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   return {
     title: locale === 'zh-TW' ? '首頁' : 'Home',
   }
@@ -59,7 +65,13 @@ async function getBannerSlides() {
   }
 }
 
-export default async function HomePage({ params: { locale } }: HomePageProps) {
+export default async function HomePage(props: HomePageProps) {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   const [t, announcements, bannerSlides] = await Promise.all([
     getTranslations('home'),
     getLatestAnnouncements(locale),

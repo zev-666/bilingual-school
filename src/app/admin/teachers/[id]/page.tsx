@@ -6,7 +6,7 @@ import TeacherEditor from '../TeacherEditor'
 
 export const metadata: Metadata = { title: '編輯師資' }
 
-interface Props { params: { id: string } }
+interface Props { params: Promise<{ id: string }> }
 
 async function getTeacher(id: string) {
   try {
@@ -16,7 +16,8 @@ async function getTeacher(id: string) {
   }
 }
 
-export default async function EditTeacherPage({ params }: Props) {
+export default async function EditTeacherPage(props: Props) {
+  const params = await props.params;
   const teacher = await getTeacher(params.id)
   if (!teacher) notFound()
 

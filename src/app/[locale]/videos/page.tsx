@@ -14,7 +14,13 @@ async function getVideos() {
   }
 }
 
-export default async function VideosPage({ params: { locale } }: { params: { locale: string } }) {
+export default async function VideosPage(props: { params: Promise<{ locale: string }> }) {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   const t = await getTranslations('videos')
   const videos = await getVideos()
 

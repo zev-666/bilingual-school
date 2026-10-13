@@ -19,7 +19,13 @@ async function getCoolEnglishUrl(): Promise<string> {
   }
 }
 
-export default async function PortalPage({ params: { locale } }: { params: { locale: string } }) {
+export default async function PortalPage(props: { params: Promise<{ locale: string }> }) {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   const coolEnglishUrl = await getCoolEnglishUrl()
 
   return <PortalSection locale={locale} coolEnglishUrl={coolEnglishUrl} />

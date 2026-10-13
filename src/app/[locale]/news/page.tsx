@@ -19,7 +19,13 @@ async function getAnnouncements() {
   }
 }
 
-export default async function NewsPage({ params: { locale } }: { params: { locale: string } }) {
+export default async function NewsPage(props: { params: Promise<{ locale: string }> }) {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   const t = await getTranslations('news')
   const tc = await getTranslations('news.categories')
   const announcements = await getAnnouncements()

@@ -2,7 +2,8 @@ import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import VideoEditor from '../VideoEditor'
 
-export default async function EditVideoPage({ params }: { params: { id: string } }) {
+export default async function EditVideoPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const video = await prisma.video.findUnique({ where: { id: params.id } })
   if (!video) notFound()
 

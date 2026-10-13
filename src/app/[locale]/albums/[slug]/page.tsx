@@ -22,11 +22,18 @@ async function getAlbum(slug: string) {
   }
 }
 
-export default async function AlbumDetailPage({
-  params: { locale, slug },
-}: {
-  params: { locale: string; slug: string }
-}) {
+export default async function AlbumDetailPage(
+  props: {
+    params: Promise<{ locale: string; slug: string }>
+  }
+) {
+  const params = await props.params;
+
+  const {
+    locale,
+    slug
+  } = params;
+
   const t = await getTranslations('albums')
   const album = await getAlbum(slug)
   if (!album) notFound()
