@@ -8,9 +8,12 @@ interface Props { params: Promise<{ id: string }> }
 
 export const metadata: Metadata = { title: '編輯公告' }
 
-async function getAnnouncement(id: string) {
+// 編輯頁網址用 id；舊的列表連結曾經用 slug（導致按「編輯」出現 404），
+// 為了相容舊書籤，找不到 id 時再用 slug 找一次。
+async function getAnnouncement(idOrSlug: string) {
   try {
-    return await prisma.announcement.findUnique({ where: { id } })
+    const key = decodeURIComponent(idOrSlug)
+    return await prisma.announcement.findFirst({ where: { OR: [{ id: key }, { slug: key }] } })
   } catch {
     return null
   }

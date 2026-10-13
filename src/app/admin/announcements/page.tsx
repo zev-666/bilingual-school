@@ -52,7 +52,7 @@ export default async function AnnouncementsPage() {
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex justify-end gap-2">
-                    <Link href={`/admin/announcements/${item.slug}`} className="btn-ghost py-1.5 px-3 text-xs">
+                    <Link href={`/admin/announcements/${item.id}`} className="btn-ghost py-1.5 px-3 text-xs">
                       編輯
                     </Link>
                     <DeleteAnnouncementButton slug={item.slug} />
