@@ -8,6 +8,7 @@ import { usePathname } from '@/i18n/routing'
 
 export default function HideOnHome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  if (pathname === '/') return null
+  // /home 是內容首頁（從入口頁的「英語教學／外師專區」進入），同樣不需要「首頁 > 詳細內容」麵包屑
+  if (pathname === '/' || pathname === '/home') return null
   return <>{children}</>
 }
