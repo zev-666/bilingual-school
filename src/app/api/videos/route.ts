@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError, generateSlug } from '@/lib/utils'
 import { z } from 'zod'
+import { mediaUrl } from '@/lib/validation'
 
 function extractYouTubeId(url: string): string | null {
   const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/)
@@ -59,9 +60,9 @@ const createSchema = z.object({
   titleEn:     z.string().min(1),
   descZh:      z.string().optional(),
   descEn:      z.string().optional(),
-  videoUrl:    z.string().url(),
+  videoUrl:    mediaUrl,
   source:      z.enum(['YOUTUBE', 'VIMEO', 'SELF_HOSTED']).default('YOUTUBE'),
-  thumbnail:   z.string().url().optional().or(z.literal('')).transform(v => v || undefined),
+  thumbnail:   mediaUrl.optional().or(z.literal('')).transform(v => v || undefined),
   duration:    z.number().positive().optional(),
   isPublished: z.boolean().default(false),
 })

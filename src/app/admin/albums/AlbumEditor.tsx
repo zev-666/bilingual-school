@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { mediaUrl } from '@/lib/validation'
 import { Save, Eye, EyeOff, ArrowLeft, Calendar } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
@@ -15,7 +16,7 @@ const schema = z.object({
   titleEn:    z.string().min(1, 'Please enter English title'),
   descZh:     z.string().optional(),
   descEn:     z.string().optional(),
-  coverImage: z.string().url('請輸入有效的圖片網址').optional().or(z.literal('')),
+  coverImage: mediaUrl.optional().or(z.literal('')),
   eventDate:  z.string().optional(),
   isPublished:z.boolean(),
 })

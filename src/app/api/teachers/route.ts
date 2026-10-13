@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
 import { z } from 'zod'
+import { mediaUrl } from '@/lib/validation'
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
@@ -22,7 +23,7 @@ const createSchema = z.object({
   nameZh: z.string().min(1), nameEn: z.string().min(1),
   titleZh: z.string().min(1), titleEn: z.string().min(1),
   bioZh: z.string().optional(), bioEn: z.string().optional(),
-  avatar: z.string().url().optional().or(z.literal('')).transform(v => v || undefined),
+  avatar: mediaUrl.optional().or(z.literal('')).transform(v => v || undefined),
   type: z.enum(['CONVENER', 'FOREIGN', 'FOREIGN_COUNSELLOR', 'LOCAL_ADVISOR', 'LOCAL_COUNSELLOR', 'STAFF', 'FULL_TIME', 'PART_TIME']).default('FULL_TIME'),
   subjects: z.array(z.string()).default([]),
   email: z.string().email().optional(),

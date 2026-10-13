@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError, generateSlug } from '@/lib/utils'
 import { z } from 'zod'
+import { mediaUrl } from '@/lib/validation'
 
 // GET /api/announcements — public listing
 export async function GET(req: NextRequest) {
@@ -50,7 +51,7 @@ const createSchema = z.object({
   contentZh:  z.string().min(1),
   contentEn:  z.string().min(1),
   category:   z.enum(['ANNOUNCEMENT','ACTIVITY','ADMISSION','COMPETITION','NEWS','WORKSHOP']),
-  coverImage: z.string().url().optional().or(z.literal('')).transform(v => v || undefined),
+  coverImage: mediaUrl.optional().or(z.literal('')).transform(v => v || undefined),
   isPinned:   z.boolean().optional().default(false),
   isPublished:z.boolean().optional().default(false),
 })

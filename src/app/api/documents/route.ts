@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
 import { z } from 'zod'
+import { mediaUrl } from '@/lib/validation'
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
@@ -34,7 +35,7 @@ const createSchema = z.object({
   descZh: z.string().optional(), descEn: z.string().optional(),
   category: z.enum(['FORM','REGULATION','BROCHURE','REPORT','OTHER']).default('OTHER'),
   formType: z.enum(['TEACHING','ADMINISTRATIVE']).default('ADMINISTRATIVE'),
-  fileUrl: z.string().url(), fileName: z.string().min(1),
+  fileUrl: mediaUrl, fileName: z.string().min(1),
   fileSize: z.number().positive(), fileType: z.string(),
   isPublished: z.boolean().default(true),
   publishedAt: z

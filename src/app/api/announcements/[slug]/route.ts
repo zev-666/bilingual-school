@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
 import { z } from 'zod'
+import { mediaUrl } from '@/lib/validation'
 
 interface Ctx { params: Promise<{ slug: string }> }
 
@@ -26,7 +27,7 @@ const updateSchema = z.object({
   summaryZh: z.string().optional(), summaryEn: z.string().optional(),
   contentZh: z.string().optional(), contentEn: z.string().optional(),
   category: z.enum(['ANNOUNCEMENT','ACTIVITY','ADMISSION','COMPETITION','NEWS','WORKSHOP']).optional(),
-  coverImage: z.string().url().nullable().optional(),
+  coverImage: mediaUrl.nullable().optional().or(z.literal('')).transform(v => (v === '' ? null : v)), // 空字串＝清除封面；沒送＝不變
   isPinned: z.boolean().optional(),
   isPublished: z.boolean().optional(),
 })

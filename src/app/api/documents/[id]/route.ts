@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
 import { z } from 'zod'
+import { mediaUrl } from '@/lib/validation'
 
 const updateSchema = z.object({
   titleZh:     z.string().min(1).optional(),
@@ -12,7 +13,7 @@ const updateSchema = z.object({
   descEn:      z.string().optional(),
   category:    z.enum(['FORM', 'REGULATION', 'BROCHURE', 'REPORT', 'OTHER']).optional(),
   formType:    z.enum(['TEACHING', 'ADMINISTRATIVE']).optional(),
-  fileUrl:     z.string().url().optional().or(z.literal('')).transform(v => v || undefined),
+  fileUrl:     mediaUrl.optional().or(z.literal('')).transform(v => v || undefined),
   fileName:    z.string().optional(),
   fileSize:    z.number().positive().optional(),
   fileType:    z.string().optional(),

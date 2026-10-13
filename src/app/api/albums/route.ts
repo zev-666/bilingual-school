@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError, generateSlug } from '@/lib/utils'
 import { z } from 'zod'
+import { mediaUrl } from '@/lib/validation'
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
@@ -27,7 +28,7 @@ export async function GET(req: NextRequest) {
 const createSchema = z.object({
   titleZh: z.string().min(1), titleEn: z.string().min(1),
   descZh: z.string().optional(), descEn: z.string().optional(),
-  coverImage: z.string().url().optional().or(z.literal('')).transform(v => v || undefined),
+  coverImage: mediaUrl.optional().or(z.literal('')).transform(v => v || undefined),
   eventDate: z.string().datetime().optional(),
   isPublished: z.boolean().default(false),
 })

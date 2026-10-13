@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
 import { z } from 'zod'
+import { mediaUrl } from '@/lib/validation'
 
 const updateSchema = z.object({
   nameZh:    z.string().min(1).optional(),
@@ -12,7 +13,7 @@ const updateSchema = z.object({
   titleEn:   z.string().min(1).optional(),
   bioZh:     z.string().optional(),
   bioEn:     z.string().optional(),
-  avatar:    z.string().url().optional().nullable().or(z.literal('')).transform(v => v || null),
+  avatar:    mediaUrl.optional().nullable().or(z.literal('')).transform(v => v || null),
   type:      z.enum(['CONVENER', 'FOREIGN', 'FOREIGN_COUNSELLOR', 'LOCAL_ADVISOR', 'LOCAL_COUNSELLOR', 'STAFF', 'FULL_TIME', 'PART_TIME']).optional(),
   subjects:  z.array(z.string()).optional(),
   email:     z.string().email().optional().nullable(),

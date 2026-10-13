@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { mediaUrl } from '@/lib/validation'
 import { Save, ArrowLeft, Plus, X } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -30,7 +31,7 @@ const schema = z.object({
   titleEn:   z.string().min(1, 'Please enter title (English)'),
   bioZh:     z.string().optional(),
   bioEn:     z.string().optional(),
-  avatar:    z.string().url('請輸入有效的圖片網址').optional().or(z.literal('')),
+  avatar:    mediaUrl.optional().or(z.literal('')),
   type:      z.enum(TEACHER_TYPES),
   email:     z.string().email('請輸入有效的 Email').optional().or(z.literal('')),
   sortOrder: z.coerce.number().default(0),

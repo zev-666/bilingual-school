@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
 import { z } from 'zod'
+import { mediaUrl } from '@/lib/validation'
 
 interface Ctx { params: Promise<{ id: string }> }
 
@@ -17,8 +18,8 @@ export async function GET(_req: NextRequest, props: Ctx) {
 }
 
 const createPhotoSchema = z.object({
-  url:       z.string().url(),
-  thumbnail: z.string().url().optional(),
+  url:       mediaUrl,
+  thumbnail: mediaUrl.optional(),
   captionZh: z.string().optional(),
   captionEn: z.string().optional(),
   sortOrder: z.number().default(0),

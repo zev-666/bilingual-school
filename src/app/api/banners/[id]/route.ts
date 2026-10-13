@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
 import { z } from 'zod'
+import { mediaUrl } from '@/lib/validation'
 
 interface Ctx { params: Promise<{ id: string }> }
 
@@ -12,7 +13,7 @@ const updateBannerSchema = z.object({
   titleEn: z.string().min(1).optional(),
   subtitleZh: z.string().nullable().optional(),
   subtitleEn: z.string().nullable().optional(),
-  imageUrl: z.string().url().optional().or(z.literal('')).transform(v => v || undefined),
+  imageUrl: mediaUrl.optional().or(z.literal('')).transform(v => v || undefined),
   linkUrl: z.string().nullable().optional(),
   linkTextZh: z.string().nullable().optional(),
   linkTextEn: z.string().nullable().optional(),

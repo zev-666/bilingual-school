@@ -4,13 +4,14 @@ import { prisma } from '@/lib/prisma'
 import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
 import { z } from 'zod'
+import { mediaUrl } from '@/lib/validation'
 
 const createBannerSchema = z.object({
   titleZh: z.string().min(1),
   titleEn: z.string().min(1),
   subtitleZh: z.string().optional(),
   subtitleEn: z.string().optional(),
-  imageUrl: z.string().url(),
+  imageUrl: mediaUrl,
   linkUrl: z.string().optional(),
   linkTextZh: z.string().optional(),
   linkTextEn: z.string().optional(),

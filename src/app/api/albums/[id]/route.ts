@@ -4,13 +4,14 @@ import { prisma } from '@/lib/prisma'
 import { getAuthUserFromRequest, hasPermission } from '@/lib/auth'
 import { apiSuccess, apiError } from '@/lib/utils'
 import { z } from 'zod'
+import { mediaUrl } from '@/lib/validation'
 
 const updateSchema = z.object({
   titleZh:     z.string().min(1).optional(),
   titleEn:     z.string().min(1).optional(),
   descZh:      z.string().optional(),
   descEn:      z.string().optional(),
-  coverImage:  z.string().url().optional().or(z.literal('')).transform(v => v || undefined),
+  coverImage:  mediaUrl.optional().or(z.literal('')).transform(v => v || undefined),
   eventDate:   z.string().datetime().optional().nullable(),
   isPublished: z.boolean().optional(),
   sortOrder:   z.number().optional(),
